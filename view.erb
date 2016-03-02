@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+<body class='body-style'>
+
+  <section>
+    <h1 id="welcomeMsg"> Welcome to <a href="/">Sinatra TODO List Manager.</a></h1>
+  </section>
+  
+  <section class='rounded-corners'>
+    <h3>Add new item</h3>
+    <form method='post' action='/add'>
+      <input type='text' name='task_name' placeholder='Task name?'>
+      <textarea name='task_description' placeholder='Task description'></textarea>
+      <button type='submit' class='btn'>Add item</button>
+    </form>
+  </section>
+  
+  <%= erb :tasks_list, locals: {tasks: tasks} %>
+  
+  </body>
+</html>
