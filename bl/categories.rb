@@ -1,1 +1,1 @@
-$categories = mongo.collection('categories')
+$categories = $mongo.collection('categories')
