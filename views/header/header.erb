@@ -1,0 +1,9 @@
+<header>
+<a href="/">home</a>
+<% if cu %>
+<a href="<%=user_permalink(cu)%>"><%=cu['email']%></a>
+<a href="/logout">(log out)</a>
+<% else %>
+<a href="/signup"><button>Sign Up</button></a>
+<% end %>
+</header>

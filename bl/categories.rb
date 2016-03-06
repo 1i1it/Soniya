@@ -1,0 +1,1 @@
+$categories = mongo.collection('categories')

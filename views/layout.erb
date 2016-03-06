@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Generate API</title>
+  <title>My Social Network</title>
 </head>
 <body style='text-align: center'>
 
-<header>
-<a href="/">Home</a>
-</header>
-
+<%= erb :"header/header" %>
 <%= yield %>
 
-<footer>  
-(footer.)
-</footer>
-
+<%= erb :"footer/footer" %>
 </body>
 </html>

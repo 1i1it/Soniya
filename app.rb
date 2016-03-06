@@ -8,17 +8,21 @@ puts "requiring gems..."
 Bundler.require
 
 require './setup'
-require './users'
 require './my_lib'
 
 require_all './db'
 require_all './mw'
 require_all './bl'
 
-get '/' do
-  erb :index
-end
-
 get '/ping' do
   {msg: '123 pong from BEAPI', pong: true}
+end
+
+get '/:slug' do
+  slug = params[:slug]
+  if user = $users.get(username: slug)
+    render_user_page(user)
+  else
+    render_home_page
+  end
 end

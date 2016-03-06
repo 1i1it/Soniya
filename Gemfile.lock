@@ -107,6 +107,3 @@ DEPENDENCIES
   sinatra-contrib
   sinatra-reloader
   tux
-
-BUNDLED WITH
-   1.10.6
