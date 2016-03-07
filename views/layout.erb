@@ -2,12 +2,19 @@
 <html>
 <head>
   <title>My Social Network</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 </head>
-<body style='text-align: center'>
 
-<%= erb :"header/header" %>
-<%= yield %>
-
-<%= erb :"footer/footer" %>
+<body style='padding-top: 50px;'>
+  
+  
+  <div class='container-fluid'>    
+    <%= erb :"header/header" %>
+    <%= yield %>        
+    <%= erb :"footer/footer" %>
+  </div>
+    
+    <%= erb :bottom_js_scripts %>
 </body>
+
 </html>

@@ -1,3 +1,7 @@
+def halt_bad_input(opts = {})
+  halt(403, {msg: opts[:msg] || "Bad input."}) 
+end
+
 def halt_missing_fields(fields)
   halt(403, {msg: "Missing fields: #{fields.join(",")}"}) 
 end

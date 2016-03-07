@@ -1,0 +1,56 @@
+<%
+  coll_name = params[:coll]
+  coll      = $mongo.collection(coll_name)
+  crit      = {}
+  limit     = params_num(:limit, max: 100, default: 100)
+  page      = 
+  items     = coll.find(crit).limit(limit).to_a * 1
+  fields    = items.map(&:keys).flatten.hash_of_num_occurrences.keys #shared fields
+%>
+
+<style>
+  .mongo_item_cell:hover { 
+    background-color: lightgrey;
+    color: black;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  function editItem(cell, type, id, field, oldVal) {
+    var newVal;
+    if (newVal = prompt("Enter new value.",oldVal)) {
+      $.post('/admin/update_item',{coll: type, id: id, field: field, val: newVal})
+       .success(function(res){ $(cell).html(newVal).css('border','1px solid lightgreen')})
+       .error(function(res){ debugger; alert(res.responseJSON.msg)});
+    }
+  }
+</script>
+
+<div class='row'>
+  <div class='col-md-8'>
+    <h1> Items List: <%= coll_name %> </h1>
+    <p> total items: <%= coll.count %> </p>
+    <h3> Items: </h3>
+    <table class='table table-inverse'>
+      
+      <tr>
+        <% fields.each do |field| %>
+          <th> <%= field.to_s %> </th>
+        <% end %>
+      </tr>
+
+      <% items.each do |item| %>      
+        <tr class='mongo_item_row'>
+          <% fields.each do |field| %>
+          <% 
+            id      = item["_id"]
+            val = item[field].to_s 
+
+          %>
+          <td class='mongo_item_cell' ondblclick="editItem(this, '<%=coll_name%>','<%=id%>','<%=field%>','<%=val%>')"> <%= val %> </td>
+          <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>

@@ -37,6 +37,7 @@ class Mongo::Collection
     opts[:return_document] = :after
     
     res = self.find_one_and_update({_id: _id}, {'$set' => fields}, opts)    
+    return nil unless res
     {_id: _id}.merge(res).hwia
   end
 

@@ -16,7 +16,7 @@ def params_num(key, opts = {})
   
   return opts[:default] if !val.present? && opts[:default]  
 
-  val = val.to_f
+  val = to_numeric(val)
   val = opts[:max] if opts[:max] && val > opts[:max].to_f
   val = opts[:min] if opts[:min] && val < opts[:min].to_f
   return val 
