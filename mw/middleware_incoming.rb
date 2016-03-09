@@ -12,6 +12,14 @@ def cu
   @cu = session && session[:user_id] && $users.get(session[:user_id])
 end
 
+def cuid 
+  cu && cu['_id']
+end
+
+def cusername 
+  cu && cu['username']
+end
+
 #get val from params
 def params_num(key, opts = {})
   val = params[key]  

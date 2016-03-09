@@ -1,4 +1,4 @@
-MANAGEABLE_COLLECTIONS = [:users,:posts]
+MANAGEABLE_COLLECTIONS = [:users,:posts,:errors].map {|n| $mongo.collection(n) }
 
 get '/admin' do
   erb :"admin/dashboard", default_layout
@@ -28,7 +28,7 @@ end
 post '/admin/update_item' do
   halt_missing_fields(['id','field','coll']) unless params.just(:field,:id,:coll).size == 3
   coll, field, val = params[:coll], params[:field], params[:val]
-  val = verify_admin_val(coll, field, val)
+  verified_val = verify_admin_val(coll, field, val)
   res = $mongo.collection(params[:coll]).update_id(params[:id],{field => verified_val})
   {msg: "ok", new_item: res}
 end

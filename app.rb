@@ -14,6 +14,8 @@ require_all './db'
 require_all './mw'
 require_all './bl'
 
+include Helpers
+
 get '/ping' do
   {msg: '123 pong from BEAPI', pong: true}
 end
@@ -23,6 +25,6 @@ get '/:slug' do
   if user = $users.get(username: slug)
     render_user_page(user)
   else
-    render_home_page
+    halt(404)
   end
 end

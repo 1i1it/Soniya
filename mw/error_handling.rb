@@ -1,5 +1,20 @@
+$errors = $mongo.collection('errors')
+
+module Helpers
+  def log_e(err, data = {})  
+    err = {msg: err.to_s, backtrace: err.backtrace.to_a.slice(0,4)} if err.is_a? Exception
+    err = {} unless err.is_a? Hash
+    err[:user_id]  ||= cuid
+    err[:username] ||= cusername
+    $errors.add(err)
+  rescue => e
+    nil
+  end
+end
+
 error do 
   e = env['sinatra.error']    
+  log_e(e)
   {msg: "an error occurred", e: e.to_s, backtrace: e.backtrace.to_a.slice(0,4).to_s}
 end
 
@@ -12,3 +27,9 @@ not_found do
     erb :"other/404", layout: :layout
   end
 end
+
+get '/error' do
+  a = b 
+end
+
+

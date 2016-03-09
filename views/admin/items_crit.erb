@@ -1,7 +1,20 @@
-<form method='get' path='<%=request.path%>' class="form-inline">     
-  <input type='text' class='form-control' name='anywhere_val' placeholder='search by id, name, etc' value=''/>
-  <input type='text' class='form-control' name='sort_field' placeholder='sort_by field' value=''/>
-  <input type='text' class='form-control' name='sort_dir' placeholder='sort_by field' value='1'/>
+<form method='get' path='<%=request.path%>' class="form-inline">       
+  <select name='sort_field' class="c-select"> 
+    <option selected>Sort by field?</option> 
+    <% mongo_coll_keys($users).each do |k| %>
+    <option value="<%=k%>"><%= k %></option>
+    <% end %>
+  </select>
 
-  <button type="submit" class="btn btn-primary">Get</button> 
+  <select name='sort_dir' class="c-select"> 
+    <option selected>Sort direction?</option> 
+    <option value="1">Sort Ascending (Up)</option> 
+    <option value="-1">Sort Descending (Down)</option>
+  </select>
+
+  <div>
+    <input type='text' class='form-control' name='anywhere_val' placeholder='search by id, name, etc' />
+    <button type="submit" class="btn btn-primary">Get</button> 
+  </div>
+  
 </form>

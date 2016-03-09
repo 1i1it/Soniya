@@ -35,3 +35,7 @@ end
 def guid
   SecureRandom.uuid
 end
+
+def either(val1,val2 = nil)
+  val1.present? ? val1 : val2
+end
