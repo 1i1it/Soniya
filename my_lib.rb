@@ -31,3 +31,7 @@ def to_numeric(n)
   return n.to_s.to_f if n.to_s == n.to_s.to_f.to_s  
   n
 end
+
+def guid
+  SecureRandom.uuid
+end

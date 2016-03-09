@@ -1,7 +1,20 @@
-get '/admin/items' do 
-  erb :"admin/items", layout: :layout
+MANAGEABLE_COLLECTIONS = [:users,:posts]
+
+get '/admin' do
+  erb :"admin/dashboard", default_layout
+end
+
+get "/admin/manage/:coll" do 
+  erb :"admin/items", default_layout
 end 
 
+def is_admin(user = cu)
+  true
+end
+
+before '/admin*' do
+  halt(404) unless is_admin
+end
 
 def verify_admin_val(coll, field, val)
   if coll == 'posts'

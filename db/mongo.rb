@@ -6,7 +6,7 @@ DB_URI = ENV["MONGOLAB_URI"] || "mongodb://localhost:27017/#{mongodb_db_name}"
 
 $mongo = Mongo::Client.new(DB_URI).database
 $posts = $mongo.collection('posts')
-
+$mongo_data = {}
 def page_mongo(collection, crit, opts)
   default_limit = 20
   sort = Array(opts[:sort])
@@ -31,3 +31,22 @@ def page_mongo(collection, crit, opts)
   return items, done
 end
 
+def mongo_coll_keys(coll)
+  coll_name = coll.name
+  key = "#{coll_name}_collection_fields"  
+  if !$mongo_data[key]  
+    opts = {
+      mapreduce: coll_name,
+      map: "function() { for (var key in this) { emit(key, null); }}",    
+      reduce: "function(key, stuff) { return null; }", 
+      out: {inline: 1}
+    }
+    mongo_results    = $mongo.command(opts)
+    $mongo_data[key] = mongo_results.to_a[0]['results'].map { |doc| doc['_id'] }
+  end
+  $mongo_data[key]
+end
+
+def crit_any_field(coll, val)
+  {"$or" => mongo_coll_keys(coll).map { |f| {f => {"$regex" => Regexp.new(val, Regexp::IGNORECASE) }}} }
+end

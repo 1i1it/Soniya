@@ -1,11 +1,25 @@
 <header>
-  <nav class="navbar navbar-dark bg-inverse navbar-fixed-top">
-    <a href="/">home</a>
-    <% if cu %>
-    <a href="<%=user_permalink(cu)%>"><%=cu['email']%></a>
-    <a href="/logout">(log out)</a>
-    <% else %>
-    <a href="/signup"><button>Sign Up</button></a>
-    <% end %>
+  <nav class="navbar navbar-fixed-top navbar-dark bg-inverse hidden"> 
+    <a class="navbar-brand" href="/">SNM</a> 
+    
+    <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">☰ </button>
+
+    <ul class="nav navbar-nav collapse navbar-toggleable-sm">
+      <div id="exCollapsingNavbar2">
+        <% if cu %>
+        <li class="nav-item"> <a class="nav-link" href="<%=user_permalink(cu)%>"><%=cu['email']%></a></li>
+        <li class="nav-item"> <a class="nav-link" href="/logout">(log out)</a> </li>
+        <% else %>
+        <li class="nav-item"> <a class="nav-link" href="/signup">Sign Up</a></li>
+        <% end %>      
+        <li class="nav-item"> <a class="nav-link" href="#">Features</a> </li>         
+        <li class="nav-item"> <a class="nav-link" href="#">About</a> </li> 
+        <% if is_admin %>
+        <li class="nav-item"> <a class="admin nav-link" href="/admin">Admin</a> </li> 
+        <% end %>
+      </div>
+    </ul> 
+      <form class="form-inline pull-xs-right"> <input class="form-control" type="text" placeholder="Search"></form>
+      <!-- <button class="btn btn-primary-outline" type="submit">Search</button> </form>  -->
   </nav>
 </header>
