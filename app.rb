@@ -17,7 +17,7 @@ require_all './bl'
 include Helpers
 
 get '/ping' do
-  {msg: '123 pong from BEAPI', pong: true}
+  {msg: '123 pong from SNM', pong: true}
 end
 
 get '/:slug' do

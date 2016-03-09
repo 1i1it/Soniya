@@ -4,8 +4,10 @@ module Helpers
   def log_e(err, data = {})  
     err = {msg: err.to_s, backtrace: err.backtrace.to_a.slice(0,4)} if err.is_a? Exception
     err = {} unless err.is_a? Hash
-    err[:user_id]  ||= cuid
-    err[:username] ||= cusername
+    err[:user_id]  = cuid
+    err[:username] = cusername
+    err[:path]     = request_path
+    err[:params]   = get_params
     $errors.add(err)
   rescue => e
     nil

@@ -1,4 +1,4 @@
-MANAGEABLE_COLLECTIONS = [:users,:posts,:errors].map {|n| $mongo.collection(n) }
+MANAGEABLE_COLLECTIONS = [:users,:posts,:errors,:site_log].map {|n| $mongo.collection(n) }
 
 get '/admin' do
   erb :"admin/dashboard", default_layout

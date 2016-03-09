@@ -3,15 +3,15 @@
   coll      = $mongo.collection(coll_name)
   crit      = {}
   
-  anywhere_val = params[:anywhere_val] && params[:anywhere_val].present?
+  anywhere_val = params_val(:anywhere_val)
+
   if anywhere_val
     crit      = crit_any_field(coll,anywhere_val)
   end
   
   limit     = params_num(:limit, max: 100, default: 100)
   sort_field= either(params[:sort_field], :created_at)
-  sort_dir  = either(params[:sort_dir], -1).to_i
-
+  sort_dir  = params[:sort_dir].to_i == 1 ? 1 : -1
   items     = coll.find(crit).limit(limit).sort([{sort_field => sort_dir}]).to_a 
   fields    = items.map(&:keys).flatten.hash_of_num_occurrences.keys #shared fields to show
 %>
@@ -21,11 +21,10 @@
     background-color: lightgrey;
     color: black;
     cursor: pointer;
-    width:5000px;
   }
 
   .truncate {
-    max-width: 150px;
+    max-width: 250px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -80,10 +79,11 @@
           <% 
             id      = item["_id"]
             val = item[field].to_s 
+            val = escape_html(val)
             val = val.gsub(/#{anywhere_val}/i) { |s| "<mark>#{s}</mark>" } if anywhere_val && val.downcase.include?(anywhere_val.downcase)
             #val = val.gsub(,"<mark>#{anywhere_val}</mark>") if anywhere_val && val.include?(anywhere_val)
-            bp
-            val = escape_html(val)
+            
+            
           %>
           <td class='mongo_item_cell truncate' ondblclick="editItem(this, '<%=coll_name%>','<%=id%>','<%=field%>','<%=val%>')"> <%= val %> </td>
           <% end %>
