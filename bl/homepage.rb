@@ -1,3 +1,7 @@
 def render_home_page
-  erb :index, layout: :layout
+  if !cu
+    erb :index, layout: :layout
+  else 
+    
+  end
 end

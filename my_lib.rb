@@ -39,3 +39,8 @@ end
 def either(val1,val2 = nil)
   val1.present? ? val1 : val2
 end
+
+def nice_id
+    #return rand(Time.now.to_i*100).to_s(36)
+    SecureRandom.urlsafe_base64(7,false)
+end

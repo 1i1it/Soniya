@@ -79,11 +79,9 @@ class Mongo::Collection
     find(crit).batch_size(1000).each {|item| yield(item)}
   end
 
-  def nice_id
+  def mongo_nice_id #use either this or the global nice_id
     #return BSON::ObjectId.new.to_s
     #return self.name + "_" + BSON::ObjectId.new.to_s
     #return BSON::ObjectId.new.to_s.to_i(16).base62_encode #.base62_decode to reverse 
-    #return rand(Time.now.to_i*100).to_s(36)
-    SecureRandom.urlsafe_base64(7,false)
-  end
+  end  
 end #end Mongo class 

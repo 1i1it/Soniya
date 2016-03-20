@@ -1,3 +1,7 @@
+<%
+#bp
+x=1
+%>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -12,9 +16,10 @@
             <ul class="nav navbar-nav navbar-right">
                 
                 <% if cu %>
-                <li><a href="<%=user_permalink(cu)%>"><%= cu['email']%></a></li>
+                <li><a href="<%=user_permalink(cu)%>">Case ID: <%= cu['case_id']%></a></li>
+                <li><a href="/logout">Log Out</a></li>
                 <% else %>
-                <li> <a class="nav-link" href="/signup">Sign Up</a></li>
+                <!-- <li> <a class="nav-link" href="/signup">Sign Up</a></li> -->
                 <% end %>
                 
                 <% if is_admin %>

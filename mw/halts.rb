@@ -15,7 +15,7 @@ def halt_error(msg)
 end
 
 def require_fields(fields)
-  Array(fields).each do |f| halt_missing_param(f) unless params[:f].present? end 
+  Array(fields).each do |field| halt_missing_param(field) unless params[field].present? end 
 end
 
 get '/halts' do

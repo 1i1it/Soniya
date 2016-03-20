@@ -6,7 +6,12 @@ end
 
 post '/admin/create_user' do
   require_fields([:phone,:case_id])
-  {a:123}
+
+  data = params.just(:phone,:case_id)
+  data[:code] = nice_id
+  user = create_user(data)
+  flash.message = "Patient's code is #{user[:code]}. We will also send him an SMS to #{user[:phone]} (not yet implemented.)"
+  redirect back
 end
 
 get "/admin/manage/:coll" do 
