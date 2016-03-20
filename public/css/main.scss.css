@@ -3,3 +3,7 @@
   padding: 10px;
   border-radius: 5px;
   color: black !important; }
+
+.card .card-height-indicator {
+  /*overriding bootstrap-material's 100%, to make slim cards. */
+  zmargin-top: 55px; }

@@ -14,7 +14,8 @@ def user_permalink(user)
 end
 
 def render_user_page(user)
-  erb :"users/single_user", locals: {user: user}, layout: :layout
+  single_user_page = erb(:"users/single_user", locals: {user: user}, layout: :'layout/card') 
+  erb single_user_page, layout: :layout
 end
 
 post '/signin' do

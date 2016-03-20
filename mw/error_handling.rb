@@ -26,7 +26,7 @@ not_found do
     status 404
     return {msg: 'Whoops, no such route.'}
   else 
-    erb :"other/404", layout: :layout
+    full_page_card(:"other/404")     
   end
 end
 
