@@ -2,8 +2,8 @@ def halt_bad_input(opts = {})
   halt(403, {msg: opts[:msg] || "Bad input."}) 
 end
 
-def halt_missing_fields(fields)
-  halt(403, {msg: "Missing fields: #{fields.join(",")}"}) 
+def halt_missing_param(field)
+  halt(403, {msg: "Missing field: #{field}"}) 
 end
 
 def halt_item_exists(field, val = nil)
@@ -12,6 +12,10 @@ end
 
 def halt_error(msg)
   halt(500, {msg: msg})
+end
+
+def require_fields(fields)
+  Array(fields).each do |f| halt_missing_param(f) unless params[:f].present? end 
 end
 
 get '/halts' do

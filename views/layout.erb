@@ -11,11 +11,10 @@
 
 </head>
 
-<body style='padding-top: 70px;'>
-  
-  
-  <div class='container-fluid'>    
+<body style='padding-top: 70px;'>  
+  <div class='container-fluid'>        
     <%= erb :"header/header" %>    
+    <%= erb :"layout/flash" %>            
     <%= yield %>        
     <%= erb :"footer/footer" %>
   </div>

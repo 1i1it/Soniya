@@ -4,6 +4,11 @@ get '/admin' do
   full_page_card(:"admin/dashboard")
 end
 
+post '/admin/create_user' do
+  require_fields([:phone,:case_id])
+  {a:123}
+end
+
 get "/admin/manage/:coll" do 
   erb :"admin/items", default_layout
 end 
@@ -26,7 +31,7 @@ def verify_admin_val(coll, field, val)
 end
 
 post '/admin/update_item' do
-  halt_missing_fields(['id','field','coll']) unless params.just(:field,:id,:coll).size == 3
+  require_fields(['id','field','coll'])
   coll, field, val = params[:coll], params[:field], params[:val]
   verified_val = verify_admin_val(coll, field, val)
   res = $mongo.collection(params[:coll]).update_id(params[:id],{field => verified_val})
