@@ -1,11 +1,12 @@
 <%
 
 BOTTOM_JS_SCRIPTS ||= [
-  '/js/jquery-2.2.1.min.js'
+  '/js/jquery-2.2.1.min.js',
+  '/js/tether.min.js',
+  '/js/bootstrap4.js'
 ]
 
 %>
-
 
 <% BOTTOM_JS_SCRIPTS.each do |path| %>
   <script src='<%=path%>'></script>

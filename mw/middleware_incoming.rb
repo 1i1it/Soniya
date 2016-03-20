@@ -21,11 +21,15 @@ def cusername
 end
 
 def request_path
-  request.path rescue nil #for tux
+  _req.path rescue nil #for tux
 end
 
 def request_fullpath
-  request.fullpath rescue nil #for tux 
+  _req.fullpath rescue nil #for tux 
+end
+
+def _req 
+  request rescue OpenStruct.new #allows us to call 'request' safely, including within tux
 end
 
 def _params #allows us to call 'params' safely, including within tux

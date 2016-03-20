@@ -1,7 +1,7 @@
 <form method='get' path='<%=request.path%>' class="form-inline">       
   <select name='sort_field' class="c-select"> 
     <option selected>Sort by field?</option> 
-    <% mongo_coll_keys($users).each do |k| %>
+    <% mongo_coll_keys(coll).each do |k| %>
     <option value="<%=k%>"><%= k %></option>
     <% end %>
   </select>

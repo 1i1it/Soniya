@@ -45,6 +45,8 @@ def mongo_coll_keys(coll)
     $mongo_data[key] = mongo_results.to_a[0]['results'].map { |doc| doc['_id'] }
   end
   $mongo_data[key]
+rescue => e 
+  []
 end
 
 def crit_any_field(coll, val)
