@@ -21,7 +21,15 @@ get '/ping' do
 end
 
 get '/' do
-  flash.message = "hello this is a flash"
+  #flash.message = "hello this is a flash"
   render_home_page  
 end
 
+get '/:slug' do
+  slug = params[:slug]
+  if user = $users.get(username: slug)
+    render_user_page(user)
+  else
+    halt(404)
+  end
+end
