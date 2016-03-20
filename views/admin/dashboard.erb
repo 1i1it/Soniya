@@ -1,4 +1,11 @@
 <section>
 <p> Hello, admin. </p>
-<a href="/admin/manage/users"><button class='btn btn-lg'>Manage Items</button></a>
-</section>
+
+<button class='btn btn-lg btn-raised'>Create User</button>
+
+<a href="/admin/manage/users"><button class='btn btn-lg btn-raised'>Manage Items</button></a> 
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#complete-dialog">Open dialog<div class="ripple-container"></div></button>
+
+<%= erb :"admin/create_user_dialog" %>
+</section> 

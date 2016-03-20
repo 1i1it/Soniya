@@ -1,7 +1,7 @@
 MANAGEABLE_COLLECTIONS = [:users,:posts,:errors,:site_log,:requests].map {|n| $mongo.collection(n) }
 
 get '/admin' do
-  erb :"admin/dashboard", default_layout
+  full_page_card(:"admin/dashboard")
 end
 
 get "/admin/manage/:coll" do 
