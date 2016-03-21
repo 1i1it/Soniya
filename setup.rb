@@ -1,5 +1,7 @@
-$app_name = 'snm'
+$app_name   = 'snm'
 
+$prod       = settings.production? #RACK_ENV==production?
+$prod_url   = 'http://my-er.herokuapp.com/'
 $root_url   = $prod ? $prod_url : 'http://localhost:9000'
 
 enable :sessions
