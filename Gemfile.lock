@@ -42,6 +42,7 @@ GEM
     pry-byebug (2.0.0)
       byebug (~> 3.4)
       pry (~> 0.10)
+    puma (3.2.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -100,6 +101,7 @@ DEPENDENCIES
   json
   mongo (~> 2.1.0)
   pry-byebug (= 2.0.0)
+  puma
   require_all
   rest-client (= 1.8.0)
   shotgun
@@ -107,3 +109,6 @@ DEPENDENCIES
   sinatra-contrib
   sinatra-reloader
   tux
+
+BUNDLED WITH
+   1.10.6

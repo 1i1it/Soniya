@@ -14,6 +14,7 @@ gem 'rest-client', '1.8.0'
 #gem 'base62' #allows compression of mongo ids
 
 group :development, :test do
+  gem 'puma'
   gem 'shotgun'
   gem 'sinatra-reloader'
   gem 'colorize' 
