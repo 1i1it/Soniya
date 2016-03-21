@@ -5,21 +5,13 @@ function showTasks(type) {
   $("."+type).show();
 }
 
-</script>
+function updateUserTasks(){
+  $.get('/user_tasks').success(function(res){$('.userTasksContent').html(res.html)});
+  console.log("updating data "+Date());
+}
 
-<%
-  open_tasks = 
-  [
-    {name: "task1", location: "room1", completed_at: Time.now, expected_at: Time.now + 1.hour},
-    {name: "task2", location: "room2", completed_at: Time.now-1.hour, expected_at: Time.now + 5.minutes},
-    {name: "task3", location: "room3", completed_at: Time.now-20.minutes, expected_at: Time.now + 1.hour}
-  ]
-  done_tasks = 
-  [
-    {name: "task4", location: "room4", completed_at: Time.now-10.minutes, expected_at: Time.now + 35.minutes},
-    {name: "task5", location: "room5", completed_at: Time.now-30.minutes, expected_at: Time.now + 15.minutes}
-  ]
-%>
+setInterval(updateUserTasks,5000)
+</script>
 
 <p style='text-align: center;'><strong><%= "Case ID #{cu['case_id']}, Phone #{cu['phone']}" %></strong></p>
 <div class="btn-group btn-group-justified btn-group-raised">
@@ -27,14 +19,6 @@ function showTasks(type) {
   <a href="#" onclick=showTasks('open_tasks') class="btn">Open</a>
 </div>
 
-<section class='tasks open_tasks'>
-<% open_tasks.each do |task| %>
-  <%= to_card(:"my_er/single_task", locals: {task: task, open: true}) %>
-<% end %>
-</section>
-
-<section class='noDisplay tasks done_tasks'>
-<% done_tasks.each do |task| %>
-  <%= to_card :"my_er/single_task", locals: {task: task, open: false} %>
-<% end %>
+<section class='userTasksContent'>
+  <%= erb :"my_er/user_tasks_content" %>
 </section>

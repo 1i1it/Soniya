@@ -45,7 +45,13 @@ def nice_id
     SecureRandom.urlsafe_base64(7,false)
 end
 
+## Time 
+
 def nice_time(time, opts = {}) #http://www.foragoodstrftime.com/
   #time.strftime("%b %e, %l:%M %p") #"Jul 9, 12:55 PM"
   time.strftime("%l:%M %p") #"Jul 9, 12:55 PM"
+end
+
+def rand_time(from = 0.0, to = Time.now)
+  Time.at(from + rand * (to.to_f - from.to_f))
 end
