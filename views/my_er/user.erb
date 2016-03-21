@@ -21,7 +21,7 @@ function showTasks(type) {
   ]
 %>
 
-<p style='text-align: center'><strong><%= "Case ID #{cu['case_id']}, Phone #{cu['phone']}" %></strong></p>
+<p style='text-align: center;'><strong><%= "Case ID #{cu['case_id']}, Phone #{cu['phone']}" %></strong></p>
 <div class="btn-group btn-group-justified btn-group-raised">
   <a href="#" onclick=showTasks('done_tasks') class="btn">Done</a>
   <a href="#" onclick=showTasks('open_tasks') class="btn">Open</a>
@@ -29,12 +29,12 @@ function showTasks(type) {
 
 <section class='tasks open_tasks'>
 <% open_tasks.each do |task| %>
-  <%= erb :"my_er/single_task", locals: {task: task, open: true} %>
+  <%= to_card(:"my_er/single_task", locals: {task: task, open: true}) %>
 <% end %>
 </section>
 
 <section class='noDisplay tasks done_tasks'>
 <% done_tasks.each do |task| %>
-  <%= erb :"my_er/single_task", locals: {task: task, open: false} %>
+  <%= to_card :"my_er/single_task", locals: {task: task, open: false} %>
 <% end %>
 </section>

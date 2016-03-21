@@ -1,3 +1,15 @@
-<p class="" style='border: 1px solid <%=open ? "red" : "blue"%>'>
-<%= task.to_json %>
-<p>
+<article style='font-size: 16px' onclick=goToPath('/map')> 
+  
+
+  <div style='zmin-height: 15px'>
+    <span class='pull-left'> <%= task[:name] %></span>
+    <span class='pull-right'> <%= nice_time(task[:expected_at]) %></span>
+    <br>
+  </div>
+
+  <div style='margin:10px'>
+    <span><i class="fa fa-share-square" style='margin: 10px'></i> <%= task[:location] %></span>
+  </div>
+
+
+</article>

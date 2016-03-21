@@ -1,4 +1,4 @@
-MANAGEABLE_COLLECTIONS = [:users,:posts,:errors,:site_log,:requests].map {|n| $mongo.collection(n) }
+MANAGEABLE_COLLECTIONS = [:users,:errors,:site_log,:requests].map {|n| $mongo.collection(n) }
 
 get '/admin' do
   full_page_card(:"admin/dashboard")

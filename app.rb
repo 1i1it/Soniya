@@ -24,7 +24,7 @@ def render_home_page
   if !cu
     erb :index, layout: :layout
   else 
-    full_page_card(:"my_er/user")
+    erb :"my_er/user", layout: :layout
   end
 end
 
