@@ -1,7 +1,5 @@
 def request_expects_json
-  request.path_info.starts_with? ("/api") || 
-  request.xhr? || 
-  false
+  request.xhr? || request.path_info.starts_with?("/api") 
 end
 
 before do     

@@ -5,9 +5,6 @@
   <%= erb :"layout/alert", locals: {type: "warning", text: params[:alert_text]} %>
 <% end %>
 
-<button type="button" class="btn btn-primary btn-raised" data-toggle="modal" data-target="#complete-dialog">Create User<div class="ripple-container"></div></button>
-
 <a href="/admin/manage/users"><button class='btn btn-lg btn-raised'>Manage System</button></a> 
 
-<%= erb :"admin/create_user_dialog" %>
 </section> 

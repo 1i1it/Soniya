@@ -42,3 +42,9 @@ post '/admin/update_item' do
   res = $mongo.collection(params[:coll]).update_id(params[:id],{field => verified_val})
   {msg: "ok", new_item: res}
 end
+
+post '/admin/delete_item' do
+  require_fields(['id','coll'])
+  $mongo.collection(params[:coll]).delete_one({_id: params[:id]})
+  {msg: "ok"}
+end
