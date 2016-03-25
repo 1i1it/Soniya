@@ -1,0 +1,43 @@
+<%
+  coll ||= nil
+  template ||= nil
+  type = nil
+  if coll
+    type      = coll.name
+    form_keys = mongo_coll_keys(coll).map {|k| {name: k, label: k}}
+  elsif template == 'hospital_patient'
+    type      = 'users'
+    form_keys = [{name: "case_id", label: "Patient's case number"}, {name: "phone", label: "Patient's phone number"}]
+  else 
+    form_keys = {}
+  end
+%>
+<form method='post' action='/admin/create_item'>
+<input type='hidden' name='coll' value='<%=type%>'>
+<div id="complete-dialog" class="modal fade" tabindex="-1" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Create a new <%=type[0..-2]%>.</h4>
+      </div>
+    
+      <div class="modal-body">
+      <% form_keys.each do |k| %>
+        <div class="form-group label-floating is-empty">
+          <label for="555" class="control-label"><%= k[:label] %></label>
+          <input type="text" class="form-control" id="555" name='<%=k[:name]%>'>
+
+          <span class="material-input"></span>
+        </div>
+      <% end %>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary"> Submit!</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+</form>

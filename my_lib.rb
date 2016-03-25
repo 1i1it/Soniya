@@ -3,11 +3,15 @@ class Hash
     args = (firstItem.is_a? Array) ? firstItem : args.unshift(firstItem)
 
     args = (args.map {|v| v.to_s}) + (args.map {|v| v.to_sym})
-    self.slice(*args)
+    self.slice(*args).compact
   end
 
   def hwia
     HashWithIndifferentAccess.new self
+  end
+
+  def compact
+    delete_if { |k, v| v.nil? }
   end
 end
 
@@ -20,6 +24,9 @@ class Array
     self.each_with_object(Hash.new(0)){|word,counts|counts[word]+=1}.sort_by{|k,v|v}.reverse.to_h
   end
 
+  def to_simple_hash
+    self.reduce({}) {|h,k| h[k.to_s] = k; h }.hwia
+  end
 end
 
 def time(&block) #to call: time { get '/u/ann-oates' }

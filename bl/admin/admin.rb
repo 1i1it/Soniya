@@ -35,6 +35,14 @@ def verify_admin_val(coll, field, val)
   val
 end
 
+post '/admin/create_item' do
+  require_fields(['coll'])
+  coll = $mongo.collection(params[:coll])
+  fields = mongo_coll_keys(coll)
+  data   = params.just(fields)
+  coll.add(data)
+end
+
 post '/admin/update_item' do
   require_fields(['id','field','coll'])
   coll, field, val = params[:coll], params[:field], params[:val]
