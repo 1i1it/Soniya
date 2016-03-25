@@ -14,9 +14,9 @@
 
   <div>
     <input type='text' class='form-control' name='anywhere_val' placeholder='search by id, name, etc' />
-    <button type="submit" class="btn btn-primary">Get</button> 
+    <button type="submit" class="btn btn-primary">Get <%=coll.name.capitalize%></button> 
     
-    <button type="button" class="btn btn-primary btn-raised" data-toggle="modal" data-target="#complete-dialog">Create<div class="ripple-container"></div></button>    
+    <button type="button" class="btn btn-primary btn-raised" data-toggle="modal" data-target="#complete-dialog">Create <%=coll.name[0..-2].capitalize%><div class="ripple-container"></div></button>    
   </div>
   
 </form>

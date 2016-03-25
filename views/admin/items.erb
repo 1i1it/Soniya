@@ -8,7 +8,7 @@
   if anywhere_val
     crit      = crit_any_field(coll,anywhere_val)
   end
-  
+  bp
   limit     = params_num(:limit, max: 100, default: 100)
   sort_field= either(params[:sort_field], :created_at)
   sort_dir  = params[:sort_dir].to_i == 1 ? 1 : -1
