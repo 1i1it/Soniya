@@ -50,5 +50,8 @@ rescue => e
 end
 
 def crit_any_field(coll, val)
-  {"$or" => mongo_coll_keys(coll).map { |f| {f => {"$regex" => Regexp.new(val, Regexp::IGNORECASE) }}} }
+  coll_keys = mongo_coll_keys(coll)
+  return {} unless coll_keys.any?
+  
+  {"$or" => coll_keys.map { |f| {f => {"$regex" => Regexp.new(val, Regexp::IGNORECASE) }}} }
 end

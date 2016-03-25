@@ -1,19 +1,19 @@
 <form method='get' path='<%=request.path%>' class="form-inline">       
-  <select name='sort_field' class="c-select"> 
+  <select name='sort_field' class="form-control"> 
     <option selected>Sort by field?</option> 
     <% mongo_coll_keys(coll).each do |k| %>
-    <option value="<%=k%>"><%= k %></option>
+    <option value="<%=k%>" <%='selected' if params[:sort_field] == k %>><%= k %></option>
     <% end %>
   </select>
 
-  <select name='sort_dir' class="c-select"> 
+  <select name='sort_dir' class="form-control"> 
     <option selected>Sort direction?</option> 
-    <option value="1">Sort Ascending (Up)</option> 
-    <option value="-1">Sort Descending (Down)</option>
+    <option value="1" <%='selected' if params[:sort_dir] == "1" %>>Sort Ascending (Up)</option> 
+    <option value="-1" <%='selected' if params[:sort_dir] == "-1" %>>Sort Descending (Down)</option>
   </select>
 
   <div>
-    <input type='text' class='form-control' name='anywhere_val' placeholder='search by id, name, etc' />
+    <input type='text' class='form-control' name='anywhere_val' placeholder='search by id, name, etc' value='<%=params[:anywhere_val].to_s%>'/>
     <button type="submit" class="btn btn-primary">Get <%=coll.name.capitalize%></button> 
     
     <button type="button" class="btn btn-primary btn-raised" data-toggle="modal" data-target="#complete-dialog">Create <%=coll.name[0..-2].capitalize%><div class="ripple-container"></div></button>    
