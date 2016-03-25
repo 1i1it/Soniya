@@ -1,0 +1,28 @@
+<section class='centerText'>
+<h3>We like to keep things simple.</h3>
+<h4>Fill out the form below and we'll get back to you within 1 business day.</h4>
+
+<style>
+.inp1 { display: block; width: 100%; padding: 5px;}
+</style>
+<form style='margin-top:20px'>
+  <input type='hidden' value="<%=params[:type]%>">
+  <h5><strong><%=params[:type]%></strong></h5>
+  <div class='row'>
+    <div class='col-md-6 col-md-offset-3'>
+      <div class='col-md-6'>
+        <input name='name' placeholder="Name" class='inp1'>
+        <input name='email' placeholder="Company Email" class='inp1'>
+        <input name='phone' placeholder="Phone" class='inp1'>
+        <input name='budget' placeholder="Budget" class='inp1'>
+        <input name='date' placeholder="Date and Time of the Event" class='inp1'>
+      </div>
+      <div class='col-md-6'>
+        <textarea placeholder='Anything else?' class='inp1' style='height: 170px; padding-left: 5px'></textarea>
+        <button class='btn btn-primary btn-raised'>Send</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+</section>

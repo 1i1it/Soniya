@@ -11,7 +11,10 @@ def full_page_card(path, opts = {})
   erb(card, opts.merge(default_layout))
 end
 
-
 def escape_html(html, opts = {})
   Rack::Utils.escape_html(html.to_s)
+end
+
+def html_title
+  $app_name.capitalize
 end

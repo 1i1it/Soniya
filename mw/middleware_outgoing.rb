@@ -7,4 +7,3 @@ after do
     @response.body = @response.body.to_json   
   end 
 end
-

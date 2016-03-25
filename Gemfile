@@ -21,4 +21,5 @@ group :development, :test do
   gem 'sinatra-reloader'
   gem 'colorize' 
   gem 'faker' 
+  gem 'nokogiri'
 end

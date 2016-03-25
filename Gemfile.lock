@@ -30,11 +30,14 @@ GEM
     json (1.8.1)
     method_source (0.8.2)
     mime-types (2.99.1)
+    mini_portile2 (2.0.0)
     minitest (4.7.5)
     mongo (2.1.2)
       bson (~> 3.0)
     multi_json (1.11.2)
     netrc (0.11.0)
+    nokogiri (1.6.7.2)
+      mini_portile2 (~> 2.0.0.rc2)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -100,6 +103,7 @@ DEPENDENCIES
   httpclient (= 2.5.2)
   json
   mongo (~> 2.1.0)
+  nokogiri
   pry-byebug (= 2.0.0)
   puma
   require_all
@@ -111,4 +115,4 @@ DEPENDENCIES
   tux
 
 BUNDLED WITH
-   1.10.6
+   1.11.2

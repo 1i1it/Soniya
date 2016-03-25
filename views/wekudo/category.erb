@@ -1,0 +1,9 @@
+<%
+  sub_categories = 
+  ['Pasta Classes', 'Paella Classes', 'Knife Classes', 'Sushi Classes', 'Cupcake Classes', 'Dumpling Classes', 'Cocktail Workshops', 'Chocolate Workshops', 'Gnocchi Workshops', 'Massages', 'Meditation Classes', 'Yoga Classes', 'Pilates', 'Group Runs', 'Kick-Boxing Classes', 'Smoothie Making'
+  ].sample(6).map { |s| {title: s+" - Request Proposal" }} 
+%>
+
+<h1 class='centerText'> <%= params[:category].titleize %> </h1> 
+
+<%= erb :"wekudo/activity_boxes", locals: {boxes: sub_categories, link_to_contact: true} %>

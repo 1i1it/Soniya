@@ -1,0 +1,41 @@
+<%
+  categories = [
+    { title: 'Cooking Classes',      
+    },
+    {
+      title: 'Indoor Games',
+    },
+    {
+      title: 'Tastings'
+    },
+    {
+      title: 'Wellness'
+    },
+    {
+      title: 'They\'re cool, trust us'
+    },
+    {
+      title: 'Indoor Awesomeness'
+    }
+  ]
+%>
+
+
+<h1 class='centerText'> Wekudo Experiences </h1>
+
+<section class='row' style='margin-bottom:10px'>
+  <section class='col-md-12'>
+  <section class='pull-left'>
+    <div> Vetted by employees like you.</div>
+    <div> Click on a square to explore more options.</div>
+  </section> 
+
+  <section class='pull-right'>
+    <div> No Booking Fees.</div>
+    <div> Best Price Guarantee.</div>
+  </section> 
+
+  </section>
+</section>
+
+<%= erb :"wekudo/activity_boxes", locals: {boxes: categories} %>
