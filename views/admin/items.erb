@@ -48,7 +48,7 @@
   function deleteItem(type,id,cell) {
     if (confirm('Are you sure you want to delete this?')){
       $.post('/admin/delete_item',{coll: type, id: id})
-       .success(function(res){ $(cell).closest('tr').remove();})
+       .success(function(res){ $(cell).closest('tr').fadeOut();})
        .error(function(res){ alert(res.responseJSON.msg)});
     }
   }
