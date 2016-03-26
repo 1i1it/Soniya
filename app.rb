@@ -21,11 +21,7 @@ get '/ping' do
 end
 
 def render_home_page
-  if !cu
-    erb :index, layout: :layout
-  else 
-    erb :"my_er/user", layout: :layout
-  end
+  erb :"wekudo/main_page", layout: :layout
 end
 
 

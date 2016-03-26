@@ -1,0 +1,18 @@
+<%
+  src ||= "http://video.wixstatic.com/video/11062b_6743da5900054f1f8e69f53302930a6a/1080p/mp4/file.mp4"
+  overlay_title ||= nil
+  overlay_subtitle ||= nil
+%>
+<div class='row'>
+  <div style='height: 400px; overflow: hidden; margin-top: 40px; position: relative'>
+    <div style='position: absolute; text-align: center; color: white; width: 100%; margin-top: 100px'>
+      <span style='font-size: 40px;'>
+        <div><%= overlay_title%></div>
+        <div><%= overlay_subtitle %></div>
+        </span>
+    </div>
+    <video loop autoplay muted preload="auto">
+      <source src="<%= src %>">
+    </video>    
+  </div>
+</div>
