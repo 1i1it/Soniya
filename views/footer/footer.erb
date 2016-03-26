@@ -25,16 +25,18 @@ footer .col-md-2 div { font-weight: bold }
       <div> Legal </div>
     </div>
 
-    <div class='col-md-4'>
+    <div class='col-md-4'>      
+      <h4 class='footer_menu centerText'> Talk to us </h4>
       <form>
-      <div class='col-md-6 bg2'>
-        <input placeholder='Name'/>
-        <input placeholder='Name'/>
-        shmello
+      <div class='col-md-6'>        
+        <input placeholder='Name' class='inp1'/>
+        <input placeholder='Name' class='inp1'/>
       </div>
-      <div class='col-md-6 bg1'>
-        <textarea placeholder='What?'></textarea>
+      <div class='col-md-6'>
+        <textarea placeholder='Thoughts? Questions? Funny Jokes to Share?' class='inp1' style='height: 76px'></textarea>
+        <button class='btn btn-raised btn-primary pull-right' style='color: white'>Send</button>
       </div>
+
       </form>
     </div>
 
@@ -46,8 +48,7 @@ footer .col-md-2 div { font-weight: bold }
   <div class='col-md-12'>
     <div class='col-md-6 col-md-offset-3 centerText'>
       <h4 class='footer_menu'> INSPIRE WORKPLACE HAPPINESS </h4>
-      <button class="btn btn-raised">Share</button>
-      <button class="btn btn-raised btn-warning">Learn More</button>
+      <%= erb :"other/sharing_buttons" %>
     </div>
   </div>
 
