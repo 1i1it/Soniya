@@ -11,7 +11,7 @@ box_imgs = [
 ]
 %>
 
-<section class='row' style='height:300px'>
+<section class='row' style='margin-top:20px'>
   <div class='col-md-12'>
   <% boxes.each do |box| %>
     <% link = link_to_contact ? "/contact?type=#{box[:title]}" : "/c/#{box[:title]}" %>

@@ -1,0 +1,31 @@
+<section class='centerText'>
+<h2> Why Wekudo? </h2>
+<h4> Tell us what kind of company/team you are & we will tell you what Wekudo for you! (Ha, Get it?) </h4>
+</section>
+
+<%
+  team_types = [
+    {title: "Contracted Cubists"},
+    {title: '"That" Team'},
+    {title: "Winner Takes It All"},
+    {title: "Cranky-Pants"},
+    {title: "Workplace Buds"},
+    {title: "Roommates"},
+  ]
+%>  
+
+<%= erb :"wekudo/activity_boxes", locals: {boxes: team_types} %>
+
+<div class='row'>
+  <div style='height: 400px; overflow: hidden; margin-top: 40px; position: relative'>
+    <div style='position: absolute; text-align: center; color: white; width: 100%; margin-top: 100px'>
+      <span style='font-size: 40px;'>
+        <div>We have a BIG dream</div>
+        <div>to inspire *happiness* at work.</div>
+        </span>
+    </div>
+    <video loop autoplay muted preload="auto">
+      <source src="http://video.wixstatic.com/video/11062b_6743da5900054f1f8e69f53302930a6a/1080p/mp4/file.mp4">
+    </video>    
+  </div>
+</div>
