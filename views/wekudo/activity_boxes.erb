@@ -11,15 +11,22 @@ box_imgs = [
 ]
 %>
 
+<style>
+.activityBox {
+  margin-bottom:20px;
+}
+</style>
 <section class='row' style='margin-top:20px'>
   <div class='col-md-12'>
   <% boxes.each do |box| %>
-    <% link = link_to_contact ? "/contact?type=#{box[:title]}" : "/c/#{box[:title]}" %>
-    <span class='col-md-4 col-xs-12'> 
+    <% box = box.hwia %>
+    <% box[:title] ||= box[:name] %>
+    <% link = link_to_contact ? "/new-york/#{box[:title].downcase.gsub(' ','-')}" : "/nyc/#{box[:url] || box[:title]}" %>
+    <span class='col-md-4 col-xs-12 activityBox'> 
       <a href="<%= link %>">
         <div class='centerText'>
           <img src='<%= box_imgs.sample %>' height=283px width=283px/>
-          <span class="btn btn-raised btn-lg" href="<%= link %>"><%= box[:title] %></span>
+          <div class="btn btn-raised btn-lg" href="<%= link %>"><%= box[:title] %></div>
         </div>
       </a>
     </span>

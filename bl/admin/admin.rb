@@ -1,7 +1,7 @@
-MANAGEABLE_COLLECTIONS = [:users,:errors,:site_log,:requests].map {|n| $mongo.collection(n) }
+MANAGEABLE_COLLECTIONS = [:pages,:users,:errors,:site_log,:requests].map {|n| $mongo.collection(n) }
 
 get '/admin' do
-  full_page_card(:"admin/dashboard")
+  to_page(:"admin/dashboard")
 end
 
 post '/admin/create_user' do
@@ -41,6 +41,7 @@ post '/admin/create_item' do
   fields = mongo_coll_keys(coll)
   data   = params.just(fields)
   coll.add(data)
+  redirect back
 end
 
 post '/admin/update_item' do

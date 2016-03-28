@@ -11,7 +11,7 @@ class Hash
   end
 
   def compact
-    delete_if { |k, v| v.nil? }
+    delete_if { |k, v| !v.present? }
   end
 end
 

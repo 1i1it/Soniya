@@ -11,23 +11,32 @@
 <%= erb :"layout/wide_video", locals: {src: "http://video.wixstatic.com/video/11062b_6743da5900054f1f8e69f53302930a6a/1080p/mp4/file.mp4", overlay_html: overlay_html} %>
 
 
-<h2> Top Companies Use WeKudo To Manage Their Team-Building</h2>
-<h4> Discover new, unique corporate activities for in or out of the office. </h4>
+<section style='margin-top:60px; margin-bottom:60px;'>
+    <h2> NYC Companies Use WeKudo To Manage Their Team-Building Experiences</h2>
+    <h4> Discover new, unique corporate activities for in or out of the office, in New York City.</h4>
+  </section>
 
-<% imgs = ['macys.png','etsy.png','bank_of_america.png','ernst_and_young.png','shutterstock.png'] %>
-<div class='row' style='margin:30px auto'>
-<div class='col-md-12 centerText'>
-  <div class='col-md-1'></div>
-<% imgs.each do |img| %>
-
-  
-    <div class='col-md-2'>
-      <img src="/img/wekudo/<%= img %>">
-    </div>
-  
-
-<% end %>
+<% imgs = ['macys.png','bank_of_america.png','etsy.png','ernst_and_young.png','shutterstock.png'] %>
+<div class='row' style='margin:30px auto'>  
+  <div class='col-md-12 centerText'>
+    <style>
+      .client-img {
+        /*border:1px solid green;*/
+        text-align: center;
+        margin:10px;
+      }
+    </style>
+    <% imgs.each do |img| %>
+    <span class='centerText' >
+      <span class='client-img'>
+        <img src="/img/wekudo/<%= img %>">
+      </span>
+    </span>
+    <% end %>
+  </div>
 </div>
-</div>
 
+<div class='col-md-12' style='margin-bottom: 40px'>
+    <a href="/contact" class='btn btn-lg btn-primary'>Get a custom suggestion tailored for your team. </a>
+</div>
 </section>

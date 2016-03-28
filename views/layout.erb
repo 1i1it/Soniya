@@ -13,14 +13,13 @@
 
 </head>
 
-<body style='padding-top: 60px;'>  
+<body style='padding-top: 60px; '>  
   <div class='container-fluid'>        
     <%= erb :"header/header" %>    
     <%= erb :"layout/flash" %>            
     <%= yield %>        
-    <%= erb :"footer/footer" %>
   </div>
-    
+        <%= erb :"footer/footer" %>    
     <%= erb :bottom_js_scripts %>
 </body>
 

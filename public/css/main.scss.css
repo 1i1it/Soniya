@@ -43,6 +43,14 @@
     height: 30%;
     padding: 18px; }
 
+.page {
+  margin: 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto; }
+  .page .pageHeader {
+    margin-bottom: 40px; }
+
 /* Yellow fade */
 .highlight {
   -webkit-animation: yellow-fade 3s;
