@@ -8,8 +8,9 @@
   <div class='centerText'>
     <h3>We like to keep things simple.</h3>
     <h4>Fill out the form below and we'll get back to you within 1 business day.</h4>
-    <form style='margin-top:20px'>
-      <input type='hidden' value="<%=params[:type]%>">
+    <form action='/post_form' method='post' style='margin-top:20px'>
+      <input type='hidden' name='event_type' value="<%=params[:type]%>">
+      <input type='hidden' name='which_form' value="main_contact1">
       <h5><strong><%=params[:type]%></strong></h5>
       <div class='row'>
         <div class='col-md-6 col-md-offset-3'>
@@ -21,7 +22,7 @@
             <input name='date' placeholder="Date and Time of the Event" class='inp1'>
           </div>
           <div class='col-md-6'>
-            <textarea placeholder='Anything else?' class='inp1' style='height: 202px; padding-left: 5px; border-color: lightgrey'></textarea>
+            <textarea placeholder='Anything else?' name='text' class='inp1' style='height: 202px; padding-left: 5px; border-color: lightgrey'></textarea>
             <button class='btn btn-primary btn-raised'>Send</button>
           </div>
         </div>
