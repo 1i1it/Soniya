@@ -42,6 +42,10 @@ get '/why_wekudo' do
   to_page(:"wekudo/why_wekudo")
 end
 
+get '/referral' do 
+  full_page_card(:"wekudo/referral")
+end
+
 get '/:page' do
   {page: params[:page]}
 end

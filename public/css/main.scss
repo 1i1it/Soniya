@@ -12,13 +12,14 @@
 .slim-card { /*not 100% height as opposed to Material BootStrap's "card"*/
   display: inline-block;
   position: relative;
-  margin-bottom: 5px;
+  margin-top: 20px;
   width: 100%;
-  border-radius: 2px;
-  color: rgba(0,0,0,.87);
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.87);
   background: #fff;
-  -webkit-box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
-  box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
+  -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 20px;
 
   .card-body {
     height: 30%;
