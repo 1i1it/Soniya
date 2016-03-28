@@ -54,9 +54,12 @@ end
 
 ## Time 
 
-def nice_time(time, opts = {}) #http://www.foragoodstrftime.com/
-  #time.strftime("%b %e, %l:%M %p") #"Jul 9, 12:55 PM"
-  time.strftime("%l:%M %p") #"Jul 9, 12:55 PM"
+def nice_datetime(time, opts = {})
+  time.strftime("%b %e, %l:%M %p") #"Jul 9, 12:55 PM"
+end
+
+def nice_time(time, opts = {}) #http://www.foragoodstrftime.com/  
+  time.strftime("%l:%M %p") #"12:55 PM"
 end
 
 def rand_time(from = 0.0, to = Time.now)

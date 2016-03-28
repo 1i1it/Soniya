@@ -31,14 +31,15 @@ footer .col-md-2 div { font-weight: bold }
         <div>Talk to us, we respond within 24 hours.</div>
       </h4>
       <form action='/post_form' method='post'>
+      <input type='hidden' name='which_form' value='footer1'>
       <div class='col-md-6'>        
         
-          <input placeholder='Name' class='inp1'/>
-          <input placeholder='Email' class='inp1'/>
+          <input placeholder='Name' name='name' class='inp1'/>
+          <input placeholder='Email' name='email' class='inp1'/>
         
       </div>
       <div class='col-md-6'>
-        <textarea placeholder='What are you looking for?' class='inp1' style='height: 76px'></textarea>
+        <textarea placeholder='What are you looking for?' name='text' class='inp1' style='height: 76px'></textarea>
         <button class='btn btn-raised btn-primary pull-right' style='color: white'>Send</button>
       </div>
 

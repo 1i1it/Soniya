@@ -1,0 +1,20 @@
+<%
+  forms = $forms_posted.find.limit(100).sort([{created_at: -1}]).to_a
+%>
+
+<h3> Forms Posted </h3>
+
+<div class='col-md-6'>
+<% forms.each do |form| %>
+  <% name, email, time, which_form = form['name'].to_s, form['email'], nice_datetime(form['created_at']), form['which_form'].to_s%>
+  <div class="panel panel-primary">
+    <div class="panel-heading">      
+      <h3 class="panel-title"><%="#{name}, #{email} "%><small><%="via #{which_form}. #{(time)}"%></small></h3>      
+    </div>
+    <div class="panel-body">
+      <%= form['text'] %>
+    </div>
+    <div class="panel-footer"><%= form.to_json %></div>
+  </div>
+<% end %>
+</div>

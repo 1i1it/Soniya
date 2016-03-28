@@ -45,7 +45,3 @@ end
 get '/refer' do 
   full_page_card(:"wekudo/referral")
 end
-
-get '/:page' do
-  {page: params[:page]}
-end
