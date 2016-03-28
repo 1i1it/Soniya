@@ -42,7 +42,7 @@ get '/why_wekudo' do
   to_page(:"wekudo/why_wekudo")
 end
 
-get '/referral' do 
+get '/refer' do 
   full_page_card(:"wekudo/referral")
 end
 
