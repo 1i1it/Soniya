@@ -4,6 +4,6 @@
   ].sample(6).map { |s| {title: s+" - Request Proposal" }} 
 %>
 
-<h1 class='centerText'> <%= params[:category].titleize %> </h1> 
+<h1 class='centerText' style='color: red'> <%= params[:category].titleize %> </h1> 
 
 <%= erb :"wekudo/activity_boxes", locals: {boxes: sub_categories, link_to_contact: true} %>

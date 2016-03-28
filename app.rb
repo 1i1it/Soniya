@@ -16,10 +16,6 @@ require_all './bl'
 
 include Helpers
 
-get '/ping' do
-  {msg: '123 pong from SNM', pong: true}
-end
-
 def render_home_page
   erb :"wekudo/main_page", layout: :layout
 end

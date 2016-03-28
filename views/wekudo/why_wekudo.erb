@@ -16,4 +16,5 @@
 
 <%= erb :"wekudo/activity_boxes", locals: {boxes: team_types, } %>
 
-<%= erb :"layout/wide_video", locals: {src: "http://video.wixstatic.com/video/11062b_6743da5900054f1f8e69f53302930a6a/1080p/mp4/file.mp4", overlay_title: "We have a BIG dream", overlay_subtitle: "to inspire *happiness* at work."} %>
+<% overlay_html = erb :"layout/video_overlays/overlay1" %>
+<%= erb :"layout/wide_video", locals: {src: "http://video.wixstatic.com/video/11062b_6743da5900054f1f8e69f53302930a6a/1080p/mp4/file.mp4", overlay_html: overlay_html} %>
