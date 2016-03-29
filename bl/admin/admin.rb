@@ -1,4 +1,4 @@
-MANAGEABLE_COLLECTIONS = [:pages,:users,:errors,:site_log,:requests].map {|n| $mongo.collection(n) }
+MANAGEABLE_COLLECTIONS = [:pages,:vendors,:users,:errors,:site_log,:requests].map {|n| $mongo.collection(n) }
 
 get '/admin' do
   to_page(:"admin/dashboard")

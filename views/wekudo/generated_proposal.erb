@@ -1,0 +1,10 @@
+<%
+  v = vendors[0]
+  name = v['Name']
+  type = v['Sub-Type'][0]
+  address = v['Address'] || v['Neighborhood'].to_a[0]
+%>
+
+<div>
+  Hi! So here's a suggestion: I think you guys should go to <strong><%= name %></strong>. They're a cool <%= type %> at <%= address %>. What do you think? :)
+</div>

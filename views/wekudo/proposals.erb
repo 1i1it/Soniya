@@ -1,0 +1,22 @@
+<%
+
+x=1
+%>
+<h1 class='centerText'> Create Proposals </h1>
+<div class='row'>
+
+
+<section class='col-md-5'>  
+  <h3> Enter Vendor IDs to create a proposal.</h3>
+  <form method='get' action='/admin/proposals'>
+    <input placeholder=vendor_id name=vendors[] class='inp1' value="<%=params[:vendors].to_a[0]%>">
+    <button class='btn btn-lg btn-primary btn-raised' class='inp1'>Create Proposal!</button>
+  </form>
+</section>
+
+<% if params[:proposal_text] %>
+<section class='col-md-5' style='padding:20px; background-color: white'>  
+  <h3> Suggested Proposal:</h3>
+  <%= params[:proposal_text] %>
+</section>
+<% end %>

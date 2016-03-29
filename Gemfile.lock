@@ -21,6 +21,7 @@ GEM
     debugger-linecache (1.2.0)
     domain_name (0.5.20160216)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.1.1)
     faker (1.6.3)
       i18n (~> 0.5)
     http-cookie (1.0.2)
@@ -99,6 +100,7 @@ DEPENDENCIES
   activesupport (= 4.0.0)
   bson_ext
   colorize
+  dotenv
   faker
   httpclient (= 2.5.2)
   json

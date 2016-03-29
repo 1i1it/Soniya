@@ -1,0 +1,9 @@
+.idea
+.build
+npm*.log
+node_modules
+nohup.out
+secret_config.rb
+.sass-cache
+.env
+logs/*

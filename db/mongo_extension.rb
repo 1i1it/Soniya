@@ -11,8 +11,14 @@ class Mongo::Collection
   end
   alias_method :get, :find_one
 
+
+
   def find_all(params = {})
     self.find(params).to_a
+  end
+
+  def all(params = {})
+    self.find_all(params)
   end
 
   def add(doc)

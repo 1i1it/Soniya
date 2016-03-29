@@ -7,12 +7,17 @@ require 'sinatra/reloader' #dev-only
 puts "requiring gems..."
 Bundler.require
 
+Dotenv.load
+
 require './setup'
 require './my_lib'
 
 require_all './db'
 require_all './mw'
+require_all './comm'
 require_all './bl'
+
+
 
 include Helpers
 
