@@ -5,6 +5,8 @@
     {name: 'foo3', date: '27/3', dept: 'dept3', cost: "20$"}
   ]
 
+  events = $company_tracked_events.find_all(email: params[:email])
+
   header_keys = ['Event', 'Date','Department','Cost']
   row_keys    = ['name','date','dept','cost']
 %>
