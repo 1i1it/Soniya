@@ -1,4 +1,9 @@
-<section>
+<style>
+.admin_dashboard_buttons a {
+  display: block;
+}
+</style>
+<section class='admin_dashboard_buttons'>
 <p> Hello, admin. </p>
 
 <% if params[:alert_text] %>
@@ -6,11 +11,10 @@
 <% end %>
 
 
-<a href="/admin/manage/users"><button class='btn btn-lg btn-raised'>Manage System</button></a>
-<a href="/admin/update_pages"><button class='btn btn-lg btn-raised'>Update Site Pages From GDOC</button></a> 
-<a href="https://docs.google.com/spreadsheets/d/1a8LaRk7yX6COz455CexQjnM8lqkeCaFJEUIwyc8szug/edit#gid=0" target="_blank"><button class='btn btn-lg btn-raised'>Edit Site Pages</button></a>
-<a href="https://docs.google.com/spreadsheets/d/1a8LaRk7yX6COz455CexQjnM8lqkeCaFJEUIwyc8szug/edit#gid=0" target="_blank"><button class='btn btn-lg btn-raised'>Edit Site Pages</button></a>
-
-<a href="/admin/forms_posted"><button class='btn btn-lg btn-raised'>Forms Posted</button></a>
+<a href="/admin/manage/users"><button class='btn btn-lg btn-raised btn-primary'>Manage System</button></a>
+<a href="/admin/update_pages"><button class='btn btn-lg btn-raised btn-primary'>Update Site Pages From GDOC</button></a> 
+<a href="https://docs.google.com/spreadsheets/d/1a8LaRk7yX6COz455CexQjnM8lqkeCaFJEUIwyc8szug/edit#gid=0" target="_blank"><button class='btn btn-lg btn-raised btn-primary'>Edit Site Pages</button></a>
+<a href="/admin/update_vendors"><button class='btn btn-lg btn-raised btn-primary'>Update Vendors from AirTable</button></a>
+<a href="/admin/forms_posted"><button class='btn btn-lg btn-raised btn-primary'>Forms Posted</button></a>
 
 </section> 
