@@ -54,3 +54,13 @@ end
 get '/refer' do 
   full_page_card(:"wekudo/referral")
 end
+
+
+
+get '/our_events' do
+  if params[:email]
+    to_page(:"wekudo/pages/our_events", locals: {email: params[:email]})
+  else 
+    full_page_card(:"wekudo/pages/our_events_form")
+  end
+end

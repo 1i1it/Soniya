@@ -1,0 +1,26 @@
+<%
+  events = [ 
+    {name: 'foo', date: '29/3', dept: 'dept1', cost: "20$"},
+    {name: 'foo2', date: '28/3', dept: 'dept2', cost: "20$"},
+    {name: 'foo3', date: '27/3', dept: 'dept3', cost: "20$"}
+  ]
+
+  header_keys = ['Event', 'Date','Department','Cost']
+  row_keys    = ['name','date','dept','cost']
+%>
+
+<h2> Company Events (<%= params[:email] %>)</h2>
+<table class='table table-striped sortable'>
+  <thead>
+  <% header_keys.each do |key| %>
+    <th> <%= key %></th> 
+  <% end %>
+  </thead>
+<% events.each do |event| %>
+  <tr>
+  <% row_keys.each do |v| %>
+    <td> <%= event.hwia[v] %> </td>
+  <% end %>
+  </tr>
+<% end %>
+</table>

@@ -8,7 +8,6 @@
   if anywhere_val
     crit      = crit_any_field(coll,anywhere_val)
   end
-  
   limit     = params_num(:limit, max: 100, default: 100)
   sort_field= either(params[:sort_field], :created_at)
   sort_dir  = params[:sort_dir].to_i == 1 ? 1 : -1
@@ -39,7 +38,7 @@
   function editItem(cell, type, id, field, oldVal) {
     var newVal;
     //if (newVal = prompt("Enter new value.",oldVal)) {
-    nicePrompt("Enter value instead of "+oldVal, function(newVal) {
+    nicePrompt("Enter value instead of "+$(cell).text(), function(newVal) {
       $.post('/admin/update_item',{coll: type, id: id, field: field, val: newVal})
        .success(function(res){ $(cell).html(newVal).css('background-color','lightgreen')})
        .error(function(res){ alert(res.responseJSON.msg)});

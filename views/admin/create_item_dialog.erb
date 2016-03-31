@@ -2,9 +2,10 @@
   coll ||= nil
   template ||= nil
   type = nil
+  technical_keys = ['_id','created_at','updated_at']
   if coll
     type      = coll.name
-    form_keys = mongo_coll_keys(coll).map {|k| {name: k, label: k}}
+    form_keys = (mongo_coll_keys(coll).reverse - technical_keys).map {|k| {name: k, label: k}}
   elsif template == 'hospital_patient'
     type      = 'users'
     form_keys = [{name: "case_id", label: "Patient's case number"}, {name: "phone", label: "Patient's phone number"}]
