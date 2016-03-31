@@ -21,7 +21,7 @@ box_imgs = [
   <% boxes.each do |box| %>
     <% box = box.hwia %>
     <% box[:title] ||= box[:name] %>
-    <% link = link_to_contact ? "/new-york/#{box[:title].downcase.gsub(' ','-')}" : "/nyc/#{box[:url] || box[:title]}" %>
+    <% link = link_to_contact ? "/new-york-city/#{box[:title].downcase.gsub(' ','-')}" : "/new-york-city/#{box[:url] || box[:title]}" %>
     <span class='col-md-4 col-xs-12 activityBox'> 
       <a href="<%= link %>">
         <div class='centerText'>

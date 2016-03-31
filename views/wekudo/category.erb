@@ -1,5 +1,4 @@
-<%
-  cat_page = $pages.get(url: params[:category])
+<%  
   cat_page_id   = cat_page['page-id']
   sub_categories = $pages.find_all({parent: cat_page_id})
 %>

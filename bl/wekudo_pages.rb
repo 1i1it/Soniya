@@ -22,21 +22,30 @@ get '/experiences' do
   to_page(:"wekudo/experiences")
 end 
 
-get "/nyc/:category" do
-  to_page(:"wekudo/category")
-end
+# get "/category/:category" do
+#   to_page(:"wekudo/category")
+# end
 
 get '/contact' do
   to_page(:"wekudo/contact")
+end
+
+get '/new-york-city/:category' do
+  if (cat_page = $pages.get(url: params[:category]))
+    to_page(:"wekudo/category", locals: {cat_page: cat_page})
+  else
+    params[:type] = params[:category]
+    to_page(:"wekudo/contact") 
+  end
 end
 
 get '/tell_your_hr' do
   to_page(:"wekudo/pages/tell_your_hr")
 end
 
-get '/new-york/:type' do
-  to_page(:"wekudo/contact")
-end
+# get '/events/new-york-city/:type' do
+#   to_page(:"wekudo/contact")
+# end
 
 get '/why_wekudo' do
   to_page(:"wekudo/why_wekudo")
