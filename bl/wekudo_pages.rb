@@ -30,6 +30,10 @@ get '/contact' do
   to_page(:"wekudo/contact")
 end
 
+get '/tell_your_hr' do
+  to_page(:"wekudo/pages/tell_your_hr")
+end
+
 get '/new-york/:type' do
   to_page(:"wekudo/contact")
 end
