@@ -4,18 +4,19 @@
     {name: 'foo2', date: '28/3', dept: 'dept2', cost: "20$"},
     {name: 'foo3', date: '27/3', dept: 'dept3', cost: "20$"}
   ]
-
-  events = $company_tracked_events.find_all(email: params[:email])
-
-  header_keys = ['Event', 'Date','Department','Cost']
-  row_keys    = ['name','date','dept','cost']
+  #events = $company_tracked_events.find_all(email: params[:email])
+  events = $deals.find_all("Company Name" => params[:company_name], "Stage" => "Closed Won")
+bp
+  header_keys = ['Event','Amount','Date']
+  row_keys    = ['Vendor Chosen','Amount','Last Contacted']
 %>
 
-<h2> Company Events (<%= params[:email] %>)</h2>
-<table class='table table-striped sortable'>
+<section class='zborder1'>
+<h2> <img src='/img/wekudo_logo.png'/> <strong><%= params[:company_name] %></strong> Company Events </h2>
+<table class='table table-striped table-bordered sortable'>
   <thead>
   <% header_keys.each do |key| %>
-    <th> <%= key %></th> 
+    <th style='cursor: pointer'> <%= key %></th> 
   <% end %>
   </thead>
 <% events.each do |event| %>
@@ -26,3 +27,8 @@
   </tr>
 <% end %>
 </table>
+
+  <section class=''>
+  <p> If you have any questions or issues, please contact us 24/7 at <strong>enterprise@wekudo.com.</strong></p>
+  </section>
+</section>

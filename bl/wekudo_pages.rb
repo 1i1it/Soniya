@@ -11,11 +11,11 @@ def update_wekudo_pages
   redirect '/admin/manage/pages'
 end
 
-
-
 get '/admin/update_pages' do
   update_wekudo_pages
 end
+
+STATIC_WEKUDO_PAGES = ['/experiences']
 
 get '/experiences' do
   #full_page_card(:"wekudo/experiences")
@@ -57,9 +57,9 @@ end
 
 
 
-get '/our_events' do
-  if params[:email]
-    to_page(:"wekudo/pages/our_events", locals: {email: params[:email]})
+get '/accounts/:company_name' do
+  if params[:company_name]
+    to_page(:"wekudo/pages/our_events", locals: {company_name: params[:company_name], skinny_layout: true})
   else 
     full_page_card(:"wekudo/pages/our_events_form")
   end

@@ -1,3 +1,6 @@
+<%
+  skinny_layout ||= false
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,11 +18,18 @@
 
 <body style='padding-top: 60px; '>  
   <div class='container-fluid'>        
-    <%= erb :"header/header" %>    
-    <%= erb :"layout/flash" %>            
+    
+    <% unless skinny_layout %>
+      <%= erb :"header/header" %>    
+      <%= erb :"layout/flash" %>            
+    <% end %>
+
     <%= yield %>        
   </div>
-        <%= erb :"footer/footer" %>    
+
+    <% unless skinny_layout %>
+      <%= erb :"footer/footer" %>    
+    <% end %>    
     <%= erb :bottom_js_scripts %>
 </body>
 
