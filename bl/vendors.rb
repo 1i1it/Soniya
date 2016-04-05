@@ -13,7 +13,7 @@ end
 #   redirect '/admin/manage/vendors'
 # end
 
-get '/admin/update_vendors' do
+get '/admin/update_vendors_from_airtable' do
   update_vendors_from_airtable
   redirect '/admin/manage/vendors'
 end
