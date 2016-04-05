@@ -1,10 +1,18 @@
-<%
-  v = vendors[0]
-  name = v['Name']
-  type = v['Sub-Type'][0]
-  address = v['Address'] || v['Neighborhood'].to_a[0]
-%>
 
-<div>
-  Hi! So here's a suggestion: I think you guys should go to <strong><%= name %></strong>. They're a cool <%= type %> at <%= address %>. What do you think? :)
+<div style='height:100%; width: 100%; padding:20px' class='border1' contentEditable="true">
+<% vendors.each_with_index do |v,idx| %>
+    <%
+    name = v['Name']
+    type = v['Sub-Type'][0]
+    address = v['Address'] || v['Neighborhood'].to_a[0]
+    desc = "(some description)"
+  %>
+  <div>
+    <%= idx+1%>. <%= name %>, <%= type %>, <%= desc %> 
+    <% if !params[:just_suggestion] %>
+    <img src="http://t2.gstatic.com/images?q=tbn:ANd9GcQCze-mfukcuvzKk7Ilj2zQ0CS6PbOkq7ZhRInnNd1Yz3TQzU4e&t=1" style='display: block'/>
+  </div>
+  <% end %>
+<% end %>
 </div>
+</textarea>  
