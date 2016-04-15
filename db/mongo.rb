@@ -5,8 +5,9 @@ mongodb_db_name = $app_name
 DB_URI = ENV["MONGOLAB_URI"] || "mongodb://localhost:27017/#{mongodb_db_name}"
 
 $mongo = Mongo::Client.new(DB_URI).database
-$posts = $mongo.collection('posts')
+
 $mongo_data = {}
+
 def page_mongo(collection, crit, opts)
   default_limit = 20
   sort = Array(opts[:sort])
@@ -48,6 +49,21 @@ def mongo_coll_keys(coll)
 rescue => e 
   []
 end
+
+def get_unique_slug(coll, field, val, crit = {})
+    # gets a unique slug based on 'val' for field 'field'.
+    # $users.get_unique_slug('username','Sella Rafaeli') => 'sella-rafaeli' or 'sella-rafaeli-2'
+    slug  = val.to_slug.normalize.to_s.slice(0,200)
+    !coll.exists?(crit.merge!({field.to_s => slug}))       ? slug      :
+    !coll.exists?(crit.merge!({field.to_s => slug+"-1"}))  ? slug+"-1" :    
+    !coll.exists?(crit.merge!({field.to_s => slug+"-2"}))  ? slug+"-2" :    
+    !coll.exists?(crit.merge!({field.to_s => slug+"-3"}))  ? slug+"-3" :    
+    !coll.exists?(crit.merge!({field.to_s => slug+"-4"}))  ? slug+"-4" :    
+    !coll.exists?(crit.merge!({field.to_s => slug+"-5"}))  ? slug+"-5" :    
+    !coll.exists?(crit.merge!({field.to_s => slug+"-6"}))  ? slug+"-6" :    
+    slug+"-"+rand(1000000).to_s
+end  
+
 
 def crit_any_field(coll, val)
   coll_keys = mongo_coll_keys(coll)

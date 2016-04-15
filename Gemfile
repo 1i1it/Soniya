@@ -14,6 +14,8 @@ gem 'require_all'
 gem 'httpclient',           '2.5.2'
 gem 'rest-client', '1.8.0'
 gem 'dotenv'
+gem 'babosa',                '1.0.2' #creating slugs. (.to_slug)
+gem 'ripl-color_result'    #used to color console output?
 #gem 'base62' #allows compression of mongo ids
 
 group :development, :test do
