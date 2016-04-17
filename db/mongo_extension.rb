@@ -1,23 +1,28 @@
 class Mongo::Collection
   # read
-  def get(params = nil) #get('id123') || get(email: 'bob@gmail.com')
-    params.present? ? self.find_one(params) : random 
+  def get(params = {}) #get('id123') || get(email: 'bob@gmail.com')
+    params = {_id: params} if !params.is_a? Hash
+    get_many(params).last
+  end
+
+  def get_many(params = {}, opts = {})
+    self.find(params, opts).to_a
   end
 
   def all(params = {}, opts = {})
-    self.find(params).to_a
+    get_many(params, opts)
   end
 
   def first
-    self.find.first
+    get_many.first
   end
 
   def last 
-    self.find({}, sort: [{created_at: -1}]).first
+    get_many({}, sort: [{created_at: -1}]).first
   end
 
   def exists?(fields)
-    self.find(fields, {projection: {_id:1}}).limit(1).count > 0
+    get_many(fields, {projection: {_id:1}, limit: 1}).count > 0
   end
 
   def random(amount = 1, crit = {}) #random items
@@ -26,14 +31,29 @@ class Mongo::Collection
     amount == 1 ? arr[0] : arr
   end
 
-  def num(crit = {})
-    self.find(crit).count
+  def num(crit = {}, opts = {})
+    get_many(crit, opts).count
+  end
+
+  def search_anywhere(val, opts = {})
+    crit = crit_any_field(self,val)
+    get_many(crit)
+  end
+
+  def search_by(field, val)
+    crit = {field => {"$regex" => Regexp.new(val, Regexp::IGNORECASE) } } 
+    get_many(crit)
+  end
+
+  def get_with(crit_or_id, other_coll, opts = {})
+    join_mongo_colls(self, crit_or_id, other_coll, {})
   end
 
   #create
   def add(doc)
-    data = doc.merge(_id: nice_id, created_at: Time.now)
-    self.insert_one(data)
+    doc[:_id] ||= nice_id
+    doc[:created_at] = Time.now
+    self.insert_one(doc)
     data.hwia
   end
 

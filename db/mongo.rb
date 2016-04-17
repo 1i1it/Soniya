@@ -64,10 +64,17 @@ def get_unique_slug(coll, field, val, crit = {})
     slug+"-"+rand(1000000).to_s
 end  
 
-
-def crit_any_field(coll, val)
+def crit_any_field(coll, val) # $
   coll_keys = mongo_coll_keys(coll)
   return {} unless coll_keys.any?
   
   {"$or" => coll_keys.map { |f| {f => {"$regex" => Regexp.new(val, Regexp::IGNORECASE) }}} }
+end
+
+# join_colls($users,123/{name: 'joe'},[$posts,$msgs])
+def join_mongo_colls(coll1, id, colls)
+  item   = coll1.find(_id: id).first # {"_id"=>123, "name"=>"Joe"}
+  fkey   = coll1.name[0..-2]+"_id" # "user_id"
+  joined = colls.map { |coll| coll.find(fkey => item['_id']).to_a } # [posts, messages]
+  return joined.unshift(item) # [user, posts, messages]
 end
