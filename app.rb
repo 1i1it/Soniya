@@ -17,18 +17,19 @@ require_all './mw'
 require_all './comm'
 require_all './bl'
 
-
-
 include Helpers
 
 def render_home_page
   erb :"wekudo/main_page", layout: :layout
 end
 
-
 get '/' do
   #flash.message = "hello this is a flash"
   render_home_page  
+end
+
+get '/ko' do
+  erb :"ko_page", default_layout
 end
 
 # get '/:slug' do
