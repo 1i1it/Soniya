@@ -5,9 +5,9 @@ def create_user(data)
   $users.add(data)
 end
 
-# def signin(email)
-#   user = email.present? && $users.get(email: email)
-# end
+def signin(email)
+  user = email.present? && $users.get(email: email)
+end
 
 def user_permalink(user)
   $root_url + "/#{user['username']}"

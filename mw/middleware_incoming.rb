@@ -1,5 +1,9 @@
-def request_expects_json
+def request_expects_json?
   request.xhr? || request.path_info.starts_with?("/api") 
+end
+
+def request_is_public?
+  request_fullpath.to_s.starts_with?('/css/','/js/','/img/') rescue false 
 end
 
 before do     

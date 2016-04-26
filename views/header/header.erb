@@ -21,25 +21,24 @@ x=1
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/"><img src='/img/wekudo_logo2.png'/></a>
+            <a class="navbar-brand" href="/" style='color: black'>Home-Made: The Best Agency</a>
         </div> 
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right header-links">
                 
                 <% if cu %>
-                <li><a href="<%=user_permalink(cu)%>">Case ID: <%= cu['case_id']%></a></li>
+                <li><a href="<%=user_permalink(cu)%>"><%= cu['email']%></a></li>
                 <li><a href="/logout">Log Out</a></li>
                 <% else %>
-                <!-- <li> <a class="nav-link" href="/signup">Sign Up</a></li> -->
+                <li> <a class="nav-link" href="/signup">Sign Up</a></li>
                 <% end %>
                 
                 <% if is_admin %>
                 <li> <a class="admin" href="/admin">Admin</a> </li> 
-                <% end %>                     
-                <li><a href="/experiences">Experiences</a></li>
+                <% end %>                                     
                 <li><a href="/experiences">Request An Event</a></li>
                 <li><a href="/why_wekudo">Why Wekudo?</a></li>                
-                <li><a href="/about">Blog</a></li>
+                <li><a href="/about">About</a></li>
                 <!-- <li><a href="/about">About</a></li> -->
             </ul>
         </div --><!--/.navbar-collapse -->

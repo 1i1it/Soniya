@@ -6,10 +6,15 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'mongo', '~> 2.1.0'
 gem 'bson_ext'
+gem 'pg'
+gem 'activerecord'
+gem 'sinatra-activerecord'
+#gem 'rake'
 gem 'json'
 gem 'pry-byebug',           '2.0.0' # binding.pry for breakpoints
 gem 'tux'
 gem 'activesupport',        '4.0.0' # utility functions like hash.slice
+
 gem 'require_all'
 gem 'httpclient',           '2.5.2'
 gem 'rest-client', '1.8.0'

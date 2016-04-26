@@ -54,7 +54,7 @@ class Mongo::Collection
     doc[:_id] ||= nice_id
     doc[:created_at] = Time.now
     self.insert_one(doc)
-    data.hwia
+    doc.hwia
   end
 
   def get_or_add(fields)
