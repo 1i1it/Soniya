@@ -43,9 +43,7 @@ def print_msg
 end
 
 def kinky_text
-  a = RandomWord.nouns.next.titleize
-  b = RandomWord.nouns.next.titleize
-  "Here are two words: #{a} and #{b}."
+  "Something kinky."
 end
 
 def handle_msg 
@@ -56,7 +54,7 @@ def handle_msg
 
   response_msg = "I got: #{text}. In reverse it is: #{text.reverse}"
   response_msg = LiterateRandomizer.sentence if text == 'random' rescue 'oopsie'
-  response_msg = kinky_text if text == 'smooth'
+  response_msg = kinky_text if text == 'test'
   send_fb_msg(user_id, response_msg)
 rescue => e
   {msg: "some error occurred"}
