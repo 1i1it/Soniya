@@ -42,13 +42,20 @@ def print_msg
   puts "---"  
 end
 
+def kinky_text
+  a = RandomWord.nouns.next.titleize
+  b = RandomWord.nouns.next.titleize
+  "I'd like to put my #{a} on your #{b}...."
+end
+
 def handle_msg 
   print_msg
   return params['hub.challenge'] if params['hub.challenge']
   data = fb_msg_data(params)
   user_id, text = data[:user_id], data[:text]
   response_msg = "I got: #{text}. In reverse it is: #{text.reverse}"
-  response_msg = LiterateRandomizer.sentence if text == 'random'
+  response_msg = LiterateRandomizer.sentence if text == 'random' rescue 'oopsie'
+  response_msg = kinky_text if text == 'kinky' rescue 'oopsie'
   send_fb_msg(user_id, response_msg)
 rescue => e
   {msg: "some error occurred"}
