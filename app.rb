@@ -48,6 +48,7 @@ def handle_msg
   data = fb_msg_data(params)
   user_id, text = data[:user_id], data[:text]
   response_msg = "I got: #{text}. In reverse it is: #{text.reverse}"
+  response_msg = LiterateRandomizer.sentence if text == 'random'
   send_fb_msg(user_id, response_msg)
 rescue => e
   {msg: "some error occurred"}
