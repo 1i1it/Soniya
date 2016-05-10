@@ -23,7 +23,7 @@ gem 'babosa',                '1.0.2' #creating slugs. (.to_slug)
 gem 'ripl-color_result'    #used to color console output?
 gem 'colorize' 
 gem 'literate_randomizer'
-gem 'random-word'
+gem 'faker'
 #gem 'base62' #allows compression of mongo ids
 
 group :development, :test do

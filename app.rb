@@ -43,7 +43,9 @@ def print_msg
 end
 
 def kinky_text
-  "Something kinky."
+  verb = Faker::Hacker.verb
+  noun = Faker::Hacker.noun
+  "I'd like to #{verb} your #{noun}..."
 end
 
 def handle_msg 
