@@ -45,7 +45,7 @@ end
 def kinky_text
   a = RandomWord.nouns.next.titleize
   b = RandomWord.nouns.next.titleize
-  "I'd like to put my #{a} on your #{b}...."
+  "Here are two words: #{a} and #{b}."
 end
 
 def handle_msg 
