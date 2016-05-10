@@ -56,7 +56,7 @@ def handle_msg
 
   response_msg = "I got: #{text}. In reverse it is: #{text.reverse}"
   response_msg = LiterateRandomizer.sentence if text == 'random' rescue 'oopsie'
-  response_msg = kinky_text if text == 'kinky2' rescue 'oopsie'
+  response_msg = kinky_text if text == 'kinky'
   send_fb_msg(user_id, response_msg)
 rescue => e
   {msg: "some error occurred"}
