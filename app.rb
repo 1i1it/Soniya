@@ -34,12 +34,21 @@ end
 
 # fb app token: EAAOxuLF0mJkBAH8r1ykzjhq5xeZCQ6WEZAb7TtcWNQ2eZBW887Lf9AYW3a10WvIJLWsD3uiXT9TZBgZAPwi2adBxCBLr14hVHorjjedy3W6gEPM6Gg3ZCUBfcHLFo6tZCu4fflBYIHfofzqoQ67W2pZABd87GLUSJCeFIIkTgGLeOAZDZD
 
+
+def print_msg
+  puts Time.now.to_s
+  puts "received params: ".blue
+  puts JSON.pretty_generate(params).light_blue
+  puts "---"  
+end
+
 def handle_msg 
-  bp()
-  puts "received: "
-  puts params
-  puts "---"
-  return params['hub.challenge'] || 'no hub.challenge' 
+  print_msg
+  return params['hub.challenge'] if params['hub.challenge']
+  data = fb_msg_data(params)
+  user_id, text = data[:user_id], data[:text]
+  response_msg = "I got: #{text}. In reverse it is: #{text.reverse}"
+  send_fb_msg(user_id, response_msg)
 end
 
 get '/webhook' do

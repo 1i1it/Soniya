@@ -1,3 +1,7 @@
+use Rack::Parser, :content_types => {
+  'application/json'  => Proc.new { |body| ::MultiJson.decode body }
+}
+
 def request_expects_json?
   request.xhr? || request.path_info.starts_with?("/api") 
 end

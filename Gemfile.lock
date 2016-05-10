@@ -62,6 +62,8 @@ GEM
       pry (~> 0.10)
     puma (3.2.0)
     rack (1.6.4)
+    rack-parser (0.6.0)
+      rack
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -133,6 +135,7 @@ DEPENDENCIES
   pg
   pry-byebug (= 2.0.0)
   puma
+  rack-parser (= 0.6.0)
   require_all
   rest-client (= 1.8.0)
   ripl-color_result
