@@ -49,6 +49,8 @@ def handle_msg
   user_id, text = data[:user_id], data[:text]
   response_msg = "I got: #{text}. In reverse it is: #{text.reverse}"
   send_fb_msg(user_id, response_msg)
+rescue => e
+  {msg: "some error occurred"}
 end
 
 get '/webhook' do
