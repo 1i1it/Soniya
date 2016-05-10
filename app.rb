@@ -28,9 +28,35 @@ def render_home_page
   erb :"wekudo/main_page", layout: :layout
 end
 
+get '/ping' do
+  {msg: 'pong from pauzzitive', val: 123}
+end
+
+# fb app token: EAAOxuLF0mJkBAH8r1ykzjhq5xeZCQ6WEZAb7TtcWNQ2eZBW887Lf9AYW3a10WvIJLWsD3uiXT9TZBgZAPwi2adBxCBLr14hVHorjjedy3W6gEPM6Gg3ZCUBfcHLFo6tZCu4fflBYIHfofzqoQ67W2pZABd87GLUSJCeFIIkTgGLeOAZDZD
+
+def handle_msg 
+  bp()
+  puts "received: "
+  puts params
+  puts "---"
+  return params['hub.challenge'] || 'no hub.challenge' 
+end
+
+get '/webhook' do
+  handle_msg  
+end
+
+post '/webhook' do
+  handle_msg
+end
+
+
+
 get '/' do
   #flash.message = "hello this is a flash"
-  render_home_page  
+  #render_home_page  
+  #bp
+  {msg: 'pauzzitive home'}
 end
 
 get '/ko' do
