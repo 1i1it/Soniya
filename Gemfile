@@ -24,6 +24,7 @@ gem 'ripl-color_result'    #used to color console output?
 gem 'colorize' 
 gem 'literate_randomizer'
 gem 'faker'
+gem 'bcrypt'
 #gem 'base62' #allows compression of mongo ids
 
 group :development, :test do

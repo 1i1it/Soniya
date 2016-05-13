@@ -19,6 +19,7 @@ GEM
     arel (4.0.2)
     babosa (1.0.2)
     backports (3.6.8)
+    bcrypt (3.1.11)
     bond (0.5.1)
     bson (3.2.6)
     bson_ext (1.5.1)
@@ -125,6 +126,7 @@ DEPENDENCIES
   activerecord
   activesupport (= 4.0.0)
   babosa (= 1.0.2)
+  bcrypt
   bson_ext
   colorize
   dotenv

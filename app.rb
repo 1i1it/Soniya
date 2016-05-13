@@ -76,6 +76,7 @@ get '/' do
   #flash.message = "hello this is a flash"
   #render_home_page  
   #bp
+  redirect '/admin'
   {msg: 'pauzzitive home'}
 end
 

@@ -17,7 +17,8 @@
 </head>
 
 <body style='padding-top: 60px; '>  
-  <div class='container-fluid'>        
+  <div class='container-fluid'>    
+    <%= erb :"layout/flash" %>        
     <%= erb :"header/header" %>    
     <%= yield %>        
   </div>

@@ -15,7 +15,7 @@ get "/admin/manage/:coll" do
 end 
 
 def is_admin(user = cu)
-  true
+  user['email'] == 'sella.rafaeli@gmail.com' rescue false
 end
 
 before '/admin*' do
