@@ -1,8 +1,0 @@
-<%  
-  cat_page_id   = cat_page['page-id']
-  sub_categories = $pages.find_all({parent: cat_page_id})
-%>
-
-<h1 class='centerText' style=''> <%= params[:category].titleize %> </h1> 
-
-<%= erb :"wekudo/activity_boxes", locals: {boxes: sub_categories, link_to_contact: true} %>

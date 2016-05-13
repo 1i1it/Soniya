@@ -18,19 +18,10 @@
 
 <body style='padding-top: 60px; '>  
   <div class='container-fluid'>        
-    
-    <% unless skinny_layout %>
-      <%= erb :"header/header" %>    
-      <%= erb :"layout/flash" %>            
-    <% end %>
-
+    <%= erb :"header/header" %>    
     <%= yield %>        
   </div>
-
-    <% unless skinny_layout %>
-      <%= erb :"footer/footer" %>    
-    <% end %>    
-    <%= erb :bottom_js_scripts %>
+  <%= erb :"footer/footer" %>    
+  <%= erb :bottom_js_scripts %>
 </body>
-
 </html>

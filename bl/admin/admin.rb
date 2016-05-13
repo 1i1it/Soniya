@@ -1,18 +1,14 @@
-MANAGEABLE_COLLECTIONS = [:pages,:vendors,:deals,:company_tracked_events,:users,:errors,:site_log,:requests].map {|n| $mongo.collection(n) }
+MANAGEABLE_COLLECTIONS = [:users,:errors,:site_log,:requests].map {|n| $mongo.collection(n) }
 
 get '/admin' do
   to_page(:"admin/dashboard")
 end
 
-post '/admin/create_user' do
-  require_fields([:phone,:case_id])
-
-  data = params.just(:phone,:case_id)
-  data[:code] = nice_id
-  user = create_user(data)
-  flash.message = "Patient's code is #{user[:code]}. We will also send him an SMS to #{user[:phone]} (not yet implemented.)"
-  redirect back
-end
+# post '/admin/create_user' do
+#   require_fields([:phone,:case_id])
+#   user = create_user(data)
+#   redirect back
+# end
 
 get "/admin/manage/:coll" do 
   erb :"admin/items", default_layout
