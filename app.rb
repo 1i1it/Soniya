@@ -24,10 +24,6 @@ require_all './bl'
 
 include Helpers
 
-def render_home_page
-  erb :"wekudo/main_page", layout: :layout
-end
-
 get '/ping' do
   {msg: 'pong from pauzzitive', val: 123}
 end
@@ -69,8 +65,6 @@ end
 post '/webhook' do
   handle_msg
 end
-
-
 
 get '/' do
   #flash.message = "hello this is a flash"

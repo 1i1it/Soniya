@@ -7,7 +7,7 @@ module Helpers
     err[:user_id]  = cuid
     err[:username] = cusername
     err[:path]     = request_path
-    err[:params]   = get_params
+    err[:params]   = JSON.parse(_params.to_json) #sometimes params has un-BSON able fields
     $errors.add(err)
   rescue => e
     nil

@@ -1,22 +1,9 @@
 $users = $mongo.collection('users')
 
 def create_user(data)
-  #data[:username] = data[:email]
+  data[:token] = SecureRandom.uuid
   $users.add(data)
 end
-
-def signin(email)
-  user = email.present? && $users.get(email: email)
-end
-
-def user_permalink(user)
-  $root_url + "/#{user['username']}"
-end
-
-def render_user_page(user)
-  full_page_card(:"users/single_user", locals: {user: user})
-end
-
 
 get '/login' do
   erb :"users/login", layout: :layout
@@ -24,11 +11,11 @@ end
 
 post '/login' do
   email, password = params[:email], params[:password]
-  bp
   if $users.exists?(email: email)
     user = $users.get(email: email)
-    if BCrypt::Password.new(user['hashed_pass']) == password
+    if BCrypt::Password.new(user['hashed_pass']) == password      
       session[:user_id] = user[:_id]     
+      log_event('logged in')
       redirect '/' 
     else
       flash.message = 'Wrong password.'
@@ -52,6 +39,7 @@ post '/register' do
   else 
     user = create_user(email: email, hashed_pass: BCrypt::Password.create(password))
     session[:user_id] = user[:_id]     
+    log_event('registered')
     redirect '/' 
   end
 end
@@ -68,6 +56,7 @@ get '/enterByCode' do
 end
 
 get '/logout' do
+  log_event('logged out')
   session.clear
   redirect '/'
 end

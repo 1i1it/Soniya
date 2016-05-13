@@ -4,12 +4,6 @@ get '/admin' do
   to_page(:"admin/dashboard")
 end
 
-# post '/admin/create_user' do
-#   require_fields([:phone,:case_id])
-#   user = create_user(data)
-#   redirect back
-# end
-
 get "/admin/manage/:coll" do 
   erb :"admin/items", default_layout
 end 
