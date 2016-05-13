@@ -18,14 +18,18 @@ require './setup'
 require './my_lib'
 
 require_all './db'
-require_all './mw'
-require_all './comm'
+require_all './admin'
 require_all './bl'
+require_all './comm'
+require_all './logging'
+require_all './mw'
 
 include Helpers
 
+$app_name   = 'barry2'
+
 get '/ping' do
-  {msg: 'pong from pauzzitive', val: 123}
+  {msg: "pong from #{$app_name}", val: 123}
 end
 
 # fb app token: EAAOxuLF0mJkBAH8r1ykzjhq5xeZCQ6WEZAb7TtcWNQ2eZBW887Lf9AYW3a10WvIJLWsD3uiXT9TZBgZAPwi2adBxCBLr14hVHorjjedy3W6gEPM6Gg3ZCUBfcHLFo6tZCu4fflBYIHfofzqoQ67W2pZABd87GLUSJCeFIIkTgGLeOAZDZD
