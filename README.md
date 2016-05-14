@@ -1,5 +1,7 @@
 This is our cool app.
 
+- Liliya was here.
+
 #Sublime Keyboard shortcuts
 http://docs.sublimetext.info/en/latest/file_management/file_management.html
 
