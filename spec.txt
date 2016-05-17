@@ -1,0 +1,88 @@
+This file will define the technical spec in broad terms.
+
+Objects
+=======
+(every object has '_id' and 'created_at' fields)
+
+* Users (defined in usrs.rb file and $users collection)
+Each user will have:
+- email
+- name 
+- pic_url
+- fb_id
+
+* Info Requests
+- user_id (requesting user)
+- location
+- medium (text, image, video)
+- amount 
+- lat (latitude coordinates)
+- long (longitude coordinates)
+- status ('Open', 'Fulfilled', etc)
+
+* Responses
+- request_id 
+- user_id (responding user)
+- text
+- photos_arr (array of urls) 
+- videos_arr (array of urls)
+
+* Ratings
+- user_id (rating user)
+- rating 
+- rated_user_id
+- response_id 
+
+* Payments
+- user_id (paying user)
+- request_id
+- amount
+- paid_user_id
+- confirmed_paid_at
+
+End-Points
+==========
+
+* Users
+- /login (with FB) # TBD 
+- /user_data (expects user_id, returns a hash with email, name, pic_url)
+- update_me (expects one of the following and sets it: [paypal email, pic_url, name.] 
+- activity_data
+  - num_requests_made
+  - num_responses
+  - num_requests_marked_as_fulfilled
+  - num_paid_requests_marked_as_fulfilled
+  - num_actual_paid
+
+* Info Requests
+- add_request
+- get_requests 
+  - expects one of the following as criteria: _id, user_id, responder_id, text, lat & long
+  - returns an array of requests
+    - each request has all data necessary to display 
+  
+* Responses 
+- add_response
+- get_responses
+  - expects one of the following as criteria: _id, user_id, request_id, text
+  - returns an array of responses
+    - each response has all data necessary to display it 
+- confirm_response
+- refute_response
+
+* Ratings
+- add rating (expects rated_user_id, rating, response_id)
+- get ratings 
+  - expects user_id or rated_user_id
+  - returns an array of ratings 
+
+* Payments 
+- prepare_payment_page
+ - expects request_id 
+ - returns URL of Paypal page ready for payment 
+
+* Flags
+- flag (expects user_id)
+
+* Other
+- contact_us 
