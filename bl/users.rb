@@ -6,7 +6,11 @@ def create_user(data)
 end
 
 get '/login' do
-  erb :"users/login", layout: :layout
+  erb :"users/login", layout: :layout 
+end
+
+get '/me' do
+  {user: $users.get(token: params[:token])}
 end
 
 post '/login' do
@@ -15,7 +19,7 @@ post '/login' do
     user = $users.get(email: email)
     if BCrypt::Password.new(user['hashed_pass']) == password      
       session[:user_id] = user[:_id]     
-      log_event('logged in')
+      log_event('logged in') 
       redirect '/' 
     else
       flash.message = 'Wrong password.'
@@ -44,7 +48,7 @@ post '/register' do
   end
 end
 
-get '/enterByCode' do
+get '/enterByCode' do #??
   user = $users.get(code: params[:code])
   if user 
     session[:user_id] = user[:_id]

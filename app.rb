@@ -26,7 +26,7 @@ require_all './mw'
 
 include Helpers
 
-$app_name   = 'barry2'
+$app_name   = 'Android rules!'
 
 get '/ping' do
   {msg: "pong from #{$app_name}", val: 123}

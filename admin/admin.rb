@@ -1,4 +1,4 @@
-MANAGEABLE_COLLECTIONS = [:users,:errors,:site_log,:requests].map {|n| $mongo.collection(n) }
+MANAGEABLE_COLLECTIONS = [:users,:errors,:site_log,:requests, :info_requests].map {|n| $mongo.collection(n) }
 
 get '/admin' do
   to_page(:"admin/dashboard")
@@ -9,7 +9,12 @@ get "/admin/manage/:coll" do
 end 
 
 def is_admin(user = cu)
-  user['email'] == 'sella.rafaeli@gmail.com' rescue false
+  email = user['email'] 
+  return true if email == 'sella.rafaeli@gmail.com' 
+  return true if email == 'lily.matveyeva@gmail.com'
+  return false
+rescue 
+  false
 end
 
 before '/admin*' do
