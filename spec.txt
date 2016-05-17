@@ -10,6 +10,7 @@ Each user will have:
 - name 
 - pic_url
 - fb_id
+- token (tbd if new on every sign-in)
 
 * Info Requests
 - user_id (requesting user)
