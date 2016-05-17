@@ -16,15 +16,18 @@ Each user will have:
 - user_id (requesting user)
 - location
 - medium (text, image, video)
-- amount 
+- amount (of money for response)
 - lat (latitude coordinates)
 - long (longitude coordinates)
 - status ('Open', 'Fulfilled', etc)
+- is_private (false by default)
 
 * Responses
 - request_id 
 - user_id (responding user)
 - text
+- lat (latitude coordinates)
+- long (longitude coordinates)
 - photos_arr (array of urls) 
 - videos_arr (array of urls)
 
@@ -37,18 +40,33 @@ Each user will have:
 * Payments
 - user_id (paying user)
 - request_id
-- amount
+- amount 
 - paid_user_id
 - confirmed_paid_at
+- transaction_id 
+
+* Flags
+- flagging_user_id
+- flagged_user_id
+- request_id/response_id 
+
+* Confirm
+- response_id
+- user_id
+
+* Refute
+- response_id
+- user_id
 
 End-Points
 ==========
 
 * Users
-- /login (with FB) # TBD 
+- /login (with FB) # TBD  -> 
 - /user_data (expects user_id, returns a hash with email, name, pic_url)
-- update_me (expects one of the following and sets it: [paypal email, pic_url, name.] 
-- activity_data
+- /update_me (expects one of the following and sets it: [paypal email, pic_url, name.] 
+- /activity_data
+returns of  activity_data:
   - num_requests_made
   - num_responses
   - num_requests_marked_as_fulfilled
@@ -56,34 +74,38 @@ End-Points
   - num_actual_paid
 
 * Info Requests
-- add_request
-- get_requests 
+- /add_request
+- /get_requests  (will show of different types by imput param (e.g logitude and latitude will return local requests)
   - expects one of the following as criteria: _id, user_id, responder_id, text, lat & long
   - returns an array of requests
     - each request has all data necessary to display 
   
 * Responses 
-- add_response
-- get_responses
+- /add_response
+- /get_responses
   - expects one of the following as criteria: _id, user_id, request_id, text
   - returns an array of responses
     - each response has all data necessary to display it 
-- confirm_response
-- refute_response
+- /confirm_response
+- /refute_response
 
 * Ratings
-- add rating (expects rated_user_id, rating, response_id)
-- get ratings 
+- /add_rating (expects rated_user_id, rating, response_id)
+- get_ratings 
   - expects user_id or rated_user_id
   - returns an array of ratings 
 
 * Payments 
-- prepare_payment_page
+- /prepare_payment_page
  - expects request_id 
  - returns URL of Paypal page ready for payment 
+ 
+ * Admin
+ - /block_account
+ - /unblock_account
+ - /see_contact_us
 
-* Flags
-- flag (expects user_id)
 
 * Other
-- contact_us 
+- contact_us (recieves submitted form data, saves it to database)
+
