@@ -5,12 +5,12 @@ def create_user(data)
   $users.add(data)
 end
 
+get '/me' do
+  #mock
+  {user:cu}
+end
 get '/login' do
   erb :"users/login", layout: :layout 
-end
-
-get '/me' do
-  {user: $users.get(token: params[:token])}
 end
 
 post '/login' do

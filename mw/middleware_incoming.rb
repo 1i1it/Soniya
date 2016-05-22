@@ -15,7 +15,12 @@ before do
 end
 
 def cu 
-  @cu = session && session[:user_id] && $users.get(session[:user_id]) rescue nil #for tux
+  # return current user
+  if request.path_info.starts_with?("/admin")
+    @cu ||= session && session[:user_id] && $users.get(session[:user_id]) rescue nil #for tux
+  else
+    @cu ||= params && params[:token] && $users.get(token: params[:token]) rescue nil #for tux
+  end
 end
 
 def cuid 

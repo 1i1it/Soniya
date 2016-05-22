@@ -1,0 +1,15 @@
+$refute = $mongo.collection('refute')
+
+post '/refute_response' do
+	# receives response_id and token
+
+	require_user
+	user = cu
+
+	response = $responses.get({_id:params[:response_id]})
+	return {err:"no such response"} if !response
+
+	refute = $refute.add({user_id: user['_id'], response_id:response['_id']})
+
+  {refute:refute} 
+end
