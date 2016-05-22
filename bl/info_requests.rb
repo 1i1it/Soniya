@@ -3,16 +3,20 @@ $ir = $info_requests = $mongo.collection('info_requests')
 =end
 
 def map_requests(items)
-	items.map! do |old|
-	  new_request = {
-	  	text: old[:text],
-	  	request_location: old[:location],
-	  	medium: old[:medium],
-	  	amount: old[:amount],
-	  	is_expensive: (old[:amount].to_i > 10)
-	  }
-	end
-	return items
+  items.map! do |old|
+    responses = $res.find({request_id: old['_id']}).to_a
+    responses = map_responses(responses)
+    new_request = {
+      request_id:old['_id'],
+      text: old[:text],
+      request_location: old[:location],
+      medium: old[:medium],
+      amount: old[:amount],
+      responses: responses,
+      is_expensive: (old[:amount].to_i > 10)
+    }
+  end
+  return items
 end
 
 get '/requests' do
@@ -27,7 +31,6 @@ get '/requests' do
 	else
 		status 400
 		return {error: "No such parameter. Please choose from legal parameters location, text, user_id, request_id"}
-		#return {error: "No such parameter. Please choose from legal parameters location, text, user_id, request_id"}
 	end
 	items = map_requests(items)
 	{items:items}

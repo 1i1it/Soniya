@@ -3,7 +3,7 @@ use Rack::Parser, :content_types => {
 }
 
 def request_expects_json?
-  request.xhr? || request.path_info.starts_with?("/api") 
+  request.xhr? || !request.path_info.starts_with?("/admin") 
 end
 
 def request_is_public?
