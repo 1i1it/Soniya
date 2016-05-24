@@ -1,16 +1,35 @@
 $ir = $info_requests = $mongo.collection('info_requests')
 =begin
+- when querying for 'requests' and receiving a lat && long, we'll need to query using Mongo's 
+greater than ($gt) query operator (https://docs.mongodb.com/v3.0/reference/operator/query/gt/).
+ The syntax will be something like this:
+
+$requests.find({ lat: {"$gt": params[:lat] - 10 }  }).to_a
+
+First of all try that (just doing greater than for latitude). Then add a $lt (less than) for the 
+other end of the range:
+
+$requests.find({ lat: {"$gt": params[:lat] - 10, "$lt": params[:lat] + 10 }   })
+
+Then add the same for lon, and we have a geo-query for box within +- 10 lat/long points from a 
+given point.
 =end
+
+LOCATION_CHANGE = 0.01
+QUERY_LIMIT = 100
+
 
 def map_requests(items)
   items.map! do |old|
-    responses = $res.find({request_id: old['_id']}).to_a
+    responses = $res.get_many_limited({request_id: old['_id']}, sort: [{created_at: -1}] ) #$res.find({request_id: old['_id']}).to_a
     responses = map_responses(responses)
     new_request = {
       request_id:old['_id'],
       text: old[:text],
       request_location: old[:location],
       medium: old[:medium],
+      latitude: old[:latitude],
+      longitude: old[:longitude],
       amount: old[:amount],
       responses: responses,
       is_expensive: (old[:amount].to_i > 10)
@@ -25,9 +44,9 @@ get '/requests' do
 	elsif params[:location]
 		items = $ir.search_by("location", params[:location])
 	elsif params[:request_id]
-		items = $ir.find({_id:params[:request_id]}).to_a
+		items = $ir.get_many_limited({_id:params[:request_id]}, sort: [{created_at: -1}] ) 
 	elsif params[:user_id]
-		items = $ir.find({user_id:params[:user_id]}).to_a
+		items = $ir.get_many_limited({user_id:params[:user_id]}, sort: [{created_at: -1}] )
 	else
 		status 400
 		return {error: "No such parameter. Please choose from legal parameters location, text, user_id, request_id"}
@@ -92,6 +111,22 @@ get '/requests_by_location' do
 	{items:items}
 end
 
+get '/requests_around_me' do
+	if !params[:latitude] || !params[:longitude]
+		return {err:"missing parameters latitude and longitude"}
+	end
+
+	items = $ir.find({ 
+		latitude: {
+			"$gt": params[:latitude].to_f - LOCATION_CHANGE, 
+			"$lt": params[:latitude].to_f + LOCATION_CHANGE},
+		longitude: {
+			"$gt": params[:longitude].to_f - LOCATION_CHANGE, 
+			"$lt": params[:longitude].to_f + LOCATION_CHANGE}
+			}).limit(QUERY_LIMIT).to_a
+	{items:items}
+end
+
 get '/requests/info' do
 	{num: $ir.count}
 end
@@ -99,4 +134,5 @@ end
 get '/requests/all' do
 	{requests: $ir.all}
 end
+
 

@@ -9,6 +9,11 @@ class Mongo::Collection
     self.find(params, opts).to_a
   end
 
+  def get_many_limited(params = {}, opts = {})
+    opts[:limit] ||= 5 
+    self.find(params, opts).to_a
+  end
+
   def all(params = {}, opts = {})
     get_many(params, opts)
   end
@@ -40,9 +45,9 @@ class Mongo::Collection
     get_many(crit)
   end
 
-  def search_by(field, val)
+  def search_by(field, val, opts={})
     crit = {field => {"$regex" => Regexp.new(val, Regexp::IGNORECASE) } } 
-    get_many(crit)
+    get_many(crit, opts)
   end
 
   def get_with(crit_or_id, other_coll, opts = {})

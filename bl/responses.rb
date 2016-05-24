@@ -65,9 +65,13 @@ post '/add_new_response' do
 	user = cu
 	return {err:"no such user"} if !user 
 
-	request = $ir.find({_id:params[:request_id]})
+	request = $ir.find({_id:params[:request_id]}).to_a
 	return {err:"no such request"} if !request
 
+	# Max 4 responses per requests
+	if $res.count({request_id:params[:request_id]}) > 4
+		halt_bad_input(msg:"Sorry, you can't add more than 4 responses")
+	end
     response = $res.add({user_id: user['_id'], 
     				text: params['text'],
     				request_id:params[:request_id],
