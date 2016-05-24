@@ -2,7 +2,7 @@ $conref = $confirm_refute =  $mongo.collection('confirm_refute')
 
 
 def confirm_refute
-		#receive token and response_id and action (confirm/refute/none)
+	#receive token and response_id and action (confirm/refute/none)
 	require_user
 	response = $responses.get({_id:params[:response_id]})
 
@@ -25,7 +25,6 @@ end
 get '/confirm_refute' do
 	confirm_refute
 end
-
 
 
 get '/confirm_refute/all' do

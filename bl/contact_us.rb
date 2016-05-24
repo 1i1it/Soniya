@@ -1,9 +1,13 @@
 $contact = $contact_us =  $mongo.collection('contact_us')
 
 =begin
+Modify the form by adding inline CSS (that is, CSS defined on the 
+'style' attribute of the form). Then move it from inline to just an internal
+ <style> tag in the document.
+
 =end
-get '/contact_form' do
-  erb :"contact_us/contact_form", layout: :layout
+get '/contact_us' do
+  full_page_card(:"contact_us/contact_form")
 end
 
 post '/contact_us' do

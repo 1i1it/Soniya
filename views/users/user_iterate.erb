@@ -1,0 +1,39 @@
+<style>
+  .mongo_item_cell:hover { 
+    background-color: lightgrey;
+    color: black;
+    cursor: pointer;
+  }
+
+  .truncate {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+</style>
+
+<script>
+  function deleteItem(type,id,cell) {
+    if (confirm('Are you sure you want to delete this?')){
+      $.post('/admin/delete_item',{coll: type, id: id})
+       .success(function(res){ $(cell).closest('tr').fadeOut();})
+       .error(function(res){ alert(res.responseJSON.msg)});
+    }
+  }
+</script>
+
+<h2 style="font-family: verdana;">About me</h2>
+<% user = cu%>
+<h4 style="font-family: verdana;">My email is <%= cu[:email] %> </h4>
+<h4 style="font-family: verdana;">My user_id is <%= cuid %> </h4>
+<h4 style="font-family: verdana;">Created at <%= cu[:created_at] %> </h4>
+<!-- <li><a href="#"><%= cu['email']%></a></li> -->
+<h1 style="font-family: verdana; color: #b3b3ff; ">My requests and responses</h1> 
+<% user_id = cuid
+collections = [params[:coll1], params[:coll2]]
+  collections.each do |collection|%>
+  <p> <%=erb :"users/user_info1", locals: {coll: collection, user_id: user_id} %></p> 
+  <% end %>
+

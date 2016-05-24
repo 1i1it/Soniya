@@ -1,9 +1,30 @@
 $users = $mongo.collection('users')
 
+MANAGEABLE_COLLECTIONS = [:users,:errors,:site_log,:requests, :info_requests].map {|n| $mongo.collection(n) }
+
 def create_user(data)
   data[:token] = SecureRandom.uuid
   $users.add(data)
 end
+
+=begin
+get "/user_info/:coll/" do 
+   #create a /user_info route that receives a user_id and displays an HTML 
+  #page showing that user's requests and responses in separate lists.
+  #requests
+  #responses
+  erb :"users/user_info", default_layout
+end 
+=end
+
+get "/user_info/:token/:coll1/:coll2" do 
+   #create a /user_info route that receives a user_id and displays an HTML 
+  #page showing that user's requests and responses in separate lists.
+  #requests
+  #responses
+  erb :"users/user_iterate", default_layout
+end 
+
 
 get '/me' do
   #mock

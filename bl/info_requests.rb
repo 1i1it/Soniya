@@ -38,6 +38,7 @@ def map_requests(items)
   return items
 end
 
+
 get '/requests' do
 	if params[:text]
 		items = $ir.search_by("text", params[:text])
