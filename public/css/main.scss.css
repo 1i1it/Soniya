@@ -68,3 +68,7 @@
 @keyframes yellow-fade {
   5% {
     background-color: #ff8; } }
+#test_css_cover:hover {
+  color: red;
+
+}

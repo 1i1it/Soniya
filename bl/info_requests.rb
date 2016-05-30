@@ -1,18 +1,5 @@
 $ir = $info_requests = $mongo.collection('info_requests')
 =begin
-- when querying for 'requests' and receiving a lat && long, we'll need to query using Mongo's 
-greater than ($gt) query operator (https://docs.mongodb.com/v3.0/reference/operator/query/gt/).
- The syntax will be something like this:
-
-$requests.find({ lat: {"$gt": params[:lat] - 10 }  }).to_a
-
-First of all try that (just doing greater than for latitude). Then add a $lt (less than) for the 
-other end of the range:
-
-$requests.find({ lat: {"$gt": params[:lat] - 10, "$lt": params[:lat] + 10 }   })
-
-Then add the same for lon, and we have a geo-query for box within +- 10 lat/long points from a 
-given point.
 =end
 
 LOCATION_CHANGE = 0.01
@@ -38,6 +25,34 @@ def map_requests(items)
   return items
 end
 
+get '/request_page' do
+	user = cu
+	item = $ir.get({_id:params[:request_id]})
+	erb :"info_requests/requests_page", layout: :layout
+	end
+	#params[:request_id]
+
+post '/add_new_request' do 
+	# # get user token from current user 
+	# if !params[:token]
+	# 	return {err:"missing parameter token"}
+	# end
+	user = cu
+	#(return an error if no such user exists).
+	
+	return {err:"no such user"} if !user 
+    request = $ir.add({user_id: user['_id'], 
+    				text:params[:text],
+  					location:params[:location],
+  					medium:params[:medium],
+  					amount:params[:amount],
+  					latitude:params[:latitude],
+  					longitude:params[:longitude],
+  					status:params[:status],
+  					is_private:params[:is_private]})
+
+  {request:request} 
+end
 
 get '/requests' do
 	if params[:text]
@@ -69,26 +84,7 @@ get '/requests_by_text' do
 	{items:items}
 end
 
-post '/add_new_request' do 
-	# get user token from current user 
-	if !params[:token]
-		return {err:"missing parameter token"}
-	end
-	#(return an error if no such user exists).
-	user = cu
-	return {err:"no such user"} if !user 
-    request = $ir.add({user_id: user['_id'], 
-    				text:params[:text],
-  					location:params[:location],
-  					medium:params[:medium],
-  					amount:params[:amount],
-  					latitude:params[:latitude],
-  					longitude:params[:longitude],
-  					status:params[:status],
-  					is_private:params[:is_private]})
 
-  {request:request} 
-end
 
  get '/requests_by_user_id' do
 	if !params[:user_id]

@@ -1,0 +1,51 @@
+<!-- More tasks: building on top of what we did yesterday. Don't use the existing admin functionality, implement the table from scratch. You can use Bootstrap's classes to make the table pretty (later). Perhaps do a tutorial on HTML tables before, if you want. 
+
+Generally when building a table in ERB I would hard-code the headers-row, and then do an 'each' on the items to generate the rows:
+
+And so on.
+
+1. Users list:
+Route: /users
+Should show a table (HTML <table>) of all users, and for each user show their _id, email, name, created_at. Sort the list by created_at, showing newest users on top. 
+
+2. User page:
+Route: /user_page?user_id=...
+Should show a table of their requests, and then a table of their responses (each will show the major fields - user_id, text, lat & long, etc). 
+
+3. Clicking on a request will lead us to a request page:
+- Route: /request_page?request_id=...
+- Will show some of the request data, and a list of the responses for that request
+- Will also have a form to submit a response to this request (note the form should submit with the current user responding). 
+
+4. Clicking on a response (from a request page or from a user page) will lead us to a response page (route: /response_page?response_id=...). In the response page you should see the request as well as the response, and also the list of users that confirmed and the users that refuted (each user should be a link to their page). 
+- The response page should also have a button to 'confirm' or 'refute'. If the current user viewing already confirmed or refuted, then they should have an 'unconfirm' (instead of confirm) or 'unrefute' (instead of refute) button. 
+
+5. A 'requests' list (similar to the user list, for 100 recent requests)
+6. A 'responses' list (similar to the user list, for 100 recent responses)
+ -->
+
+ <section class='centerText'>
+  <h1>This is our amazing app.</h1>
+</section>
+
+  <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
+    <thead class='thead-inverse'>
+    <td> _id </td>
+    <td> email </td>
+    <td> name </td>
+    <td> created </td>
+  </thead>
+  <tbody>
+  <% users = $users.get_many_limited({}, sort: [{created_at: -1}] )%>
+  <% users.each do |user| %>
+  <tr id="test_css_cover"> 
+    <td> <a href="/user_page?user_id=<%=user['_id']%>"><%= user['_id'] %> </a> </td>
+    <td> <%= user['email'] %> </td>
+    <td> <%= user['name'] %> </td>
+    <td> <%= user['created_at'] %> </td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<!-- responses = $res.get_many_limited({request_id: old['_id']}, sort: [{created_at: -1}] )  -->

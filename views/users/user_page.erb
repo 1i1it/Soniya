@@ -25,14 +25,13 @@
 </script>
 
 <h2 style="font-family: verdana;">About me</h2>
-<% user = cu%>
-<h4 style="font-family: verdana;">My email is <%= cu[:email] %> </h4>
-<h4 style="font-family: verdana;">My user_id is <%= cuid %> </h4>
-<h4 style="font-family: verdana;">Created at <%= cu[:created_at] %> </h4>
+<% user =  $users.get(_id: params[:user_id])%>
+<h4 style="font-family: verdana;">My email is <%= user[:email] %> </h4>
+<h4 style="font-family: verdana;">My user_id is <%= user[:_id] %> </h4>
+<h4 style="font-family: verdana;">Created at <%= user[:created_at] %> </h4>
 <h1 style="font-family: verdana; color: #b3b3ff; ">My requests and responses</h1> 
-<% user_id = cuid
-collections = [params[:coll1], params[:coll2]]
+<%collections = ["info_requests", "responses"]
   collections.each do |collection|%>
-  <p> <%=erb :"users/user_resreq", locals: {coll: collection, user_id: user_id} %></p> 
+  <p> <%=erb :"users/user_resreq", locals: {coll: collection, user_id: user[:_id]} %></p> 
   <% end %>
 

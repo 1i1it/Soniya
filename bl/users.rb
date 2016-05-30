@@ -7,22 +7,24 @@ def create_user(data)
   $users.add(data)
 end
 
-=begin
-get "/user_info/:coll/" do 
-   #create a /user_info route that receives a user_id and displays an HTML 
-  #page showing that user's requests and responses in separate lists.
-  #requests
-  #responses
-  erb :"users/user_info", default_layout
-end 
-=end
-
 get "/user_info/:token/:coll1/:coll2" do 
    #create a /user_info route that receives a user_id and displays an HTML 
-  #page showing that user's requests and responses in separate lists.
-  #requests
-  #responses
   erb :"users/user_iterate", default_layout
+end 
+
+get "/users" do 
+  # should show a table (HTML <table>) of all users, and for each user show 
+  # their _id, email, name, created_at. Sort the list by created_at, 
+  # showing newest users on top. 
+  erb :"users/user_details", default_layout
+end 
+
+get "/user_page" do
+  user_id = cuid || params[:user_id]
+  #receives cuid 
+  #Should show a table of their requests, and then a table of their responses 
+  #(each will show the major fields - user_id, text, lat & long, etc). 
+  erb :"users/user_page", default_layout
 end 
 
 
@@ -44,6 +46,8 @@ post '/login' do
       redirect '/' 
     else
       flash.message = 'Wrong password.'
+
+      # ADD warning message
       redirect back
     end
   else

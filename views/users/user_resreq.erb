@@ -34,7 +34,7 @@
         <tr class='mongo_item_row'>
           <% fields.each do |field| %>
             <% 
-              id      = item["_id"]
+              id  = item["_id"]
               val = item[field].to_s 
               val = escape_html(val)
               val = val.gsub(/#{anywhere_val}/i) { |s| "<mark>#{s}</mark>" } if anywhere_val && val.downcase.include?(anywhere_val.downcase)
