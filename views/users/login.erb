@@ -13,7 +13,7 @@
 
 
 <script>
-  // This is called with the results from from FB.getLoginStatus().
+  // This is called	 with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
     console.log(response);
@@ -22,6 +22,7 @@
     // Full docs on the response object can be found in the documentation
     // for FB.getLoginStatus().
     if (response.status === 'connected') {
+    	console.log(response.authResponse.accessToken);
       // Logged into your app and Facebook.
       testAPI();
     } else if (response.status === 'not_authorized') {
