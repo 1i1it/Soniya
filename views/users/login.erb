@@ -68,10 +68,17 @@
   // These three cases are handled in the callback function.
 
   FB.getLoginStatus(function(response) {
+  	if (response.status === 'connected') {
+    console.log(response.authResponse.accessToken);
+  }
     statusChangeCallback(response);
   });
 
   };
+
+
+
+
 
   // Load the SDK asynchronously
   (function(d, s, id) {
@@ -94,12 +101,7 @@
     });
   }
 
-  FB.getLoginStatus(function(response) {
-  if (response.status === 'connected') {
-    console.log(response.authResponse.accessToken);
-  }
-});
-  
+
 </script>
 
 <!--
