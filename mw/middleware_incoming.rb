@@ -24,19 +24,21 @@ end
 # end
 
 def cu_token
-   @cu ||= params && params[:token] && $users.get(token: params[:token]) rescue nil #for tux
+   params && params[:token] && $users.get(token: params[:token]) rescue nil #for tux
   end
 
 def cu_session
-  @cu ||= session && session[:user_id] && $users.get(session[:user_id]) rescue nil #for tux
+  session && session[:user_id] && $users.get(session[:user_id]) rescue nil #for tux
   end
 
 def cu
    # return current user
    if request.path_info.starts_with?("/admin")
-    cu_session
+    @cu = cu_session
    else
-    cu_token || cu_session || nil
+
+    @cu = cu_token || cu_session || nil
+    #bp
   end
 end
 

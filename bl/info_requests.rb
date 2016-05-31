@@ -39,9 +39,10 @@ post '/add_new_request' do
 	# end
 	user = cu
 	#(return an error if no such user exists).
-	
-	return {err:"no such user"} if !user 
-    request = $ir.add({user_id: user['_id'], 
+	flash.message = 'Please log in to post request' if !user 
+
+	#return {err:"no such user"} if !user 
+    	request = $ir.add({user_id: user['_id'], 
     				text:params[:text],
   					location:params[:location],
   					medium:params[:medium],
@@ -52,6 +53,7 @@ post '/add_new_request' do
   					is_private:params[:is_private]})
 
   {request:request} 
+
 end
 
 get '/requests' do

@@ -25,10 +25,13 @@
 </script>
 
 <h2 style="font-family: verdana;">About me</h2>
-<% user =  $users.get(_id: params[:user_id])%>
+<% user =  cu || $users.get(_id: params[:user_id])%>
 <h4 style="font-family: verdana;">My email is <%= user[:email] %> </h4>
 <h4 style="font-family: verdana;">My user_id is <%= user[:_id] %> </h4>
+<h4 style="font-family: verdana;">My name is <%= user[:name] %> </h4>
+<img src=<%=user[:pic_url]%> class="img-rounded" alt="Photo" width="193" height="286">
 <h4 style="font-family: verdana;">Created at <%= user[:created_at] %> </h4>
+
 <h1 style="font-family: verdana; color: #b3b3ff; ">My requests and responses</h1> 
 <%collections = ["info_requests", "responses"]
   collections.each do |collection|%>

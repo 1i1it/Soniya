@@ -19,6 +19,56 @@ get "/users" do
   erb :"users/user_details", default_layout
 end 
 
+get "/user_data" do 
+
+  user = $users.get({_id: cuid })
+  #(expects user_id, returns a hash with email, name, pic_url)
+  user = {
+      email:user[:email],
+      name: user[:name],
+      pic_url: user[:pic_url]
+    }
+  {user:user}
+end 
+
+def map_users(items)
+  items.map! do |old|
+    users = $users.get_many_limited({_id: old['_id']}, sort: [{created_at: -1}] )
+    new_user = {
+      email:old['email'],
+      name: old[:name],
+      picture_url: old[:picture_url]
+    }
+  end
+  return items
+end
+
+get "/update_me" do
+  $users.find_one_and_update({_id: cuid}, {'$set' => params}) 
+  #(expects one of the following and sets it: [paypal, email, pic_url, name.] 
+  {user:cu}
+end 
+
+get "/activity_data" do
+  activity_data = {
+  user_id:cuid,
+  num_requests_made:$ir.count({user_id:cuid}),
+  num_responses:$res.count({user_id:cuid}),
+  num_requests_marked_as_fulfilled:0,
+  num_paid_requests_marked_as_fulfilled:0,
+  num_actual_paid:0,
+  }
+  {activity_data:activity_data}
+  # returns of activity_data:
+  # - num_requests_made
+  # - num_responses
+  # - num_requests_marked_as_fulfilled
+  # - num_paid_requests_marked_as_fulfilled
+  # - num_actual_paid
+
+end 
+
+
 get "/user_page" do
   user_id = cuid || params[:user_id]
   #receives cuid 
@@ -28,8 +78,8 @@ get "/user_page" do
 end 
 
 
+
 get '/me' do
-  #mock
   {user:cu}
 end
 get '/login' do
