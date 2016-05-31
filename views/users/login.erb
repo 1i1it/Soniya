@@ -89,11 +89,17 @@
     FB.api('/me', function(response) {
 
       console.log('Successful login for: ' + response.name);
-      console.log('My token is ' + response.authResponse.accessToken);
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
     });
   }
+
+  FB.getLoginStatus(function(response) {
+  if (response.status === 'connected') {
+    console.log(response.authResponse.accessToken);
+  }
+});
+  
 </script>
 
 <!--
