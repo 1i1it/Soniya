@@ -10,7 +10,7 @@ Each user will have:
 - name 
 - pic_url 
 - fb_id  ====missing====
-- token (tbd if new on every sign-in)
+- token (to be created upon user creation) == missing ==
 
 * Info Requests
 - user_id (requesting user)
@@ -66,16 +66,17 @@ End-Points
 ==========
 
 * Users
-- /login (with FB)
+- /login (with FB) (expects fb token, return user + flag if is new user)
 - /user_data (expects user_id, returns a hash with email, name, pic_url, paypal
 - /update_me (expects one(or more) of the following and sets it: [paypal, email, pic_url, name.])
 - /activity_data  (expects user_id,
-returns of  activity_data:
+returns of activity_data:
   - num_requests_made
   - num_responses
   - num_requests_marked_as_fulfilled
   - num_paid_requests_marked_as_fulfilled
-  - num_actual_paid)
+  - num_actual_paid
+  - average rating
 
 * Info Requests
 - /add_request (expects user_id (current user), 
@@ -96,17 +97,18 @@ posts params from * Responses collection(mandatory and optional)). returns added
 - /confirm_refute (confirm or refute response)
 (expects user_id, id of response and action (confirm/refute), returns added object 
 
-
 * Ratings ====missing====
-- /add_rating (expects rated_user_id, rating(??? what would be the rating?), response_id). returns added object 
+- /add_rating (expects rated_user_id, rating(1 to 5), response_id). returns added object 
 - get_ratings 
   - expects user_id or rated_user_id
-  - returns an array of ratings 
+  - returns an array of rating objects
 
 * Payments  ====missing====
 - /prepare_payment_page
  - expects request_id 
- - returns URL of Paypal page ready for payment 
+ - returns URL of Paypal page ready for payment + pay-key (Paypal identifier for payment)
+- /confirm_payment 
+ - expects payment identifier (string), returns hash indicating confirmed payment status 
  
  * Admin ====missing====
  - /block_account (add {blocked: true} to user hash) - check for block in require user, if blocked, return message "you were blocked".
@@ -118,10 +120,8 @@ also "you were blocked" when trying to sign in
 * Other
 - contact_us (recieves submitted form data, saves it to database)
 
-
-
 Create token for every user upon creation (take it from creating email) ====missing====
 
 Admin:
 100 requests+ paging (next = +100) ====missing====
-Do intuitive(!) admin page, with responses, requests that are clickable and lead to relevant response/request pages
+Do intuitive(!) admin page, with users, responses, requests, payments that are clickable and lead to relevant response/request pages
