@@ -1,24 +1,5 @@
 $res = $responses = $mongo.collection('responses')
 =begin
-
-* Responses 
-- /add_response
-- /get_responses
-  - expects one of the following as criteria: _id, user_id, request_id, text
-  - returns an array of responses
-    - each response has all data necessary to display it 
-- /confirm_response
-- /refute_response
-
-- request_id 
-- user_id (responding user)
-- text
-- lat (latitude coordinates)
-- long (longitude coordinates)
-- photos_arr (array of urls) 
-- videos_arr (array of urls)
-
-response
 =end
 
 def map_responses(items)

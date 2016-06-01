@@ -1,5 +1,7 @@
 <h1>Login</h1>
-<form class='form-group' action='/login' method='post'>
+<button class='btn btn-lg btn-raised btn-success' onclick='doFBLogin()'>Login With Facebook</button>
+
+<form class='form-group noDisplay' action='/login' method='post'>
   <div class='input-group'>
     <label>Email</label>
     <input name='email' class='form-control' placeholder="email"> 
@@ -9,6 +11,8 @@
     <input type='password' name='password' class='form-control' placeholder="password"> 
   </div>
   <button class='btn btn-lg btn-raised btn-primary'>Login</button>
+
+
 </form>
 
 
@@ -66,17 +70,7 @@
   //    your app or not.
   //
   // These three cases are handled in the callback function.
-
-  FB.getLoginStatus(function(response) {
-  	if (response.status === 'connected') {
-    console.log(response.authResponse.accessToken);
-  }
-    statusChangeCallback(response);
-  });
-
   };
-
-
 
 
 
@@ -101,7 +95,17 @@
     });
   }
 
-
+  doFBLogin = function() {  
+	  FB.getLoginStatus(function(response) {
+	  	if (response.status === 'connected') {
+	    console.log(response.authResponse.accessToken);
+	    var user_token = response.authResponse.accessToken;
+	    document.location = '/fb_enter?token='+user_token;
+	    //document.cookie = "cl=" + user_token";";
+	  }
+	    statusChangeCallback(response);
+	  });
+  	}
 </script>
 
 <!--
@@ -109,9 +113,9 @@
   the JavaScript SDK to present a graphical Login button that triggers
   the FB.login() function when clicked.
 -->
-
+<!-- 
 <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button>
+</fb:login-button> -->
 
 <div id="status">
 </div>

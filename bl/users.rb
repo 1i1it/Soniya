@@ -19,6 +19,29 @@ get "/users" do
   erb :"users/user_details", default_layout
 end 
 
+get "/fb_enter" do
+
+  user = http_get("https://graph.facebook.com/me?fields=name,email,picture&access_token="+params[:token])
+  user_hash = JSON.parse(user)
+  fb_id = user_hash["id"]
+  existing_user = $users.get(fb_id: fb_id)
+  if existing_user
+     session[:user_id] = existing_user['_id']
+     is_new = false
+  else
+    picture = user_hash["picture"]["data"]["url"]  rescue nil
+    $users.add(email:user_hash["email"], pic_url:picture,  fb_id: fb_id, name:user_hash["name"])
+    session[:user_id] = existing_user['_id']
+    is_new = true
+  end
+  new_user = $users.get(fb_id: fb_id)
+  if params[:browser] 
+    redirect "/" 
+  else
+    {user:new_user, is_new:is_new}
+  end
+end
+
 get "/user_data" do 
 
   user = $users.get({_id: cuid })
