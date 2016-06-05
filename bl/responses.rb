@@ -21,7 +21,7 @@ def map_responses(items)
 	return items
 end
 
-get '/response_page' do
+get '/responses_page' do
 	user = cu
 	item = $res.get({_id:params[:response_id]})
 	erb :"responses/response_page", layout: :layout

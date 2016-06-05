@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-6">
             <div class="input-group" id="adv-search">
                 <input type="text" class="form-control" placeholder="Find requests" />
                 <div class="input-group-btn">
@@ -33,6 +33,38 @@
                 </div>
             </div>
           </div>
+
+          <div class="input-group" id="adv-search">
+                <input type="text" class="form-control" placeholder="Find requests by location" />
+                <div class="input-group-btn">
+                    <div class="btn-group" role="group">
+                        <div class="dropdown dropdown-lg">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <form class="form-horizontal" role="search" method="get" action="/requests_around_me">
+
+                                  <div class="form-group">
+                                    <label for="contain">Latitude</label>
+                                    <input class="form-control" type="text" name="latitude" value="<%=params[:latitude]%>"/>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="contain">Longitude</label>
+                                    <input class="form-control" type="text" name="longitude" value="<%=params[:longitude]%>"/>
+                                  </div>
+
+                                  <button type="submit" class="btn btn-primary">Go!</button>
+                                </form>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary">Go!</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+
         </div>
 	</div>
 </div>
+

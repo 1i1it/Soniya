@@ -23,6 +23,8 @@ $(document).ready(function($) {
 cursor:pointer;
 }
 </style> 
+
+<div class="container">
 <% requests = $ir.get_many_limited({}, sort: [{created_at: -1}] )%>
  <h2> List of requests </h2>
 
@@ -101,5 +103,4 @@ cursor:pointer;
   <!-- <input type="submit" value="Submit"> -->
 </form>
 
-</body>
-</html>
+</div>

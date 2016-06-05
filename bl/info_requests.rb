@@ -25,7 +25,7 @@ def map_requests(items)
   return items
 end
 
-get '/request_page' do
+get '/requests_page' do
 	user = cu
 	item = $ir.get({_id:params[:request_id]})
 	erb :"info_requests/requests_page", layout: :layout
@@ -60,10 +60,9 @@ get "/one_request" do
 	erb :"info_requests/one_request", layout: :layout
 	end
 
-
 get '/requests' do
-	search_field = params[:search_field]
-	params[search_field] = params[:search_value]
+	#search_field = params[:search_field]
+	params[params[:search_field]] = params[:search_value]
 
 	if params[:text]
 		items = $ir.search_by("text", params[:text])

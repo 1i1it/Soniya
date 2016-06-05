@@ -10,7 +10,7 @@ class Mongo::Collection
   end
 
   def get_many_limited(params = {}, opts = {})
-    opts[:limit] ||= 5 
+    opts[:limit] ||= 50 
     self.find(params, opts).to_a
   end
 

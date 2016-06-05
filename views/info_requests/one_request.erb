@@ -1,4 +1,4 @@
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
@@ -12,7 +12,7 @@ $(document).ready(function($) {
 .table-row{
 cursor:pointer;
 }
-</style>  
+</style>   -->
 <h2> Request </h2>
    <%item = $ir.get({_id:params[:request_id]})%>
   <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
@@ -23,7 +23,7 @@ cursor:pointer;
 
   </thead>
   <tbody>
-  		<tr class="table-row" data-href="/requests?request_id=<%=params[:request_id]%>">
+  		<tr class="table-row">
 
 	  <% item.each_value do |value| %>
 	  <td> <%= value %></td>
