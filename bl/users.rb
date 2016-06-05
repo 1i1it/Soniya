@@ -30,9 +30,10 @@ get "/fb_enter" do
      is_new = false
   else
     picture = user_hash["picture"]["data"]["url"]  rescue nil
-    data[:token] = SecureRandom.uuid
-    $users.add(email:user_hash["email"], pic_url:picture,  fb_id: fb_id, name:user_hash["name"], token:data)
-    session[:user_id] = existing_user['_id']
+
+    token = SecureRandom.uuid
+    new_user = $users.add(email:user_hash["email"], pic_url:picture,  fb_id: fb_id, name:user_hash["name"], token: token)
+    session[:user_id] = new_user['_id']
     is_new = true
   end
   new_user = $users.get(fb_id: fb_id)

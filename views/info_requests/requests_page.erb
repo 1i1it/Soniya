@@ -10,7 +10,7 @@
 
 
 <!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function($) {
     $(".table-row").click(function() {
@@ -29,7 +29,7 @@ cursor:pointer;
   <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
   
     <thead class='thead-inverse'>
-    <% request = requests.last %>
+    <% request = requests.last || {}%>
     <% request.each_key do |key| %>
       <td><%= key %> </td>
     <% end %>
@@ -38,11 +38,16 @@ cursor:pointer;
   <tbody>
   
   <% requests.each do |request| %>
+      
   		<tr class="table-row" data-href="/one_request?request_id=<%=request['_id']%>">
-
+    
 	  <% request.each_value do |value| %>
-	  <td> <%= value %></td>
-
+	  <td> 
+    <!--  <a href="/one_request?request_id=<%=request['_id']%>"> -->
+      <%= value %>
+      <!-- </a> -->
+    </td>
+      
 	    <% end %>
 	  </tr>
 	  
