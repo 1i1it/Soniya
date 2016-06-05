@@ -30,7 +30,6 @@ get '/request_page' do
 	item = $ir.get({_id:params[:request_id]})
 	erb :"info_requests/requests_page", layout: :layout
 	end
-	#params[:request_id]
 
 post '/add_new_request' do 
 	# # get user token from current user 
@@ -56,7 +55,16 @@ post '/add_new_request' do
 
 end
 
+get "/one_request" do
+	item = $ir.get({_id:params[:request_id]})
+	erb :"info_requests/one_request", layout: :layout
+	end
+
+
 get '/requests' do
+	search_field = params[:search_field]
+	params[search_field] = params[:search_value]
+
 	if params[:text]
 		items = $ir.search_by("text", params[:text])
 	elsif params[:location]
@@ -76,6 +84,10 @@ end
 
 get '/add_new_request_form' do
   erb :"info_requests/requests_index", layout: :layout
+end
+
+get '/search_form' do
+  erb :"other/search_form", layout: :layout
 end
 
 get '/requests_by_text' do

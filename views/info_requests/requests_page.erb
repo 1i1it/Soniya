@@ -1,4 +1,64 @@
-<h1 style="font-family: verdana; color: #b3b3ff;">Post request</h1> 
+
+
+ <%= erb :"other/search_form" %>   
+
+
+
+<!-- Latest compiled and minified CSS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function($) {
+    $(".table-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+});
+</script>
+<style type="text/css">
+.table-row{
+cursor:pointer;
+}
+</style> 
+<% requests = $ir.get_many_limited({}, sort: [{created_at: -1}] )%>
+ <h2> List of requests </h2>
+
+  <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
+  
+    <thead class='thead-inverse'>
+    <% request = requests.last %>
+    <% request.each_key do |key| %>
+      <td><%= key %> </td>
+    <% end %>
+
+  </thead>
+  <tbody>
+  
+  <% requests.each do |request| %>
+  		<tr class="table-row" data-href="/one_request?request_id=<%=request['_id']%>">
+
+	  <% request.each_value do |value| %>
+	  <td> <%= value %></td>
+
+	    <% end %>
+	  </tr>
+	  
+  <% end %>
+  </tbody>
+</table>
+
+<p><form class="navbar-form" role="search" method="get" id="s" action="/one_request">
+    <div class="form-group">
+        <input type="text" class="form-control" name="request_id"  placeholder="Search for request by id" value='<%=params[:request_id]%>'>
+    </div>
+    <button type="submit" class="btn btn-default">GO!</button>
+</form>
+
+
+<p><h1 style="font-family: verdana; color: #b3b3ff;">Post request</h1> </p>
 <form class='form-group' action='/add_new_request' method='post'>
   <div class='input-group'>
     <label>Amount</label>

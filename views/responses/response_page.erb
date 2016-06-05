@@ -1,4 +1,4 @@
- <!-- Latest compiled and minified CSS -->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
@@ -13,30 +13,30 @@ $(document).ready(function($) {
 .table-row{
 cursor:pointer;
 }
-</style> 
+</style>                                              
 
- <section class='centerText'>
-  <h1>User List</h1>
-</section>
 
+ <h2> Responses </h2>
   <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
+  <% responses = $res.get_many_limited({}, sort: [{created_at: -1}] )%>
     <thead class='thead-inverse'>
-    <td> _id </td>
-    <td> email </td>
-    <td> name </td>
-    <td> created </td>
+    <% response = responses.last %>
+    <% response.each_key do |key| %>
+      <td><%= key %> </td>
+    <% end %>
+
   </thead>
   <tbody>
-  <% users = $users.get_many_limited({}, sort: [{created_at: -1}] )%>
-  <% users.each do |user| %>
-  <tr class="table-row" data-href="/user_page?user_id=<%=user['_id']%>"> 
-    <td> <%= user['_id'] %> </td>
-    <td> <%= user['email'] %> </td>
-    <td> <%= user['name'] %> </td>
-    <td> <%= user['created_at'] %> </td>
-  </tr>
+  
+  <% responses.each do |response| %>
+  		<tr class="table-row" data-href="/responses?response_id=<%=response['_id']%>">
+
+	  <% response.each_value do |value| %>
+	  <td> <%= value %></td>
+
+	    <% end %>
+	  </tr>
+	  
   <% end %>
   </tbody>
 </table>
-
-<!-- responses = $res.get_many_limited({request_id: old['_id']}, sort: [{created_at: -1}] )  -->

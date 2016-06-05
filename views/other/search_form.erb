@@ -1,0 +1,38 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+            <div class="input-group" id="adv-search">
+                <input type="text" class="form-control" placeholder="Find requests" />
+                <div class="input-group-btn">
+                    <div class="btn-group" role="group">
+                        <div class="dropdown dropdown-lg">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <form class="form-horizontal" role="search" method="get" action="/requests">
+
+
+                                  <div class="form-group">
+                                    <label for="filter">Search by</label>
+                                    <select name="search_field" class="form-control">
+                                        <option value="request_id" selected>request_id</option>
+                                        <option value="text">Text</option>
+                                        <option value="location">Location</option>
+                                        <option value="user_id">user_id</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="contain">Contains the words</label>
+                                    <input class="form-control" type="text" name="search_value"/>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary">Go!</button>
+                                </form>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary">Go!</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+	</div>
+</div>

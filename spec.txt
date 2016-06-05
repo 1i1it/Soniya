@@ -9,8 +9,8 @@ Each user will have:
 - email
 - name 
 - pic_url 
-- fb_id  ====missing====
-- token (to be created upon user creation) == missing ==
+- fb_id  =
+- token (to be created upon user creation)    
 
 * Info Requests
 - user_id (requesting user)
@@ -37,7 +37,7 @@ or
 - photos_arr (array of urls)
 - videos_arr (array of urls) 
 
-* Ratings ====missing====
+* Ratings 
 - user_id (rating user)
 - rating 
 - rated_user_id
@@ -97,7 +97,7 @@ posts params from * Responses collection(mandatory and optional)). returns added
 - /confirm_refute (confirm or refute response)
 (expects user_id, id of response and action (confirm/refute), returns added object 
 
-* Ratings ====missing====
+* Ratings 
 - /add_rating (expects rated_user_id, rating(1 to 5), response_id). returns added object 
 - get_ratings 
   - expects user_id or rated_user_id
@@ -109,6 +109,11 @@ posts params from * Responses collection(mandatory and optional)). returns added
  - returns URL of Paypal page ready for payment + pay-key (Paypal identifier for payment)
 - /confirm_payment 
  - expects payment identifier (string), returns hash indicating confirmed payment status 
+
+ * Flags  ====missing====
+-/flag_user (expects  cuid, flagged_user_id, request_id/response_id, returns new object flag added)
+-/unflag_user (expects  cuid, flagged_user_id, request_id/response_id, returns - flag removed)
+-/flags (expects one or more of the following: flagging_user_id, flagged_user_id, request_id/response_id, returns found objects)
  
  * Admin ====missing====
  - /block_account (add {blocked: true} to user hash) - check for block in require user, if blocked, return message "you were blocked".
@@ -124,4 +129,6 @@ Create token for every user upon creation (take it from creating email) ====miss
 
 Admin:
 100 requests+ paging (next = +100) ====missing====
-Do intuitive(!) admin page, with users, responses, requests, payments that are clickable and lead to relevant response/request pages
+Do intuitiveadmin page, with users, responses, requests, payments that are clickable and lead to relevant response/request pagesb====missing====
+
+====missing==== need to make some params optional/mandatory? or we do it in client? 

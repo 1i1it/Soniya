@@ -21,7 +21,6 @@ end
 
 def require_user()
 	#checks for token, if no token missing, token, if !cu - err: bad token
-	require_fields(['token'])
 	halt_bad_input({msg:"bad token #{params[:token]}"}) if !cu
 end
 

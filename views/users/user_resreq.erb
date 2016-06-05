@@ -14,8 +14,8 @@
   sort_field= either(params[:sort_field], :created_at)
   sort_dir  = params[:sort_dir].to_i == 1 ? 1 : -1
   items     = coll.find(crit).limit(limit).sort([{sort_field => sort_dir}]).to_a 
-  fields    = items.map(&:keys).flatten.hash_of_num_occurrences.keys #shared fields to show
-%>
+  fields    = items.map(&:keys).flatten.hash_of_num_occurrences.keys #shared fields to show #hat does fields do?
+%> #???? w
 
 <div class='row'>
   
@@ -34,7 +34,7 @@
         <tr class='mongo_item_row'>
           <% fields.each do |field| %>
             <% 
-              id  = item["_id"]
+              id   = item["_id"]
               val = item[field].to_s 
               val = escape_html(val)
               val = val.gsub(/#{anywhere_val}/i) { |s| "<mark>#{s}</mark>" } if anywhere_val && val.downcase.include?(anywhere_val.downcase)

@@ -16,6 +16,7 @@ def confirm_refute
 		$conref.add({user_id: cuid, response_id:response['_id'], action: params[:action]})
 		{msg: "refute/confirm added"}
 	end
+	
 end
 
 post '/confirm_refute' do
