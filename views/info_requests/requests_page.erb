@@ -41,11 +41,11 @@ cursor:pointer;
   
   <% requests.each do |request| %>
       
-  		<tr class="table-row" data-href="/one_request?request_id=<%=request['_id']%>">
+  		<tr class="table-row" data-href="/request_page?request_id=<%=request['_id']%>">
     
 	  <% request.each_value do |value| %>
 	  <td> 
-    <!--  <a href="/one_request?request_id=<%=request['_id']%>"> -->
+    <!--  <a href="/request_page?request_id=<%=request['_id']%>"> -->
       <%= value %>
       <!-- </a> -->
     </td>
@@ -57,7 +57,7 @@ cursor:pointer;
   </tbody>
 </table>
 
-<p><form class="navbar-form" role="search" method="get" id="s" action="/one_request">
+<p><form class="navbar-form" role="search" method="get" id="s" action="/request_page">
     <div class="form-group">
         <input type="text" class="form-control" name="request_id"  placeholder="Search for request by id" value='<%=params[:request_id]%>'>
     </div>

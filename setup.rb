@@ -1,6 +1,6 @@
 $prod       = settings.production? #RACK_ENV==production?
 $prod_url   = 'http://my-er.herokuapp.com/'
-$root_url   = $prod ? $prod_url : 'http://localhost:9000'
+$root_url   = $prod ? $prod_url : 'http://localhost:9292'
 
 enable :sessions
 set :session_secret, '&a*n31994@'

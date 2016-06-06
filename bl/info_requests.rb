@@ -5,6 +5,28 @@ $ir = $info_requests = $mongo.collection('info_requests')
 LOCATION_CHANGE = 0.01
 QUERY_LIMIT = 100
 
+get '/pay' do #?receives id=123
+    info_request = $ir.get(params[:id])
+    #info_request = {_id: $ir.get(params[:id])[_id], amount:456} 
+    res = build_paypal_payment_page(info_request) #???? but it has to get amount as well?
+    redirect res[:url]
+end
+
+get '/paypal_confirm' do #?receives request_id=123
+     ir = $ir.get(params[:request_id])
+     #bp
+     pay_key = ir['paypal_pay_key']
+     #paypal_data = get_paypal_payment_details(payment['paypal_pay_key'])
+     paypal_data = get_paypal_payment_details(pay_key)
+     if paypal_data[:confirmed_paid]
+     	$ir.update_id(params[:request_id], paid:true) 
+     	{request_id: params[:request_id], paid: true, msg: "ok, you paid"}
+     else
+     	{msg: "payment didn't go through"}
+     end
+
+end
+
 
 def map_requests(items)
   items.map! do |old|
@@ -24,6 +46,8 @@ def map_requests(items)
   end
   return items
 end
+
+
 
 get '/requests_page' do
 	user = cu
@@ -55,9 +79,9 @@ post '/add_new_request' do
 
 end
 
-get "/one_request" do
+get "/request_page" do
 	item = $ir.get({_id:params[:request_id]})
-	erb :"info_requests/one_request", layout: :layout
+	erb :"info_requests/request_page", layout: :layout
 	end
 
 get '/requests' do

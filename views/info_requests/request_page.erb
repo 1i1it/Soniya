@@ -1,3 +1,4 @@
+
 <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
@@ -12,22 +13,30 @@ $(document).ready(function($) {
 .table-row{
 cursor:pointer;
 }
-</style>   -->
+</style>  
 <h2> Request </h2>
    <%item = $ir.get({_id:params[:request_id]})%>
+   <%keys = ["_id", "user_id", "text", "location", "medium", "amount", "latitude", "longitude", "status", "is_private", "created_at", "paypal_pay_key", "updated_at", "paid"]%>
   <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
     <thead class='thead-inverse'>
-    <% item.each_key do |key| %>
+
+    <% keys.each  do |key| %>
       <td><%= key %> </td>
     <% end %>
-
   </thead>
   <tbody>
   		<tr class="table-row">
 
-	  <% item.each_value do |value| %>
-	  <td> <%= value %></td>
+	  <% keys.each do |key| %>
+      <% if key == "paid" && !item[:paid] %>
+        <td> <a href="/pay?id=<%=item["_id"]%>"> <button type="button" class="btn btn-primary btn-sm">Pay now</button></a> </td>
+      
+      <%else%>
+        <td> <%= item[key] || "none" %></td>
+      <%end%> 
 	  <% end %>
+
+    
 	  </tr>
 	  
   
