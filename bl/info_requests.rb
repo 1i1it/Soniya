@@ -27,13 +27,17 @@ get '/paypal_confirm' do #?receives request_id=123
 
 end
 
+get '/paypal_cancel' do
+	redirect "/request_page?request_id="+params[:request_id] 
+end
+
 
 def map_requests(items)
   items.map! do |old|
     responses = $res.get_many_limited({request_id: old['_id']}, sort: [{created_at: -1}] ) #$res.find({request_id: old['_id']}).to_a
     responses = map_responses(responses)
     new_request = {
-      request_id:old['_id'],
+      _id:old['_id'],
       text: old[:text],
       request_location: old[:location],
       medium: old[:medium],
@@ -53,6 +57,18 @@ get '/requests_page' do
 	user = cu
 	item = $ir.get({_id:params[:request_id]})
 	erb :"info_requests/requests_page", layout: :layout
+	end
+
+get "/request_page" do
+	if params[:search_field] && params[:search_field] == "request_id"
+		request = $ir.get({_id:params[:search_value]})
+		responses = $res.get_many_limited({request_id:params[:search_value]}, sort: [{created_at: -1}] )
+	else
+
+		request = $ir.get({_id:params[:request_id]})
+		responses = $res.get_many_limited({request_id:params[:request_id]}, sort: [{created_at: -1}] )
+	end
+	full_page_card(:"info_requests/request_page", locals: {request: request, responses: responses})
 	end
 
 post '/add_new_request' do 
@@ -79,15 +95,11 @@ post '/add_new_request' do
 
 end
 
-get "/request_page" do
-	item = $ir.get({_id:params[:request_id]})
-	erb :"info_requests/request_page", layout: :layout
-	end
+
 
 get '/requests' do
 	#search_field = params[:search_field]
 	params[params[:search_field]] = params[:search_value]
-
 	if params[:text]
 		items = $ir.search_by("text", params[:text])
 	elsif params[:location]
@@ -100,8 +112,9 @@ get '/requests' do
 		status 400
 		return {error: "No such parameter. Please choose from legal parameters location, text, user_id, request_id"}
 	end
-	items = map_requests(items)
-	{items:items}
+	#data = map_requests(items)
+	full_page_card(:"info_requests/requests_page", locals: {data: items})
+	
 end
 
 

@@ -15,7 +15,7 @@ cursor:pointer;
 }
 </style>  
 <h2> Request </h2>
-   <%item = $ir.get({_id:params[:request_id]})%>
+   <%item =  locals[:request] || $ir.get({_id:params[:request_id]})%>
    <%keys = ["_id", "user_id", "text", "location", "medium", "amount", "latitude", "longitude", "status", "is_private", "created_at", "paypal_pay_key", "updated_at", "paid"]%>
   <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
     <thead class='thead-inverse'>
@@ -49,7 +49,7 @@ cursor:pointer;
 
   <h2> Responses </h2>
   <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
-  <% responses = $res.get_many_limited({request_id:params[:request_id]}, sort: [{created_at: -1}] )%>
+  <% responses = locals[:responses] ||  $res.get_many_limited({request_id:params[:request_id]}, sort: [{created_at: -1}] )%>
   <% responses = map_responses(responses)%>
     <thead class='thead-inverse'>
     <% response = responses.last || {} %>

@@ -7,4 +7,3 @@ secret_config.rb
 .sass-cache
 .env
 logs/*
-comm/paypal.rb
