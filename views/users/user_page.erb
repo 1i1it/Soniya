@@ -38,14 +38,16 @@
 
   <% flagged =  $flags.get_many({flagged_user_id:params[:user_id]})%>
 
-  <% if requests%>
+  <% if requests.count > 0%>
     <p> <%=erb :"info_requests/requests_page", locals: {data: requests } if requests%></p>   
   <% end%>
+  <% if responses.count > 0%>
   <p> <%=erb :"responses/responses_page", locals: {data: responses } if responses %></p> 
-  <% if flagging%>
+  <% end%>
+  <% if flagging.count > 0 %>
   <p> <%=erb :"flags/flags", locals: {data: flagging, flagging: true }%></p> 
   <% end%>
-  <% if flagged%>
+  <% if flagged.count > 0 %>
   <p> <%=erb :"flags/flags", locals: {data: flagged, flagged: true} %></p> 
   <% end%>
 
