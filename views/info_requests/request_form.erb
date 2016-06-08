@@ -1,0 +1,40 @@
+
+<p><h1 style="font-family: verdana; color: #b3b3ff;">Post request</h1> </p>
+<form class='form-group' action='/add_new_request' method='post'>
+  <div class='input-group'>
+    <label>Amount</label>
+    <input type="number" name='amount' class='form-control' placeholder="Amount"> 
+  </div>
+  <p><div class='input-group'>
+  <label>Location</label>
+  <input type="text" name='location' class='form-control' placeholder="Location">
+  </div></p>
+
+  <p><div class='input-group'>
+  <input type="text" name='latitude' class='form-control' placeholder="Latitude">
+  </div></p>
+
+  <p><div class='input-group'>
+  <input type="text" name='longitude' class='form-control' placeholder="Longitude">
+  </div></p>
+
+  <p><div class='input-group'>
+    <label>Text</label>
+  <p><textarea rows="9" cols="20" name='text' class='form-control' placeholder="Enter your text here"></textarea>
+  </div></p>
+  <div class="radio">
+  <label><input name='medium' type="radio" value = "Photo">Photo</label>
+</div>
+<div class="radio">
+  <label><input name='medium' type="radio" value = "Video">Video</label>
+</div>
+
+<div class="checkbox">
+  <label><input name="is_private" type="checkbox" value="true">Private</label>
+</div>
+
+  <button class='btn btn-lg btn-raised btn-primary' type='submit'>Send</button>
+  <!-- <input type="submit" value="Submit"> -->
+</form>
+
+</div>

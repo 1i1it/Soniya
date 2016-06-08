@@ -9,6 +9,7 @@ get '/pay' do #?receives id=123
     info_request = $ir.get(params[:id])
     #info_request = {_id: $ir.get(params[:id])[_id], amount:456} 
     res = build_paypal_payment_page(info_request) #???? but it has to get amount as well?
+    return res if res[:err]
     redirect res[:url]
 end
 
@@ -55,8 +56,8 @@ end
 
 get '/requests_page' do
 	user = cu
-	item = $ir.get({_id:params[:request_id]})
-	erb :"info_requests/requests_page", layout: :layout
+	data = $ir.get_many_limited({}, sort: [{created_at: -1}] )	
+	full_page_card(:"info_requests/requests_page", locals: {data: data, search: true})
 	end
 
 get "/request_page" do
@@ -171,7 +172,7 @@ get '/requests_around_me' do
 			"$gt": params[:longitude].to_f - LOCATION_CHANGE, 
 			"$lt": params[:longitude].to_f + LOCATION_CHANGE}
 			}).limit(QUERY_LIMIT).to_a
-	{items:items}
+	full_page_card(:"info_requests/requests_page", locals: {data: items})
 end
 
 get '/requests/info' do

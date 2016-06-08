@@ -17,15 +17,20 @@ def map_responses(items)
 	  	videos_arr: old[:videos_arr]
 	  }
 	end
-	#bp
 	return items
 end
 
 get '/responses_page' do
 	user = cu
 	item = $res.get({_id:params[:response_id]})
-	erb :"responses/response_page", layout: :layout
+	erb :"responses/responses_page", layout: :layout
 	end
+
+get '/response_page' do
+	item = $res.get({_id:params[:response_id]})
+	full_page_card(:"responses/response_page", locals: {data: item})
+	end
+
 
 get '/responses' do
 	if params[:text]
@@ -41,7 +46,6 @@ get '/responses' do
 		return {error: "No such parameter. Please choose from legal parameters location, text, user_id, request_id"}
 		
 	end
-	items = map_responses(items)
 	{items:items}
 end
 

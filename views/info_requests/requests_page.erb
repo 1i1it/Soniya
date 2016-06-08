@@ -1,28 +1,9 @@
 
-
- <%= erb :"other/search_form" %>   
-
-
-
-<!-- Latest compiled and minified CSS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<% if locals[:search] %>
+ <%= erb :"other/search_form" %> 
+ <% end %>  
 
 
-
-<!-- Latest compiled and minified JavaScript -->
-
-<script type="text/javascript">
-$(document).ready(function($) {
-    $(".table-row").click(function() {
-        window.document.location = $(this).data("href");
-    });
-});
-</script>
-<style type="text/css">
-.table-row{
-cursor:pointer;
-}
-</style> 
 
 <div class="container">
 <% requests = locals[:data] || $ir.get_many_limited({}, sort: [{created_at: -1}] )%>
@@ -38,15 +19,13 @@ cursor:pointer;
 
   </thead>
   <tbody>
-  
-  <% requests.each do |request| %>
+
+  	<% requests.each do |request| %>
   		<tr class="table-row" data-href="/request_page?request_id=<%=request['_id']%>">
-    
+  
 	  <% request.each_value do |value| %>
 	  <td> 
-    <!--  <a href="/request_page?request_id=<%=request['_id']%>"> -->
       <%= value || "none" %>
-      <!-- </a> -->
     </td>
       
 	    <% end %>
@@ -56,43 +35,3 @@ cursor:pointer;
   </tbody>
 </table>
 
-
-<p><h1 style="font-family: verdana; color: #b3b3ff;">Post request</h1> </p>
-<form class='form-group' action='/add_new_request' method='post'>
-  <div class='input-group'>
-    <label>Amount</label>
-    <input type="number" name='amount' class='form-control' placeholder="Amount"> 
-  </div>
-  <p><div class='input-group'>
-  <label>Location</label>
-  <input type="text" name='location' class='form-control' placeholder="Location">
-  </div></p>
-
-  <p><div class='input-group'>
-  <input type="text" name='latitude' class='form-control' placeholder="Latitude">
-  </div></p>
-
-  <p><div class='input-group'>
-  <input type="text" name='longitude' class='form-control' placeholder="Longitude">
-  </div></p>
-
-  <p><div class='input-group'>
-    <label>Text</label>
-  <p><textarea rows="9" cols="20" name='text' class='form-control' placeholder="Enter your text here"></textarea>
-  </div></p>
-  <div class="radio">
-  <label><input name='medium' type="radio" value = "Photo">Photo</label>
-</div>
-<div class="radio">
-  <label><input name='medium' type="radio" value = "Video">Video</label>
-</div>
-
-<div class="checkbox">
-  <label><input name="is_private" type="checkbox" value="true">Private</label>
-</div>
-
-  <button class='btn btn-lg btn-raised btn-primary' type='submit'>Send</button>
-  <!-- <input type="submit" value="Submit"> -->
-</form>
-
-</div>

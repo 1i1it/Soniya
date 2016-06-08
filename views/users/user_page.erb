@@ -29,12 +29,24 @@
 <h4 style="font-family: verdana;">My email is <%= user[:email] %> </h4>
 <h4 style="font-family: verdana;">My user_id is <%= user[:_id] %> </h4>
 <h4 style="font-family: verdana;">My name is <%= user[:name] %> </h4>
-<img src=<%=user[:pic_url]%> class="img-rounded" alt="Photo" width="193" height="286">
+<img src=<%=user[:pic_url]%> class="img-rounded" alt="Photo">
 <h4 style="font-family: verdana;">Created at <%= user[:created_at] %> </h4>
 
-<h1 style="font-family: verdana; color: #b3b3ff; ">My requests and responses</h1> 
-<%collections = ["info_requests", "responses"]
-  collections.each do |collection|%>
-  <p> <%=erb :"users/user_resreq", locals: {coll: collection, user_id: user[:_id]} %></p> 
-  <% end %>
+  <% requests = $ir.get_many({user_id:params[:user_id]})%>
+  <% responses = $res.get_many({user_id:params[:user_id]})%>
+  <% flagging = $flags.get_many({flagging_user_id:params[:user_id]})%>
+
+  <% flagged =  $flags.get_many({flagged_user_id:params[:user_id]})%>
+
+  <% if requests%>
+    <p> <%=erb :"info_requests/requests_page", locals: {data: requests } if requests%></p>   
+  <% end%>
+  <p> <%=erb :"responses/responses_page", locals: {data: responses } if responses %></p> 
+  <% if flagging%>
+  <p> <%=erb :"flags/flags", locals: {data: flagging, flagging: true }%></p> 
+  <% end%>
+  <% if flagged%>
+  <p> <%=erb :"flags/flags", locals: {data: flagged, flagged: true} %></p> 
+  <% end%>
+
 

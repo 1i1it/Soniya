@@ -1,3 +1,5 @@
+
+
 <%
   skinny_layout ||= false
 %>
@@ -14,6 +16,27 @@
   
   <link rel="stylesheet" href="/css/main.scss.css">  
   <link rel="stylesheet" href="/css/soniya.css">  
+
+  
+<!-- Latest compiled and minified CSS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+
+<script type="text/javascript">
+$(document).ready(function($) {
+    $(".table-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+});
+</script>
+<style type="text/css">
+.table-row{
+cursor:pointer;
+}
+</style> 
 
 
 </head>

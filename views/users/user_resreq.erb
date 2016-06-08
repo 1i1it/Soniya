@@ -15,7 +15,7 @@
   sort_dir  = params[:sort_dir].to_i == 1 ? 1 : -1
   items     = coll.find(crit).limit(limit).sort([{sort_field => sort_dir}]).to_a 
   fields    = items.map(&:keys).flatten.hash_of_num_occurrences.keys #shared fields to show #hat does fields do?
-%> #???? w
+%> 
 
 <div class='row'>
   
