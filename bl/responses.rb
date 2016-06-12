@@ -2,6 +2,9 @@ $res = $responses = $mongo.collection('responses')
 =begin
 =end
 
+RESPONSES_TABLE_FIELDS = ["_id", "user_id", "text", "request_id", "latitude", 
+	"longitude", "photos_arr", "videos_arr", "created_at"]
+
 def map_responses(items)
 	items.map! do |old|
 	#user = $users.get({_id:old[:user_id]}),
@@ -20,10 +23,38 @@ def map_responses(items)
 	return items
 end
 
+get '/responses/all' do
+	if params[:browser]
+		full_page_card(:"responses/paginated_responses", locals: {
+		page_link: '/response_page?response_id=', 
+		ajax_link: '/responses/ajax', 
+		keys: RESPONSES_TABLE_FIELDS,
+		collection_name: "Responses"})
+	else	
+		{responses: $res.all}
+	end
+end
+
+get '/responses/ajax' do
+	limit = (params[:length] || 10).to_i
+	skip  = (params[:start]  ||  0).to_i
+	col_num = params[:order]["0"]["column"] rescue RESPONSES_TABLE_FIELDS.find_index('created_at')
+	sort_field = RESPONSES_TABLE_FIELDS[col_num.to_i	]
+	sort_dir   = (params[:order]["0"]["dir"] == 'asc' ? 1 : -1) rescue 1
+	data = $responses.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |req| 
+		req.values ||= nil 
+	}
+	res = {
+  "draw": params[:draw].to_i,
+  "recordsTotal": $responses.count,
+  "recordsFiltered": $responses.count,
+  "data": data
+}
+end
+
 get '/responses_page' do
-	user = cu
-	item = $res.get({_id:params[:response_id]})
-	erb :"responses/responses_page", layout: :layout
+	item =  $responses.get_many({}, sort: [{created_at: -1}] ) 
+	full_page_card(:"responses/responses_page", locals: {data: item})
 	end
 
 get '/response_page' do
@@ -49,9 +80,7 @@ get '/responses' do
 	{items:items}
 end
 
-get '/responses/all' do
-	{responses: $res.all}
-end
+
 
 post '/add_new_response' do 
 	# receive request_id and user token
@@ -79,3 +108,5 @@ post '/add_new_response' do
   {response:response} 
 
 end
+
+

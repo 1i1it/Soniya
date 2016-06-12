@@ -82,17 +82,13 @@ get "/request_page" do
 get '/requests_list' do
 	full_page_card(:"other/paginated_requests", locals: {search: true})
 	end
-	
-post '/add_new_request' do 
-	# # get user token from current user 
-	# if !params[:token]
-	# 	return {err:"missing parameter token"}
-	# end
-	user = cu
-	#(return an error if no such user exists).
-	flash.message = 'Please log in to post request' if !user 
 
+post '/add_new_request' do 
+	user = cu
+	#(return an error if no user
+	flash.message = 'Please log in to post request' if !user 
 	require_user
+	
     	request = $ir.add({user_id: user['_id'], 
     				text:params[:text],
   					location:params[:location],

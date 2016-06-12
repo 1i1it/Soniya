@@ -1,6 +1,5 @@
 $ratings = $mongo.collection('ratings')
-=begin
-=end
+
 
 get '/ratings' do
 	if params[:user_id]
@@ -13,13 +12,13 @@ get '/ratings' do
 	end
 	{items:items}
 end
-
+	
 get '/ratings/all' do
 	{ratings: $ratings.all}
 end
 
 
-post '/add_new_rating' do 
+post '/create_rating' do 
 	#DO REQUIRE FIELDS
 	if  !params[:response_id] && !params[:rating]
 		return {err: "missing parameters"}
@@ -38,9 +37,10 @@ post '/add_new_rating' do
 	#if this user already rated this response, change it
 	existing_rating = $ratings.get({user_id:cuid, response_id:params[:response_id], rated_user_id:response["user_id"]})
 	if existing_rating
+
 		$ratings.update_id(existing_rating['_id'], {rating: params[:rating]}) 
 	else
-    rating = $ratings.add({user_id: cuid, 
+    	rating = $ratings.add({user_id: cuid, 
     				rating:params[:rating],
     				response_id:params[:response_id],
   					rated_user_id:response["user_id"]})
@@ -49,3 +49,10 @@ post '/add_new_rating' do
   {rating:rating} 
 
 end
+
+post '/update_rating' do
+	$ratings.update_id(params[:id], {rating: params[:rating]}) 
+  {rating:rating} 
+end 
+
+

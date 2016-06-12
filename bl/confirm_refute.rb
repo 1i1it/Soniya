@@ -19,15 +19,15 @@ def confirm_refute
 	
 end
 
-post '/confirm_refute' do
+post '/add_confirm_refute' do
 	confirm_refute
 end
 
-get '/confirm_refute' do
+get '/add_confirm_refute' do
 	confirm_refute
 end
 
 
-get '/confirm_refute/all' do
+get '/confirm_refutes' do
 	{confirm_refute: $confirm_refute.all}
 end

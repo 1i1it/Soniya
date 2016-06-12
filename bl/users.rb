@@ -7,11 +7,6 @@ def create_user(data)
   $users.add(data)
 end
 
-get "/user_info/:token/:coll1/:coll2" do 
-   #create a /user_info route that receives a user_id and displays an HTML 
-  erb :"users/user_iterate", default_layout
-end 
-
 get "/users" do 
   erb :"users/user_list", default_layout
 end 
@@ -34,7 +29,6 @@ get "/admin/unblock_user" do
 end
 
 get "/fb_enter" do
-
   user = http_get("https://graph.facebook.com/me?fields=name,email,picture&access_token="+params[:token])
   user_hash = JSON.parse(user)
   fb_id = user_hash["id"]
@@ -98,12 +92,6 @@ get "/activity_data" do
   num_actual_paid:0,
   }
   {activity_data:activity_data}
-  # returns of activity_data:
-  # - num_requests_made
-  # - num_responses
-  # - num_requests_marked_as_fulfilled
-  # - num_paid_requests_marked_as_fulfilled
-  # - num_actual_paid
 
 end 
 
