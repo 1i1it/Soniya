@@ -107,7 +107,7 @@ post '/add_new_request' do
 
 end
 
-get '/requests/ajax' do
+post '/requests/ajax' do
 	limit = (params[:length] || 10).to_i
 	skip  = (params[:start]  ||  0).to_i
 	col_num = params[:order]["0"]["column"] rescue REQUESTS_TABLE_FIELDS.find_index('created_at')

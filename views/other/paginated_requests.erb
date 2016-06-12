@@ -38,6 +38,7 @@ $(document).ready(function() {
     $('#pagination_table').DataTable( {
         "processing": true,
         "serverSide": true,
+        "sServerMethod": "post",
         "bFilter": false,
         "sPaginationType": "full_numbers",
         "ajax": "requests/ajax"
