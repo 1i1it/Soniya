@@ -13,11 +13,25 @@ get "/user_info/:token/:coll1/:coll2" do
 end 
 
 get "/users" do 
-  # should show a table (HTML <table>) of all users, and for each user show 
-  # their _id, email, name, created_at. Sort the list by created_at, 
-  # showing newest users on top. 
-  erb :"users/user_details", default_layout
+  erb :"users/user_list", default_layout
 end 
+
+get "/admin/block_user" do
+    halt(404) unless is_admin
+    user = $users.find_one_and_update({_id: params[:user_id]}, {'$set' => {blocked: true}}) 
+    flash.message = "user blocked"
+    redirect back
+
+end
+
+
+get "/admin/unblock_user" do
+    halt(404) unless is_admin
+    user = $users.find_one_and_update({_id: params[:user_id]}, {'$set' => {blocked: false}}) 
+    flash.message = "user unblocked"
+    redirect back
+
+end
 
 get "/fb_enter" do
 
@@ -95,11 +109,12 @@ end
 
 
 get "/user_page" do
-  user_id = cuid || params[:user_id]
+  user_id = params[:user_id] || cuid
+  user =  $users.get(_id: user_id) 
   #receives cuid 
   #Should show a table of their requests, and then a table of their responses 
   #(each will show the major fields - user_id, text, lat & long, etc). 
-  erb :"users/user_page", default_layout
+  full_page_card(:"users/user_page", locals: {data: user})
 end 
 
 

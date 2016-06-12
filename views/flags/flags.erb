@@ -9,7 +9,7 @@
  <% end %>
 
   <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
-  <% keys =  ["_id", "flagging_user_id", "flagged_user_id", "response_id", "created_at"]%>
+  <% keys =  ["_id", "flagging_user_id", "flagged_user_id", "response_id", "request_id", "created_at"]%>
     <thead class='thead-inverse'>
     <% keys.each  do |key| %>
       <td><%= key %> </td>
@@ -20,16 +20,19 @@
 
   	<% flags.each do |flag| %>
     <tr class="table-row" data-href="/flags_page?flag_id=<%=flag['_id']%>">
-	  <% flag.each_value do |value| %>
-	  <td> 
-    <!--  <a href="/request_page?request_id=<%=request['_id']%>"> -->
-      <%= value || "none" %>
-      <!-- </a> -->
-    </td>
+	      <% keys.each do |key| %>
+      <% if key == "response_id" && flag[key]%>
+        <td> <a href="/response_page?response_id=<%=flag[key]%>"><%= flag[key] || "none" %></a></td>
+      <% elsif key == "request_id" && flag[key]%>
+      <td> <a href="/request_page?request_id=<%=flag[key]%>"><%= flag[key] || "none" %></a></td>
+
+      <% else%>
+      <td><%= flag[key] || "none" %></td>
+      <% end %>
       
-	    <% end %>
-	  </tr>
-	  
+	  <% end %>
+    </tr>
   <% end %>
   </tbody>
 </table>
+

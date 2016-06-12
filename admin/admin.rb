@@ -4,6 +4,11 @@ get '/admin' do
   to_page(:"admin/dashboard")
 end
 
+get '/admin/api_spec' do
+  erb :"admin/api_spec", default_layout
+end
+
+
 get "/admin/manage/:coll" do 
   erb :"admin/items", default_layout
 end 

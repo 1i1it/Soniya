@@ -25,12 +25,22 @@
 </script>
 
 <h2 style="font-family: verdana;">About me</h2>
-<% user =  cu || $users.get(_id: params[:user_id])%>
-<h4 style="font-family: verdana;">My email is <%= user[:email] %> </h4>
-<h4 style="font-family: verdana;">My user_id is <%= user[:_id] %> </h4>
-<h4 style="font-family: verdana;">My name is <%= user[:name] %> </h4>
+<% user =  locals[:data]%>
+
+<h4 style="font-family: verdana;">My email is <%= user["email"] %> </h4>
+<h4 style="font-family: verdana;">My user_id is <%= user["_id"] %> </h4>
+<h4 style="font-family: verdana;">My name is <%= user["name"] %> </h4>
 <img src=<%=user[:pic_url]%> class="img-rounded" alt="Photo">
-<h4 style="font-family: verdana;">Created at <%= user[:created_at] %> </h4>
+<h4 style="font-family: verdana;">Created at <%= user["created_at"] %> </h4>
+
+<% if user["blocked"]%>
+    <% block_text = "Unblock user"%>
+    <% block_route = "unblock_user"%> 
+<% else%>
+    <%  block_text = "Block user"%>
+    <% block_route = "block_user"%> 
+<% end%> 
+<a href="/admin/<%=block_route%>?user_id=<%=user["_id"]%>"> <button type="button" class="btn btn-raised btn-primary btn-lg"><%=block_text%></button></a> 
 
   <% requests = $ir.get_many({user_id:params[:user_id]})%>
   <% responses = $res.get_many({user_id:params[:user_id]})%>

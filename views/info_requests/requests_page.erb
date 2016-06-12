@@ -1,12 +1,12 @@
 
-<% if locals[:search] %>
+<% if locals[:search]%>
  <%= erb :"other/search_form" %> 
  <% end %>  
 
 
 
 <div class="container">
-<% requests = locals[:data] || $ir.get_many_limited({}, sort: [{created_at: -1}] )%>
+<% requests = locals[:data] || $ir.get_many_limited({}, sort: [{created_at: -1}] ) %>
  <h2> List of requests </h2>
 
   <table class='table table-striped table-bordered table-hover table-sm table-responsive' >

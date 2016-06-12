@@ -8,7 +8,7 @@
                         <div class="dropdown dropdown-lg">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
                             <div class="dropdown-menu dropdown-menu-right" role="menu">
-                                <form class="form-horizontal" role="search" method="get" action="/requests">
+                                <form class="form-horizontal" role="search" method="get" action="/requests?search=true">
 
 
                                   <div class="form-group">
@@ -21,7 +21,7 @@
                                     </select>
                                   </div>
                                   <div class="form-group">
-                                    <label for="contain">Contains the words</label>
+                                    <label for="contain">Enter value</label>
                                     <input class="form-control" type="text" name="search_value"/>
                                   </div>
                                   <button type="submit" class="btn btn-primary">Go!</button>
@@ -31,9 +31,10 @@
                         <button type="button" class="btn btn-primary">Go!</button>
                     </div>
                 </div>
-            </div>
-          </div>
+            </div> 
+    </div>  
 
+          <div class="col-md-6">
           <div class="input-group" id="adv-search">
                 <input type="text" class="form-control" placeholder="Find requests by location" />
                 <div class="input-group-btn">
@@ -62,9 +63,5 @@
                 </div>
             </div>
           </div>
-
-
-        </div>
-	</div>
-</div>
-
+      </div> 
+	</div><!-- closing container -->

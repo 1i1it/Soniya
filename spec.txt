@@ -110,7 +110,7 @@ posts params from * Responses collection(mandatory and optional)). returns added
 - /confirm_payment 
  - expects payment identifier (string), returns hash indicating confirmed payment status 
 
- * Flags  ====missing====
+ * Flags
 -/flag_user (expects  cuid, flagged_user_id, request_id/response_id, returns new object flag added)
 -/unflag_user (expects  cuid, flagged_user_id, request_id/response_id, returns - flag removed)
 -/flags (expects one or more of the following: flagging_user_id, flagged_user_id, request_id/response_id, returns found objects)
@@ -125,10 +125,10 @@ also "you were blocked" when trying to sign in
 * Other
 - contact_us (recieves submitted form data, saves it to database)
 
-Create token for every user upon creation (take it from creating email) ====missing====
+Create token for every user upon creation
 
 Admin:
 100 requests+ paging (next = +100) ====missing====
-Do intuitiveadmin page, with users, responses, requests, payments that are clickable and lead to relevant response/request pagesb====missing====
+Do admin page, with users, responses, requests,  that are clickable and lead to relevant response/request page
 
 ====missing==== need to make some params optional/mandatory? or we do it in client? 

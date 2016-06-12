@@ -11,19 +11,31 @@ $flags = $mongo.collection('flags')
 =end
 
 get '/flag_user' do
+	require_user
 	 #(expects  cuid, flagged_user_id, request_id/response_id, returns new object flag added)
 	if params[:response_id]
 		response = $res.get(_id:params[:response_id])
-		flag = $flags.add({flagging_user_id: cuid, flagged_user_id: response[:user_id], response_id: params[:response_id]})
+		existing_flag = $flags.get({flagging_user_id: cuid, flagged_user_id: response[:user_id], response_id: params[:response_id]}) 
+		if !existing_flag
+			flag = $flags.add({flagging_user_id: cuid, flagged_user_id: response[:user_id], response_id: params[:response_id]}) 
+		else
+			return {msg: "flag exists"}
+		end	
 	elsif params[:request_id]
 		request = $ir.get(_id:params[:request_id])
-		flag = $flags.add({flagging_user_id: cuid, flagged_user_id: request[:user_id], request_id: params[:request_id]})
+		existing_flag = $flags.get({flagging_user_id: cuid, flagged_user_id: request[:user_id], request_id: params[:request_id]}) 
+		if !existing_flag
+			flag = $flags.add({flagging_user_id: cuid, flagged_user_id: request[:user_id], request_id: params[:request_id]})
+		else
+			return {msg: "flag exists"}
+		end	
 	end
 	{flag:flag}
 	
 end
 
 get '/unflag_user' do
+	require_user
 	if params[:response_id]
 		response = $res.get(_id:params[:response_id])
 		 $flags.delete_one({flagging_user_id: cuid, flagged_user_id: response[:user_id], response_id: params[:response_id]})

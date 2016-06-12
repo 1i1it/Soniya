@@ -25,6 +25,7 @@ cursor:pointer;
     <td> email </td>
     <td> name </td>
     <td> created </td>
+    <td> blocked </td>
   </thead>
   <tbody>
   <% users = $users.get_many_limited({}, sort: [{created_at: -1}] )%>
@@ -34,6 +35,7 @@ cursor:pointer;
     <td> <%= user['email'] %> </td>
     <td> <%= user['name'] %> </td>
     <td> <%= user['created_at'] %> </td>
+    <td> <%= user['blocked'] %> </td>
   </tr>
   <% end %>
   </tbody>

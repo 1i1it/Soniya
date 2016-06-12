@@ -2,10 +2,14 @@ $ir = $info_requests = $mongo.collection('info_requests')
 =begin
 =end
 
+PAGE_SIZE = 2
 LOCATION_CHANGE = 0.01
 QUERY_LIMIT = 100
+REQUESTS_TABLE_FIELDS = ["_id", "user_id", "text", "location", "medium", "amount", "latitude", "longitude", "status", "is_private", "created_at", "paypal_pay_key", "updated_at", "paid"]
+
 
 get '/pay' do #?receives id=123
+	require_user
     info_request = $ir.get(params[:id])
     #info_request = {_id: $ir.get(params[:id])[_id], amount:456} 
     res = build_paypal_payment_page(info_request) #???? but it has to get amount as well?
@@ -13,11 +17,12 @@ get '/pay' do #?receives id=123
     redirect res[:url]
 end
 
+
+
 get '/paypal_confirm' do #?receives request_id=123
+	require_user
      ir = $ir.get(params[:request_id])
-     #bp
      pay_key = ir['paypal_pay_key']
-     #paypal_data = get_paypal_payment_details(payment['paypal_pay_key'])
      paypal_data = get_paypal_payment_details(pay_key)
      if paypal_data[:confirmed_paid]
      	$ir.update_id(params[:request_id], paid:true) 
@@ -55,8 +60,10 @@ end
 
 
 get '/requests_page' do
+
 	user = cu
-	data = $ir.get_many_limited({}, sort: [{created_at: -1}] )	
+	page_num = (params[:page_num] || 0).to_i
+	data = $ir.get_many_limited({}, sort: [{created_at: -1}])	
 	full_page_card(:"info_requests/requests_page", locals: {data: data, search: true})
 	end
 
@@ -72,6 +79,10 @@ get "/request_page" do
 	full_page_card(:"info_requests/request_page", locals: {request: request, responses: responses})
 	end
 
+get '/requests_list' do
+	full_page_card(:"other/paginated_requests", locals: {search: true})
+	end
+	
 post '/add_new_request' do 
 	# # get user token from current user 
 	# if !params[:token]
@@ -81,7 +92,7 @@ post '/add_new_request' do
 	#(return an error if no such user exists).
 	flash.message = 'Please log in to post request' if !user 
 
-	#return {err:"no such user"} if !user 
+	require_user
     	request = $ir.add({user_id: user['_id'], 
     				text:params[:text],
   					location:params[:location],
@@ -96,10 +107,27 @@ post '/add_new_request' do
 
 end
 
-
-
+get '/requests/ajax' do
+	limit = (params[:length] || 10).to_i
+	skip  = (params[:start]  ||  0).to_i
+	col_num = params[:order]["0"]["column"] rescue REQUESTS_TABLE_FIELDS.find_index('created_at')
+	sort_field = REQUESTS_TABLE_FIELDS[col_num.to_i	]
+	sort_dir   = (params[:order]["0"]["dir"] == 'asc' ? 1 : -1) rescue 1
+	data = $ir.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |req| 
+		req['paypal_pay_key'] ||= nil
+		req['updated_at']     ||= nil
+		req['paid']           ||= nil 
+		req.values 
+	}
+	res = {
+  "draw": params[:draw].to_i,
+  "recordsTotal": $ir.count,
+  "recordsFiltered": $ir.count,
+  "data": data
+}
+end
+		
 get '/requests' do
-	#search_field = params[:search_field]
 	params[params[:search_field]] = params[:search_value]
 	if params[:text]
 		items = $ir.search_by("text", params[:text])
