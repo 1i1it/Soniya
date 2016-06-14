@@ -1,14 +1,12 @@
 $res = $responses = $mongo.collection('responses')
-=begin
-=end
 
 RESPONSES_TABLE_FIELDS = ["_id", "user_id", "text", "request_id", "latitude", 
-	"longitude", "photos_arr", "videos_arr", "created_at"]
+	"longitude", "photos_arr", "videos_arr", "created_at", "updated_at"]
+
+MAX_RESPONSES_PER_REQUEST = 4
 
 def map_responses(items)
 	items.map! do |old|
-	#user = $users.get({_id:old[:user_id]}),
-
 	  new_request = {
 	  	description: old[:text],
 	  	user_name:$users.get({_id:old[:user_id]})[:name], 
@@ -25,7 +23,7 @@ end
 
 get '/responses/all' do
 	if params[:browser]
-		full_page_card(:"responses/paginated_responses", locals: {
+		full_page_card(:"other/paginated_form", locals: {
 		page_link: '/response_page?response_id=', 
 		ajax_link: '/responses/ajax', 
 		keys: RESPONSES_TABLE_FIELDS,
@@ -35,13 +33,14 @@ get '/responses/all' do
 	end
 end
 
-get '/responses/ajax' do
+post '/responses/ajax' do
 	limit = (params[:length] || 10).to_i
 	skip  = (params[:start]  ||  0).to_i
 	col_num = params[:order]["0"]["column"] rescue RESPONSES_TABLE_FIELDS.find_index('created_at')
 	sort_field = RESPONSES_TABLE_FIELDS[col_num.to_i	]
 	sort_dir   = (params[:order]["0"]["dir"] == 'asc' ? 1 : -1) rescue 1
 	data = $responses.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |req| 
+		req['updated_at']     ||= nil
 		req.values ||= nil 
 	}
 	res = {
@@ -52,15 +51,13 @@ get '/responses/ajax' do
 }
 end
 
-get '/responses_page' do
-	item =  $responses.get_many({}, sort: [{created_at: -1}] ) 
-	full_page_card(:"responses/responses_page", locals: {data: item})
-	end
 
 get '/response_page' do
-	item = $res.get({_id:params[:response_id]})
-	full_page_card(:"responses/response_page", locals: {data: item})
-	end
+	full_page_card(:"other/collection_page", locals: {
+		data: $res.get({_id:params[:response_id]}),  
+		keys: RESPONSES_TABLE_FIELDS,
+		collection_name: "Responses"})
+end
 
 
 get '/responses' do
@@ -82,8 +79,7 @@ end
 
 
 
-post '/add_new_response' do 
-	# receive request_id and user token
+post '/create_response' do 
 
 	if !params[:request_id]
 		return {err: "missing parameters"}
@@ -94,8 +90,8 @@ post '/add_new_response' do
 	return {err:"no such request"} if !request
 
 	# Max 4 responses per requests
-	if $res.count({request_id:params[:request_id]}) > 14
-		halt_bad_input(msg:"Sorry, you can't add more than 4 responses")
+	if $res.count({request_id:params[:request_id]}) > MAX_RESPONSES_PER_REQUEST-1
+		halt_bad_input(msg:"you can't add more than" + MAX_RESPONSES_PER_REQUEST.to_s + " responses")
 	end
     response = $res.add({user_id: cuid, 
     				text: params['text'],
@@ -107,6 +103,16 @@ post '/add_new_response' do
 
   {response:response} 
 
+end
+
+get '/edit_response' do
+	response = $responses.update_id(params[:response_id], params) 
+	{response: response}
+end
+
+get '/delete_response' do
+	response = $responses.delete_one(_id: params[:response_id])
+	{msg: "response removed"}
 end
 
 

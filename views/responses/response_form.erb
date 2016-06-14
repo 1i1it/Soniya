@@ -1,0 +1,38 @@
+
+<h1 style="font-family: verdana; color: #b3b3ff;">Post response</h1> 
+<form class='form-group' action='/add_new_response' method='post'>
+  <div class='input-group'>
+  <label>Location</label>
+  <input type="text" name='location' class='form-control' placeholder="Location">
+  </div></p>
+  <p><div class='input-group'>
+  <label>Photos</label>
+  <input type="text" name='photos_arr' class='form-control' placeholder="Photos">
+  </div></p>
+  <p><div class='input-group'>
+  <label>Videos</label>
+  <input type="text" name='videos_arr' class='form-control' placeholder="Videos">
+  </div></p>
+
+  <p><div class='input-group'>
+  <input type="text" name='latitude' class='form-control' placeholder="Latitude">
+  </div></p>
+
+  <p><div class='input-group'>
+  <input type="text" name='longitude' class='form-control' placeholder="Longitude">
+  </div></p>
+
+  <p><div class='input-group'>
+    <label>Text</label>
+  <p><textarea rows="9" cols="20" name='text' class='form-control' placeholder="Enter your text here"></textarea>
+  </div></p>
+
+  <input type="hidden" name='request_id' value="<%=params[:request_id]%>" class='form-control' >
+
+
+  <button class='btn btn-lg btn-raised btn-primary' type='submit'>Send</button>
+  <!-- <input type="submit" value="Submit"> -->
+</form>
+
+</body>
+</html>

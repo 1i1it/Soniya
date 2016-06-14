@@ -1,5 +1,6 @@
 
 <h2>Routes</h2>
+
 <div><pre> <b>Users</b>
 - /login (with FB) (expects fb token, return user + flag if is new user)
 - /user_data (expects user_id, returns a hash with email, name, pic_url, paypal
@@ -14,26 +15,28 @@ returns of activity_data:
   - average rating
 
 * <b>Info Requests</b>
-- /add_request (expects user_id (current user), 
+- /create_request (expects user_id (current user), 
 posts params from Info Requests collection(mandatory and optional))
 returns added object .
-- /get_requests  (will show of different types by imput param (e.g logitude and latitude will return local requests)
+- /requests  (will show of different types by imput param (e.g logitude and latitude will return local requests)
   - expects one of the following as criteria: _id, user_id, text, lat & long, amount, responder_id
   - returns an array of requests
     - each request has all data necessary to display 
   
 * <b>Responses </b>
-- /add_response (expects user_id (current user), 
+- /create_response (expects user_id (current user), 
 posts params from * Responses collection(mandatory and optional)). returns added object 
-- /get_responses
+- /responses
   - expects one of the following as criteria: _id, user_id, request_id, text
   - returns an array of responses
     - each response has all data necessary to display it 
+
+ * <b>Confrims and Refutes </b>   
 - /confirm_refute (confirm or refute response)
 (expects user_id, id of response and action (confirm/refute), returns added object 
 
 * <b>Ratings </b>
-- /add_rating (expects rated_user_id, rating(1 to 5), response_id). returns added object 
+- /create_ating (expects rated_user_id, rating(1 to 5), response_id). returns added object 
 - get_ratings 
   - expects user_id or rated_user_id
   - returns an array of rating objects
@@ -50,9 +53,10 @@ posts params from * Responses collection(mandatory and optional)). returns added
 -/flags (expects one or more of the following: flagging_user_id, flagged_user_id, request_id/response_id, returns found objects)
 
  * <b>Comments</b>
--/add_comment (expects user_id, response_id; returns object comment)
+-/create_comment (expects user_id, response_id; returns object comment)
 -/remove comment (expects user_id, comment_id; returns "comment removed")
 -/edit_comment (expects user_id, comment_id; returns object comment)
+-/comments
 
  
  * <b>Admin </b>

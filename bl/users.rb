@@ -1,6 +1,39 @@
 $users = $mongo.collection('users')
 
 MANAGEABLE_COLLECTIONS = [:users,:errors,:site_log,:requests, :info_requests].map {|n| $mongo.collection(n) }
+USERS_TABLE_FIELDS = ["_id", "email", "pic_url", "fb_id", "name", "token", "created_at", "updated_at"]
+
+get '/users/all' do
+  if params[:browser]
+    full_page_card(:"other/paginated_form", locals: {
+    page_link: '/user_page?user_id=', 
+    ajax_link: '/users/ajax', 
+    keys: USERS_TABLE_FIELDS,
+    collection_name: "Users"})
+  else  
+    {users: $users.all}
+  end
+end
+
+post '/users/ajax' do
+  limit = (params[:length] || 10).to_i
+  skip  = (params[:start]  ||  0).to_i
+  col_num = params[:order]["0"]["column"] rescue USERS_TABLE_FIELDS.find_index('created_at')
+  sort_field = USERS_TABLE_FIELDS[col_num.to_i ]
+  sort_dir   = (params[:order]["0"]["dir"] == 'asc' ? 1 : -1) rescue 1
+  data = $users.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |req| 
+    req['updated_at']     ||= nil
+    req['blocked']     ||= nil
+    req['pic_url']     ||= nil
+    req.values ||= nil 
+  }
+  res = {
+  "draw": params[:draw].to_i,
+  "recordsTotal": $users.count,
+  "recordsFiltered": $users.count,
+  "data": data
+}
+end
 
 def create_user(data)
   data[:token] = SecureRandom.uuid
@@ -114,56 +147,9 @@ get '/login' do
   erb :"users/login", layout: :layout 
 end
 
-post '/login' do
-  email, password = params[:email], params[:password]
-  if $users.exists?(email: email)
-    user = $users.get(email: email)
-    if BCrypt::Password.new(user['hashed_pass']) == password      
-      session[:user_id] = user[:_id]     
-      log_event('logged in') 
-      redirect '/' 
-    else
-      flash.message = 'Wrong password.'
-
-      # ADD warning message
-      redirect back
-    end
-  else
-     flash.message = 'No such email.' 
-     redirect back
-  end  
-end
-
-get '/register' do
-  erb :"users/register", layout: :layout
-end
-
-post '/register' do
-  email, password = params[:email], params[:password]
-  if $users.exists?(email: email)
-    flash.message = 'Email already taken.'
-    redirect back
-  else 
-    user = create_user(email: email, hashed_pass: BCrypt::Password.create(password))
-    session[:user_id] = user[:_id]     
-    log_event('registered')
-    redirect '/' 
-  end
-end
-
-get '/enterByCode' do #??
-  user = $users.get(code: params[:code])
-  if user 
-    session[:user_id] = user[:_id]
-  else 
-    flash.message = 'No patient found with that code.'
-  end
-  
-  redirect back
-end
 
 get '/logout' do
   log_event('logged out')
   session.clear
-  redirect '/'
+  redirect '/login'
 end

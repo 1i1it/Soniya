@@ -58,14 +58,14 @@ def map_requests(items)
 end
 
 
-
-get '/requests_page' do
-
-	user = cu
-	page_num = (params[:page_num] || 0).to_i
-	data = $ir.get_many_limited({}, sort: [{created_at: -1}])	
-	full_page_card(:"info_requests/requests_page", locals: {data: data, search: true})
+get '/requests_all' do
+	if params[:browser]
+		full_page_card(:"other/paginated_requests", locals: {search: true})
+	else
+		{requests: $ir.all}
 	end
+end
+
 
 get "/request_page" do
 	if params[:search_field] && params[:search_field] == "request_id"
@@ -79,9 +79,7 @@ get "/request_page" do
 	full_page_card(:"info_requests/request_page", locals: {request: request, responses: responses})
 	end
 
-get '/requests_list' do
-	full_page_card(:"other/paginated_requests", locals: {search: true})
-	end
+
 
 post '/add_new_request' do 
 	user = cu
@@ -103,7 +101,7 @@ post '/add_new_request' do
 
 end
 
-get '/requests/ajax' do
+post '/requests/ajax' do
 	limit = (params[:length] || 10).to_i
 	skip  = (params[:start]  ||  0).to_i
 	col_num = params[:order]["0"]["column"] rescue REQUESTS_TABLE_FIELDS.find_index('created_at')
@@ -203,8 +201,5 @@ get '/requests/info' do
 	{num: $ir.count}
 end
 
-get '/requests/all' do
-	{requests: $ir.all}
-end
 
 

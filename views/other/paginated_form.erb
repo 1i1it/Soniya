@@ -32,6 +32,7 @@ $(document).ready(function() {
     $('#pagination_table').DataTable( {
         "processing": true,
         "serverSide": true,
+        "sServerMethod": "post",
         "bFilter": false,
         "sPaginationType": "full_numbers",
         "ajax": "<%= locals[:ajax_link]%>"
@@ -39,7 +40,7 @@ $(document).ready(function() {
 
     $('#pagination_table').on( 'click', 'tbody tr', function () {
       var hash_id = $(this).find('td').first().text()
-      var newLocation = "<%= locals[:page_link]%>" + hash_id;  //'/response_page?response_id='
+      var newLocation = "<%= locals[:page_link]%>" + hash_id; 
       window.location.href = newLocation;
 } );
 

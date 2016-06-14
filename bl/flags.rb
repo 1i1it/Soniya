@@ -1,15 +1,36 @@
 $flags = $mongo.collection('flags')
 
-=begin
-- flagging_user_id (cuid)
-- flagged_user_id
-- request_id/response_id 
+FLAGS_TABLE_FIELDS = ["_id", "flagging_user_id", "flagged_user_id", "response_id", "created_at"]
 
--/flag_user (expects  cuid, flagged_user_id, request_id/response_id, returns new object flag added)
--/unflag_user (expects  cuid, flagged_user_id, request_id/response_id, returns - flag removed)
--/flags (expects one or more of the following: flagging_user_id, flagged_user_id, request_id/response_id, returns found objects)
-=end
+get '/flags/all' do
+	if params[:browser]
+		full_page_card(:"other/paginated_form", locals: {
+		page_link: '/flags_page?flag_id=', 
+		ajax_link: '/flags/ajax', 
+		keys: FLAGS_TABLE_FIELDS,
+		collection_name: "flags"})
+	else	
+		{flags: $flags.all}
+	end
+end
 
+post '/flags/ajax' do
+	limit = (params[:length] || 10).to_i
+	skip  = (params[:start]  ||  0).to_i
+	col_num = params[:order]["0"]["column"] rescue FLAGS_TABLE_FIELDS.find_index('created_at')
+	sort_field = FLAGS_TABLE_FIELDS[col_num.to_i	]
+	sort_dir   = (params[:order]["0"]["dir"] == 'asc' ? 1 : -1) rescue 1
+	data = $flags.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |req| 
+		req['updated_at']     ||= nil
+		req.values ||= nil 
+	}
+	res = {
+  "draw": params[:draw].to_i,
+  "recordsTotal": $flags.count,
+  "recordsFiltered": $flags.count,
+  "data": data
+}
+end
 get '/flag_user' do
 	require_user
 	 #(expects  cuid, flagged_user_id, request_id/response_id, returns new object flag added)
@@ -48,10 +69,6 @@ get '/unflag_user' do
 	{msg:"flag deleted"}
 end
 
-get '/flags' do
-
-	{flags:$flags.all}
-end
 
 get '/flags_page' do
 	if params[:flagged_user_id]
@@ -61,7 +78,7 @@ get '/flags_page' do
 	elsif params[:flag_id]
 		item = $flags.get_many_limited({_id:params[:flag_id]})
 	else		
-		item = $flags.get_many_limited({}, sort: [{created_at: -1}] )
+		{msg: "params missing"} 
 	
 	end
 	full_page_card(:"flags/flags", locals: {data: item})

@@ -1,5 +1,3 @@
-
-<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
@@ -16,7 +14,7 @@ cursor:pointer;
 </style>  
 <h2> Request </h2>
    <%item =  locals[:request] || $ir.get({_id:params[:request_id]})%>
-   <%keys = ["_id", "user_id", "text", "location", "medium", "amount", "latitude", "longitude", "status", "is_private", "created_at", "paypal_pay_key", "updated_at", "paid"]%>
+   <%keys = REQUESTS_TABLE_FIELDS%>
   <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
     <thead class='thead-inverse'>
 
@@ -50,10 +48,9 @@ cursor:pointer;
   <h2> Responses </h2>
   <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
   <% responses = locals[:responses] ||  $res.get_many_limited({request_id:params[:request_id]}, sort: [{created_at: -1}] )%>
-  <% responses = map_responses(responses)%>
     <thead class='thead-inverse'>
-    <% response = responses.last || {} %>
-    <% response.each_key do |key| %>
+    <% response_keys = RESPONSES_TABLE_FIELDS %>
+    <% response_keys.each  do |key| %>
       <td><%= key %> </td>
     <% end %>
 
@@ -61,7 +58,7 @@ cursor:pointer;
   <tbody>
   
   <% responses.each do |response| %>
-  		<tr class="table-row" data-href="/responses?response_id=<%=response['_id']%>">
+  		<tr class="table-row" data-href="/response_page?response_id=<%=response['_id']%>">
 
 	  <% response.each_value do |value| %>
 	  <td> <%= value %></td>
@@ -73,41 +70,3 @@ cursor:pointer;
   </tbody>
 </table>
 
-
-<h1 style="font-family: verdana; color: #b3b3ff;">Post response</h1> 
-<form class='form-group' action='/add_new_response' method='post'>
-  <div class='input-group'>
-  <label>Location</label>
-  <input type="text" name='location' class='form-control' placeholder="Location">
-  </div></p>
-  <p><div class='input-group'>
-  <label>Photos</label>
-  <input type="text" name='photos_arr' class='form-control' placeholder="Photos">
-  </div></p>
-  <p><div class='input-group'>
-  <label>Videos</label>
-  <input type="text" name='videos_arr' class='form-control' placeholder="Videos">
-  </div></p>
-
-  <p><div class='input-group'>
-  <input type="text" name='latitude' class='form-control' placeholder="Latitude">
-  </div></p>
-
-  <p><div class='input-group'>
-  <input type="text" name='longitude' class='form-control' placeholder="Longitude">
-  </div></p>
-
-  <p><div class='input-group'>
-    <label>Text</label>
-  <p><textarea rows="9" cols="20" name='text' class='form-control' placeholder="Enter your text here"></textarea>
-  </div></p>
-
-  <input type="hidden" name='request_id' value="<%=params[:request_id]%>" class='form-control' >
-
-
-  <button class='btn btn-lg btn-raised btn-primary' type='submit'>Send</button>
-  <!-- <input type="submit" value="Submit"> -->
-</form>
-
-</body>
-</html>

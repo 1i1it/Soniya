@@ -1,49 +1,25 @@
 
-<%keys = ["_id", "user_id", "text", "request_id", "latitude", "longitude", "photos_arr", "videos_arr", "created_at"]%>
-<!-- CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"> 
-<div style="overflow-x: scroll;">
-<table id="pagination_table" class="table table-striped table-bordered table-hover table-sm table-responsive'" cellspacing="0" width="100%">
+ <h2> Responses </h2>
+  <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
+  <% responses = locals[:data] || $res.get_many_limited({}, sort: [{created_at: -1}] )%>
+    <thead class='thead-inverse'>
+    <% response = responses.last %>
+    <% response.each_key do |key| %>
+      <td><%= key %> </td>
+    <% end %>
 
- <h2> List of responses </h2>
+  </thead>
+  <tbody>
+  
+  <% responses.each do |response| %>
+      <tr class="table-row" data-href="/response_page?response_id=<%=response['_id']%>">
 
-        <thead>
-            <tr>
-                <% keys.each  do |key| %>
-                <td><%= key %> </td>
-                <% end %>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <%keys.each  do |key| %>
-                <td><%= key %> </td>
-                <% end %>
-            </tr>
-        </tfoot>
-        </table>   
-      <div class="col-md-12 text-center">
-      <ul class="pagination pagination-lg pager" id="myPager"></ul>
-      </div>
-      </div>
+    <% response.each_value do |value| %>
+    <td> <%= value %></td>
 
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#pagination_table').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "bFilter": false,
-        "sPaginationType": "full_numbers",
-        "ajax": "requests/ajax"
-    } );
-
-    $('#pagination_table').on( 'click', 'tbody tr', function () {
-      var requestId = $(this).find('td').first().text()
-      var newLocation = '/request_page?request_id=' + requestId;
-      window.location.href = newLocation;
-} );
-
-} );
-
-
-</script>
+      <% end %>
+    </tr>
+    
+  <% end %>
+  </tbody>
+</table>
