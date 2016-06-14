@@ -1,0 +1,23 @@
+
+<% hash = locals[:data]%>
+
+ <h2> <%=locals[:collection_name]%></h2>
+
+  <table class='table table-striped table-bordered table-hover table-sm table-responsive' >
+    <thead class='thead-inverse'>
+    <% locals[:keys].each  do |key| %>
+      <td><%= key %> </td>
+    <% end %>
+
+  </thead>
+  <tbody>
+
+  <tr class="table-row" data-href="/redirect">
+    <% hash.each_value do |value| %>
+    <td> <%= value || nil%></td>
+
+      <% end %>
+    </tr>
+    
+  </tbody>
+</table>

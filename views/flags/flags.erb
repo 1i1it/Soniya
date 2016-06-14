@@ -1,9 +1,9 @@
 
 <% flags = locals[:data] || $flags.get_many_limited({}, sort: [{created_at: -1}] )%>
 <% if locals[:flagged]%>
-<h2> Flagged </h2>
+<h2> Requests/responses user set flags on for</h2>
 <% elsif locals[:flagging] %>
-<h2> Flagging</h2>
+<h2> Requests/responses user is flagged for </h2>
 <% else %>
  <h2> Flags</h2>
  <% end %>

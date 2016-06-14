@@ -26,7 +26,7 @@ require_all './mw'
 
 include Helpers
 
-$app_name   = 'Android rules!'
+$app_name   = 'Soniya/Raven'
 
 get '/ping' do
   {msg: "pong from #{$app_name}", val: 123}
@@ -66,6 +66,10 @@ get '/webhook' do
   handle_msg  
 end
 
+get '/redirect' do
+  redirect back  
+end
+
 post '/webhook' do
   handle_msg
 end
@@ -74,8 +78,7 @@ get '/' do
   #flash.message = "hello this is a flash"
   #render_home_page  
   #bp
-  redirect '/admin'
-  {msg: 'pauzzitive home'}
+  redirect '/about'
 end
 
 get '/ko' do

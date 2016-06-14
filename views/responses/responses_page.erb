@@ -12,14 +12,14 @@
   <tbody>
   
   <% responses.each do |response| %>
-  		<tr class="table-row" data-href="/response_page?response_id=<%=response['_id']%>">
+      <tr class="table-row" data-href="/response_page?response_id=<%=response['_id']%>">
 
-	  <% response.each_value do |value| %>
-	  <td> <%= value %></td>
+    <% response.each_value do |value| %>
+    <td> <%= value %></td>
 
-	    <% end %>
-	  </tr>
-	  
+      <% end %>
+    </tr>
+    
   <% end %>
   </tbody>
 </table>

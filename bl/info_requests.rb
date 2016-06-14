@@ -58,14 +58,14 @@ def map_requests(items)
 end
 
 
-
-get '/requests_page' do
-
-	user = cu
-	page_num = (params[:page_num] || 0).to_i
-	data = $ir.get_many_limited({}, sort: [{created_at: -1}])	
-	full_page_card(:"info_requests/requests_page", locals: {data: data, search: true})
+get '/requests_all' do
+	if params[:browser]
+		full_page_card(:"other/paginated_requests", locals: {search: true})
+	else
+		{requests: $ir.all}
 	end
+end
+
 
 get "/request_page" do
 	if params[:search_field] && params[:search_field] == "request_id"
@@ -79,20 +79,14 @@ get "/request_page" do
 	full_page_card(:"info_requests/request_page", locals: {request: request, responses: responses})
 	end
 
-get '/requests_list' do
-	full_page_card(:"other/paginated_requests", locals: {search: true})
-	end
-	
-post '/add_new_request' do 
-	# # get user token from current user 
-	# if !params[:token]
-	# 	return {err:"missing parameter token"}
-	# end
-	user = cu
-	#(return an error if no such user exists).
-	flash.message = 'Please log in to post request' if !user 
 
+
+post '/add_new_request' do 
+	user = cu
+	#(return an error if no user
+	flash.message = 'Please log in to post request' if !user 
 	require_user
+	
     	request = $ir.add({user_id: user['_id'], 
     				text:params[:text],
   					location:params[:location],
@@ -207,8 +201,5 @@ get '/requests/info' do
 	{num: $ir.count}
 end
 
-get '/requests/all' do
-	{requests: $ir.all}
-end
 
 

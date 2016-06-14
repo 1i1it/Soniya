@@ -1,5 +1,5 @@
-<h1>Login</h1>
-<button class='btn btn-lg btn-raised btn-success' onclick='doFBLogin()'>Login With Facebook</button>
+<p><h1>Login</h1>
+<button class='btn btn-lg btn-raised btn-success' onclick='doFBLogin()'>Login With Facebook</button></p>
 
 <form class='form-group noDisplay' action='/login' method='post'>
   <div class='input-group'>
@@ -96,11 +96,13 @@
   }
 
   doFBLogin = function() {  
-	  FB.getLoginStatus(function(response) {
+  
+	  //FB.getLoginStatus(function(response) {
+      FB.login(function(response) {
 	  	if (response.status === 'connected') {
 	    console.log(response.authResponse.accessToken);
 	    var user_token = response.authResponse.accessToken;
-	    document.location = '/fb_enter?token='+user_token;
+	    document.location = '/fb_enter?token='+ user_token +'&browser=true';
 	    //document.cookie = "cl=" + user_token";";
 	  }
 	    statusChangeCallback(response);

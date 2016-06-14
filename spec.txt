@@ -51,7 +51,7 @@ or
 - confirmed_paid_at
 - transaction_id 
 
-* Flags ====missing====
+* Flags 
 - flagging_user_id
 - flagged_user_id
 - request_id/response_id 
@@ -61,6 +61,10 @@ or
 - user_id
 - action (confirm/refute/null)
 
+* Comments
+- response_id
+- user_id
+- text
 
 End-Points
 ==========
@@ -114,7 +118,13 @@ posts params from * Responses collection(mandatory and optional)). returns added
 -/flag_user (expects  cuid, flagged_user_id, request_id/response_id, returns new object flag added)
 -/unflag_user (expects  cuid, flagged_user_id, request_id/response_id, returns - flag removed)
 -/flags (expects one or more of the following: flagging_user_id, flagged_user_id, request_id/response_id, returns found objects)
- 
+
+ * Comments
+-/add_comment (expects user_id, response_id; returns object comment)
+-/remove comment (expects user_id, comment_id; returns "comment removed")
+-/edit_comment (expects user_id, comment_id; returns object comment)
+
+
  * Admin ====missing====
  - /block_account (add {blocked: true} to user hash) - check for block in require user, if blocked, return message "you were blocked".
 also "you were blocked" when trying to sign in
@@ -124,11 +134,3 @@ also "you were blocked" when trying to sign in
 
 * Other
 - contact_us (recieves submitted form data, saves it to database)
-
-Create token for every user upon creation
-
-Admin:
-100 requests+ paging (next = +100) ====missing====
-Do admin page, with users, responses, requests,  that are clickable and lead to relevant response/request page
-
-====missing==== need to make some params optional/mandatory? or we do it in client? 

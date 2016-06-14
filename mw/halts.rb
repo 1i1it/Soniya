@@ -24,7 +24,7 @@ def require_user()
 	if user[:blocked]
 		halt_bad_input ({msg:"you were blocked"})
 	else
-		#checks for token, if no token missing, token, if !cu - err: bad token
+		#checks for token, if token missing, token, if !cu - err: bad token
 		halt_bad_input({msg:"bad token #{params[:token]}"}) if !cu
 	end
 end
