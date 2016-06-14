@@ -66,10 +66,6 @@ get '/webhook' do
   handle_msg  
 end
 
-get '/redirect' do
-  redirect back  
-end
-
 post '/webhook' do
   handle_msg
 end
