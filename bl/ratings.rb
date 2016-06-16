@@ -45,11 +45,14 @@ post '/ratings/ajax' do
 end
 
 post '/create_rating' do 
-	if  !params[:response_id] && !params[:rating]
+	if  !params[:response_id] && !params[:rating] && !params[:request_id]
 		return {err: "missing parameters"}
 	end
-	
 	require_user
+	requesting_user = $ir.get(_id:params[:request_id])["user_id"]
+	if requesting_user != cuid
+		halt_bad_input(msg: "can't rate response, request is not yours")
+	end
 
 	response = $res.get({_id:params[:response_id]})
 	return {err:"no such request"} if !request
@@ -61,7 +64,7 @@ post '/create_rating' do
 	existing_rating = $ratings.get({user_id:cuid, response_id:params[:response_id], rated_user_id:response["user_id"]})
 	if existing_rating
 
-		$ratings.update_id(existing_rating['_id'], {rating: params[:rating]}) 
+		rating = $ratings.update_id(existing_rating['_id'], {rating: params[:rating]}) 
 	else
     	rating = $ratings.add({user_id: cuid, 
     				rating:params[:rating],
@@ -82,6 +85,6 @@ get '/ratings_page?' do
 	full_page_card(:"other/collection_page", locals: {
 		data: $ratings.get({_id:params[:rating_id]}),  
 		keys: RATINGS_TABLE_FIELDS,
-		collection_name: "Ratings"})
+		collection_name: "Rating"})
 end
 

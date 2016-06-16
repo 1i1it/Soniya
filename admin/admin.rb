@@ -32,6 +32,11 @@ def verify_admin_val(coll, field, val)
       halt_bad_input(msg: 'Bad photos')
     end
   end
+  if field == 'latitude' || field == 'longitude'
+      val = val.to_f
+  end
+
+  
   val
 end
 

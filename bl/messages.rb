@@ -1,0 +1,1 @@
+$messages = $submitted_messages = $mongo.collection('submitted_messages')

@@ -10,12 +10,12 @@ PayPal::SDK.configure(
     :password  => PAYPAL_PASSWORD,
     :signature => PAYPAL_SIGNATURE)
 
-def build_paypal_payment_page(info_request)
+def build_paypal_payment_page(info_request, responder_email)
   paypal_api = PayPal::SDK::AdaptivePayments.new
   return_url = $root_url+'/paypal_confirm?request_id='+info_request['_id'] 
   cancel_url = $root_url+'/paypal_cancel?request_id='+info_request['_id'] 
   amount     = info_request['amount'].to_f
-
+  responder_email = 'sella-seller@gmail.com' #until we work in production
   @pay = paypal_api.build_pay({ # Build request object 
   	#receives array with user_id and amount e.g({"_id" => '123', "amount" => 456})
   	# returns array with status, return_url, payKey:
@@ -25,8 +25,12 @@ def build_paypal_payment_page(info_request)
     :actionType => "PAY", 
     :currencyCode => "USD",
     :feesPayer => "EACHRECEIVER",
+    # :receiverList => { :receiver => [
+    #   {:amount => amount, :email => "sella-admin2@gmail.com",}, 
+    # ]},
     :receiverList => { :receiver => [
-      {:amount => amount, :email => "sella-admin2@gmail.com",}, 
+        {:amount => amount, :email => "sella-admin2@gmail.com", primary: true }, #'primary' when chaining
+       {:amount => (0.8 * amount), :email => responder_email}
     ]},
     :returnUrl => return_url, 
     :cancelUrl => cancel_url})
@@ -51,4 +55,8 @@ def get_paypal_payment_details(pay_key)
 
   details[:confirmed_paid] = details['status'].to_s.in?(['COMPLETED', 'PROCESSED'])
   details
+end
+
+get '/paypal/refresh' do
+  true
 end

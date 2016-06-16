@@ -60,5 +60,5 @@ get '/confirms_refutes_page?' do
 	full_page_card(:"other/collection_page", locals: {
 		data: $conref.get({_id:params[:conref_id]}),  
 		keys: CONREF_TABLE_FIELDS,
-		collection_name: "Confirms and Refutes"})
+		collection_name: "Confirm/Refute"})
 end
