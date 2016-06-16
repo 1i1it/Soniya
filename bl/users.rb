@@ -1,7 +1,7 @@
 $users = $mongo.collection('users')
 
 MANAGEABLE_COLLECTIONS = [:users,:errors,:site_log,:requests, :info_requests].map {|n| $mongo.collection(n) }
-USERS_TABLE_FIELDS = ["_id", "email", "pic_url", "fb_id", "name", "token", "created_at", "updated_at"]
+USERS_TABLE_FIELDS = ["_id", "email", "pic_url", "fb_id", "name", "token", "created_at", "updated_at", "paypal_email"]
 
 get '/users/all' do
   if params[:browser]
@@ -109,9 +109,9 @@ def map_users(items)
   return items
 end
 
-get "/update_me" do
-  $users.find_one_and_update({_id: cuid}, {'$set' => params}) 
-  #(expects one of the following and sets it: [paypal, email, pic_url, name.] 
+get "/edit_user" do
+  $users.find_one_and_update({_id: cuid}, {'$set' => params.except(:id)}) 
+  #(expects one or mmore of the following and sets it: [paypal_email, email, pic_url, name.] 
   {user:cu}
 end 
 
@@ -140,9 +140,11 @@ end
 
 
 
-get '/me' do
+get '/profile' do
   {user:cu}
 end
+
+
 get '/login' do
   erb :"users/login", layout: :layout 
 end

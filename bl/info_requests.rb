@@ -3,23 +3,38 @@ $ir = $info_requests = $mongo.collection('info_requests')
 =end
 
 PAGE_SIZE = 2
-LOCATION_CHANGE = 0.01
+LOCATION_CHANGE_5km = 0.01
+LOCATION_CHANGE_10km = 0.1
+LOCATION_CHANGE_50km =  1
 QUERY_LIMIT = 100
 REQUESTS_TABLE_FIELDS = ["_id", "user_id", "text", "location", "medium", "amount", "latitude", "longitude", "status", "is_private", "created_at", "paypal_pay_key", "updated_at", "paid"]
+REQUEST_STATUS_FULFILLED = 'fulfilled'
+REQUEST_STATUS_CLOSED = 'closed'
+
+post '/fulfill_request' do
+	request = $ir.update_id(params[:request_id], status: REQUEST_STATUS_FULFILLED)
+	{request: request}
+end
 
 
-get '/pay' do #?receives id=123
+post '/close_request' do
+	request = $ir.update_id(params[:request_id], status: REQUEST_STATUS_CLOSED)
+	{request: request}
+end
+
+get '/pay' do
 	require_user
-    info_request = $ir.get(params[:id])
-    #info_request = {_id: $ir.get(params[:id])[_id], amount:456} 
-    res = build_paypal_payment_page(info_request) #???? but it has to get amount as well?
+    info_request = $ir.get(params[:id])  
+    response = $res.get(request_id: params[:id], is_fulfilling: RESPONSE_STATUS_FULFILLING)
+ 	responder_paypal_email = $users.get(_id: response["user_id"])["paypal_email"] 
+    res = build_paypal_payment_page(info_request, responder_paypal_email) 
     return res if res[:err]
     redirect res[:url]
 end
 
 
 
-get '/paypal_confirm' do #?receives request_id=123
+get '/paypal_confirm' do 
 	require_user
      ir = $ir.get(params[:request_id])
      pay_key = ir['paypal_pay_key']
@@ -41,7 +56,7 @@ end
 def map_requests(items)
   items.map! do |old|
     responses = $res.get_many_limited({request_id: old['_id']}, sort: [{created_at: -1}] ) #$res.find({request_id: old['_id']}).to_a
-    responses = map_responses(responses)
+    #responses = map_responses(responses)
     new_request = {
       _id:old['_id'],
       text: old[:text],
@@ -78,8 +93,6 @@ get "/request_page" do
 	end
 	full_page_card(:"info_requests/request_page", locals: {request: request, responses: responses})
 	end
-
-
 
 post '/add_new_request' do 
 	user = cu
@@ -181,20 +194,49 @@ get '/requests_by_location' do
 	{items:items}
 end
 
+
+
 get '/requests_around_me' do
 	if !params[:latitude] || !params[:longitude]
 		return {err:"missing parameters latitude and longitude"}
 	end
 
-	items = $ir.find({ 
+	items_5km = $ir.find({ 
 		latitude: {
-			"$gt": params[:latitude].to_f - LOCATION_CHANGE, 
-			"$lt": params[:latitude].to_f + LOCATION_CHANGE},
+			"$gte": params[:latitude].to_f - LOCATION_CHANGE_5km, 
+			"$lte": params[:latitude].to_f + LOCATION_CHANGE_5km},
 		longitude: {
-			"$gt": params[:longitude].to_f - LOCATION_CHANGE, 
-			"$lt": params[:longitude].to_f + LOCATION_CHANGE}
-			}).limit(QUERY_LIMIT).to_a
-	full_page_card(:"info_requests/requests_page", locals: {data: items})
+			"$gte": params[:longitude].to_f - LOCATION_CHANGE_5km, 
+			"$lte": params[:longitude].to_f + LOCATION_CHANGE_5km}
+			}).to_a
+
+	 if items_5km.size < 10
+		items_10km = $ir.find({ 
+		latitude: {
+			"$gte": params[:latitude].to_f - LOCATION_CHANGE_10km, 
+			"$lt": params[:latitude].to_f + LOCATION_CHANGE_10km},
+		longitude: {
+			"$gte": params[:longitude].to_f - LOCATION_CHANGE_10km, 
+			"$lte": params[:longitude].to_f + LOCATION_CHANGE_10km}
+			}).to_a
+	end
+
+	if items_10km.size < 10
+		items_50km = $ir.find({ 
+		latitude: {
+			"$gte": params[:latitude].to_f - LOCATION_CHANGE_50km, 
+			"$lte": params[:latitude].to_f + LOCATION_CHANGE_50km},
+		longitude: {
+			"$gte": params[:longitude].to_f - LOCATION_CHANGE_50km, 
+			"$lte": params[:longitude].to_f + LOCATION_CHANGE_50km}
+			}).to_a
+	end
+	 	items = [items_5km + items_10km + items_50km].uniq
+	if params["browser"]
+		full_page_card(:"info_requests/requests_page", locals: {data: items})
+	else
+		{items:items}
+	end
 end
 
 get '/requests/info' do

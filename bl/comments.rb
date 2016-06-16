@@ -60,7 +60,7 @@ get '/comments_page' do
 	full_page_card(:"other/collection_page", locals: {
 		data: $comments.get({_id:params[:comment_id]}),  
 		keys: COMMENTS_TABLE_FIELDS,
-		collection_name: "Comments"})
+		collection_name: "Comment"})
 end
 
 
