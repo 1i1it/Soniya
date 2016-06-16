@@ -1,7 +1,7 @@
 PAYPAL_USERNAME =ENV['PAYPAL_USERNAME']
 PAYPAL_PASSWORD =ENV['PAYPAL_PASSWORD']
 PAYPAL_SIGNATURE=ENV['PAYPAL_SIGNATURE']
-PAYPAL_APP_ID   =ENV['PAYPAL_APP_ID'] || 'APP-80W284485P519543T' #sandbox
+PAYPAL_APP_ID   = 'APP-80W284485P519543T' #sandbox
 PAYPAL_MODE     = 'sandbox' #$prod ? "live" : "sandbox"  # Set "live" for production
 PayPal::SDK.configure(
     :mode      => PAYPAL_MODE,
