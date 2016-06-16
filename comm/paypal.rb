@@ -26,7 +26,7 @@ def build_paypal_payment_page(info_request, responder_email)
     :currencyCode => "USD",
     :feesPayer => "EACHRECEIVER",
     :receiverList => { :receiver => [
-      {:amount => amount, :email => "sella-admin@gmail.com",}, 
+      {:amount => amount, :email => "sella-admin2@gmail.com",}, 
     ]},
     # :receiverList => { :receiver => [
     #     {:amount => amount, :email => "sella.rafaeli@gmail.com", primary: true }, #'primary' when chaining
