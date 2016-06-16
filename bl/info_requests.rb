@@ -16,7 +16,6 @@ post '/fulfill_request' do
 	{request: request}
 end
 
-
 post '/close_request' do
 	request = $ir.update_id(params[:request_id], status: REQUEST_STATUS_CLOSED)
 	{request: request}
@@ -26,7 +25,7 @@ get '/pay' do
 	require_user
     info_request = $ir.get(params[:id])  
     response = $res.get(request_id: params[:id], is_fulfilling: RESPONSE_STATUS_FULFILLING)
- 	responder_paypal_email = $users.get(_id: response["user_id"])["paypal_email"] 
+ 	responder_paypal_email = 'sella.rafaeli@gmail.com' #$users.get(_id: response["user_id"])["paypal_email"] 
     res = build_paypal_payment_page(info_request, responder_paypal_email) 
     return res if res[:err]
     redirect res[:url]

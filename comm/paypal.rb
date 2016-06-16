@@ -1,8 +1,8 @@
-PAYPAL_USERNAME=ENV['PAYPAL_USERNAME']
-PAYPAL_PASSWORD=ENV['PAYPAL_PASSWORD']
+PAYPAL_USERNAME =ENV['PAYPAL_USERNAME']
+PAYPAL_PASSWORD =ENV['PAYPAL_PASSWORD']
 PAYPAL_SIGNATURE=ENV['PAYPAL_SIGNATURE']
-PAYPAL_APP_ID   =ENV['PAYPAL_APP_ID'] || 'APP-80W284485P519543T'
-PAYPAL_MODE     = $prod ? "live" : "sandbox"  # Set "live" for production
+PAYPAL_APP_ID   =ENV['PAYPAL_APP_ID'] || 'APP-80W284485P519543T' #sandbox
+PAYPAL_MODE     = 'live' #$prod ? "live" : "sandbox"  # Set "live" for production
 PayPal::SDK.configure(
     :mode      => PAYPAL_MODE,
     :app_id    => PAYPAL_APP_ID,
@@ -15,7 +15,7 @@ def build_paypal_payment_page(info_request, responder_email)
   return_url = $root_url+'/paypal_confirm?request_id='+info_request['_id'] 
   cancel_url = $root_url+'/paypal_cancel?request_id='+info_request['_id'] 
   amount     = info_request['amount'].to_f
-  responder_email = 'sella-seller@gmail.com' #until we work in production
+  responder_email = 'sella.rafaeli@gmail.com' #until we work in production
   @pay = paypal_api.build_pay({ # Build request object 
   	#receives array with user_id and amount e.g({"_id" => '123', "amount" => 456})
   	# returns array with status, return_url, payKey:
@@ -25,13 +25,13 @@ def build_paypal_payment_page(info_request, responder_email)
     :actionType => "PAY", 
     :currencyCode => "USD",
     :feesPayer => "EACHRECEIVER",
-    # :receiverList => { :receiver => [
-    #   {:amount => amount, :email => "sella-admin2@gmail.com",}, 
-    # ]},
     :receiverList => { :receiver => [
-        {:amount => amount, :email => "sella-admin2@gmail.com", primary: true }, #'primary' when chaining
-       {:amount => (0.8 * amount), :email => responder_email}
+      {:amount => amount, :email => "sella.rafaeli@gmail.com",}, 
     ]},
+    # :receiverList => { :receiver => [
+    #     {:amount => amount, :email => "sella.rafaeli@gmail.com", primary: true }, #'primary' when chaining
+    #    {:amount => (0.8 * amount), :email => 'agam.rafaeli@gmail.com'}
+    # ]},
     :returnUrl => return_url, 
     :cancelUrl => cancel_url})
   
