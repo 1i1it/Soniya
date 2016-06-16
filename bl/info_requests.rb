@@ -154,7 +154,7 @@ end
 
 
 get '/add_new_request_form' do
-  erb :"info_requests/requests_index", layout: :layout
+  erb :"info_requests/request_form", layout: :layout
 end
 
 get '/search_form' do
