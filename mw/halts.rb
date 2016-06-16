@@ -20,13 +20,8 @@ end
 
 
 def require_user()
-	user = $users.get({_id: cuid})
-	if user[:blocked]
-		halt_bad_input ({msg:"you were blocked"})
-	else
-		#checks for token, if token missing, token, if !cu - err: bad token
-		halt_bad_input({msg:"bad token #{params[:token]}"}) if !cu
-	end
+  halt_bad_input({msg:"bad token #{params[:token]}"}) if !cu
+	halt_bad_input({msg:"you were blocked"}) if user[:blocked]
 end
 
 get '/halts' do
