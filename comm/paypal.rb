@@ -1,15 +1,14 @@
 PAYPAL_USERNAME=ENV['PAYPAL_USERNAME']
 PAYPAL_PASSWORD=ENV['PAYPAL_PASSWORD']
 PAYPAL_SIGNATURE=ENV['PAYPAL_SIGNATURE']
-
+PAYPAL_APP_ID   =ENV['PAYPAL_APP_ID'] || 'APP-80W284485P519543T'
+PAYPAL_MODE     = $prod ? "live" : "sandbox",  # Set "live" for production
 PayPal::SDK.configure(
-    :mode      => "sandbox",  # Set "live" for production
-    :app_id    => "APP-80W284485P519543T",
+    :mode      => PAYPAL_MODE
+    :app_id    => PAYPAL_APP_ID,
     :username  => PAYPAL_USERNAME,
     :password  => PAYPAL_PASSWORD,
     :signature => PAYPAL_SIGNATURE)
-
-
 
 def build_paypal_payment_page(info_request)
   paypal_api = PayPal::SDK::AdaptivePayments.new
