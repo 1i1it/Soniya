@@ -20,7 +20,7 @@ end
 
 
 def require_user()
-  halt_bad_input({msg:"bad token #{params[:token]}"}) if !cu
+  halt_bad_input({msg:"not signed in - bad token #{params[:token]}"}) if !cu
 	halt_bad_input({msg:"you were blocked"}) if user[:blocked]
 end
 

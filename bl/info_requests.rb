@@ -22,7 +22,7 @@ post '/close_request' do
 end
 
 get '/pay' do
-	require_user
+#	require_user
     info_request = $ir.get(params[:id])  
     response = $res.get(request_id: params[:id], is_fulfilling: RESPONSE_STATUS_FULFILLING)
  	responder_paypal_email = 'sella.rafaeli@gmail.com' #$users.get(_id: response["user_id"])["paypal_email"] 
