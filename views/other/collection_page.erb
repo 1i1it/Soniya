@@ -13,11 +13,11 @@
   <tbody>
 
   <tr class="table-row" data-href="#">
-    <% hash.each_value do |value| %>
-    <td> <%= value || nil%></td>
-
+    <% locals[:keys].each do |key| %>
+    <td> <%= hash[key] || 'value missing' %></td>
       <% end %>
-    </tr>
+    </tr>    
+
     
   </tbody>
 </table>

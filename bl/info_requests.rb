@@ -3,9 +3,9 @@ $ir = $info_requests = $mongo.collection('info_requests')
 =end
 
 PAGE_SIZE = 2
-LOCATION_CHANGE_5km = 0.01
-LOCATION_CHANGE_10km = 0.1
-LOCATION_CHANGE_50km =  1
+LOCATION_CHANGE_LEVEL_ONE = 0.01
+LOCATION_CHANGE_LEVEL_TWO = 0.1
+LOCATION_CHANGE_LEVEL_THREE =  1
 QUERY_LIMIT = 100
 REQUESTS_TABLE_FIELDS = ["_id", "user_id", "text", "location", "medium", "amount", "latitude", "longitude", "status", "is_private", "created_at", "paypal_pay_key", "updated_at", "paid"]
 REQUEST_STATUS_FULFILLED = 'fulfilled'
@@ -22,7 +22,7 @@ post '/close_request' do
 end
 
 get '/pay' do
-#	require_user
+#	require_user TODO - ADD AFTER PAYPAL REVIEW
     info_request = $ir.get(params[:id])  
     response = $res.get(request_id: params[:id], is_fulfilling: RESPONSE_STATUS_FULFILLING)
  	responder_paypal_email = 'sella.rafaeli@gmail.com' #$users.get(_id: response["user_id"])["paypal_email"] 
@@ -34,7 +34,7 @@ end
 
 
 get '/paypal_confirm' do 
-	require_user
+	#require_user  TODO - ADD AFTER PAYPAL REVIEW
      ir = $ir.get(params[:request_id])
      pay_key = ir['paypal_pay_key']
      paypal_data = get_paypal_payment_details(pay_key)
@@ -72,7 +72,7 @@ def map_requests(items)
 end
 
 
-get '/requests_all' do
+get '/requests/all' do
 	if params[:browser]
 		full_page_card(:"other/paginated_requests", locals: {search: true})
 	else
@@ -119,10 +119,11 @@ post '/requests/ajax' do
 	col_num = params[:order]["0"]["column"] rescue REQUESTS_TABLE_FIELDS.find_index('created_at')
 	sort_field = REQUESTS_TABLE_FIELDS[col_num.to_i	]
 	sort_dir   = (params[:order]["0"]["dir"] == 'asc' ? 1 : -1) rescue 1
+	#button_html = 
 	data = $ir.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |req| 
 		req['paypal_pay_key'] ||= nil
 		req['updated_at']     ||= nil
-		req['paid']           ||= nil 
+		req['paid']           ||= '<td> <a href="/pay?id=' +  req["_id"] + '"> <button type="button" class="btn btn-primary btn-sm">Pay now</button></a> </td>'
 		req.values 
 	}
 	res = {
@@ -132,7 +133,7 @@ post '/requests/ajax' do
   "data": data
 }
 end
-		
+
 get '/requests' do
 	params[params[:search_field]] = params[:search_value]
 	if params[:text]
@@ -202,32 +203,34 @@ get '/requests_around_me' do
 
 	items_5km = $ir.find({ 
 		latitude: {
-			"$gte": params[:latitude].to_f - LOCATION_CHANGE_5km, 
-			"$lte": params[:latitude].to_f + LOCATION_CHANGE_5km},
+			"$gte": params[:latitude].to_f - LOCATION_CHANGE_LEVEL_ONE, 
+			"$lte": params[:latitude].to_f + LOCATION_CHANGE_LEVEL_ONE
+		},
 		longitude: {
-			"$gte": params[:longitude].to_f - LOCATION_CHANGE_5km, 
-			"$lte": params[:longitude].to_f + LOCATION_CHANGE_5km}
+			"$gte": params[:longitude].to_f - LOCATION_CHANGE_LEVEL_ONE, 
+			"$lte": params[:longitude].to_f + LOCATION_CHANGE_LEVEL_ONE
+	}
 			}).to_a
 
 	 if items_5km.size < 10
 		items_10km = $ir.find({ 
 		latitude: {
-			"$gte": params[:latitude].to_f - LOCATION_CHANGE_10km, 
-			"$lt": params[:latitude].to_f + LOCATION_CHANGE_10km},
+			"$gte": params[:latitude].to_f - LOCATION_CHANGE_LEVEL_TWO, 
+			"$lt": params[:latitude].to_f + LOCATION_CHANGE_LEVEL_TWO},
 		longitude: {
-			"$gte": params[:longitude].to_f - LOCATION_CHANGE_10km, 
-			"$lte": params[:longitude].to_f + LOCATION_CHANGE_10km}
+			"$gte": params[:longitude].to_f - LOCATION_CHANGE_LEVEL_TWO, 
+			"$lte": params[:longitude].to_f + LOCATION_CHANGE_LEVEL_TWO}
 			}).to_a
 	end
 
 	if items_10km.size < 10
 		items_50km = $ir.find({ 
 		latitude: {
-			"$gte": params[:latitude].to_f - LOCATION_CHANGE_50km, 
-			"$lte": params[:latitude].to_f + LOCATION_CHANGE_50km},
+			"$gte": params[:latitude].to_f - LOCATION_CHANGE_LEVEL_THREE, 
+			"$lte": params[:latitude].to_f + LOCATION_CHANGE_LEVEL_THREE},
 		longitude: {
-			"$gte": params[:longitude].to_f - LOCATION_CHANGE_50km, 
-			"$lte": params[:longitude].to_f + LOCATION_CHANGE_50km}
+			"$gte": params[:longitude].to_f - LOCATION_CHANGE_LEVEL_THREE, 
+			"$lte": params[:longitude].to_f + LOCATION_CHANGE_LEVEL_THREE}
 			}).to_a
 	end
 	 	items = [items_5km + items_10km + items_50km].uniq
@@ -236,10 +239,6 @@ get '/requests_around_me' do
 	else
 		{items:items}
 	end
-end
-
-get '/requests/info' do
-	{num: $ir.count}
 end
 
 

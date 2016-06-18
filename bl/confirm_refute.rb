@@ -20,9 +20,9 @@ post '/confirms_refutes/ajax' do
 	col_num = params[:order]["0"]["column"] rescue CONREF_TABLE_FIELDS.find_index('created_at')
 	sort_field = CONREF_TABLE_FIELDS[col_num.to_i	]
 	sort_dir   = (params[:order]["0"]["dir"] == 'asc' ? 1 : -1) rescue 1
-	data = $conref.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |req| 
-		req['updated_at']     ||= nil
-		req.values ||= nil 
+	data = $conref.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |conref| 
+		new_item = {}; CONREF_TABLE_FIELDS.map {|f| new_item[f] = conref[f] || '' }
+			new_item.values
 	}
 	res = {
   "draw": params[:draw].to_i,

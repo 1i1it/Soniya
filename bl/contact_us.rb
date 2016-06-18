@@ -39,10 +39,9 @@ post '/messages/ajax' do
 	col_num = params[:order]["0"]["column"] rescue MESSAGES_TABLE_FIELDS.find_index('created_at')
 	sort_field = MESSAGES_TABLE_FIELDS[col_num.to_i	]
 	sort_dir   = (params[:order]["0"]["dir"] == 'asc' ? 1 : -1) rescue 1
-	data = $messages.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |req| 
-		req['name']     ||= nil
-		req['user_id']     ||= nil
-		req.values ||= nil 
+	data = $messages.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |msg| 
+			new_item = {}; MESSAGES_TABLE_FIELDS.map {|f| new_item[f] = msg[f] || '' }
+			new_item.values 
 	}
 	res = {
   "draw": params[:draw].to_i,

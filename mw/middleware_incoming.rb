@@ -14,14 +14,14 @@ before do
   @time_started_request = Time.now    
 end
 
-# def cu 
-#   # return current user
-#   if request.path_info.starts_with?("/admin")
-#     @cu ||= session && session[:user_id] && $users.get(session[:user_id]) rescue nil #for tux
-#   else
-#     @cu ||= params && params[:token] && $users.get(token: params[:token]) rescue nil #for tux
-#   end
-# end
+def cu 
+  # return current user
+  if request.path_info.starts_with?("/admin")
+    @cu ||= session && session[:user_id] && $users.get(session[:user_id]) rescue nil #for tux
+  else
+    @cu ||= params && params[:token] && $users.get(token: params[:token]) rescue nil #for tux
+  end
+end
 
 def cu_token
    params && params[:token] && $users.get(token: params[:token]) rescue nil #for tux

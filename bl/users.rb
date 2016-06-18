@@ -3,6 +3,20 @@ $users = $mongo.collection('users')
 MANAGEABLE_COLLECTIONS = [:users,:errors,:site_log,:requests, :info_requests].map {|n| $mongo.collection(n) }
 USERS_TABLE_FIELDS = ["_id", "email", "pic_url", "fb_id", "name", "token", "created_at", "updated_at", "paypal_email"]
 
+
+get '/user_history' do
+  # requries token, returns requests user asked, requests user answered and responses user gave
+  requests_asked = $ir.get_many_limited({user_id:cuid}, sort: [{created_at: -1}] )
+  my_responses = $res.get_many_limited({user_id:cuid}, sort: [{created_at: -1}] ) rescue {}
+  requests_responded =  my_responses.map {|response| $ir.get({_id:response[:request_id]}) } rescue {}
+  {
+  requests_i_asked: requests_asked,
+  requests_i_answered: requests_responded,
+  responses_given: my_responses
+  }
+  
+end
+
 get '/users/all' do
   if params[:browser]
     full_page_card(:"other/paginated_form", locals: {
@@ -21,11 +35,9 @@ post '/users/ajax' do
   col_num = params[:order]["0"]["column"] rescue USERS_TABLE_FIELDS.find_index('created_at')
   sort_field = USERS_TABLE_FIELDS[col_num.to_i ]
   sort_dir   = (params[:order]["0"]["dir"] == 'asc' ? 1 : -1) rescue 1
-  data = $users.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |req| 
-    req['updated_at']     ||= nil
-    req['blocked']     ||= nil
-    req['pic_url']     ||= nil
-    req.values ||= nil 
+  data = $users.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |user| 
+    new_item = {}; USERS_TABLE_FIELDS.map {|f| new_item[f] = user[f] || '' }
+    new_item.values
   }
   res = {
   "draw": params[:draw].to_i,
@@ -95,6 +107,28 @@ get "/user_data" do
       pic_url: user[:pic_url]
     }
   {user:user}
+end 
+
+get "/user_statistics" do 
+# show statiscis_route for user: 
+#   a. num of requests
+# b, offered for payment
+# c. fulfilled offered for payment
+# d. .paid_requests.
+  requests_number = $ir.get_many({user_id: cuid }).count
+  offered_for_payment = $ir.get_many({user_id: cuid, amount: {'$exists': true} }).count
+  fulfilled_offered_for_payment = $ir.get_many({user_id: cuid, amount: {'$exists': true}, status: REQUEST_STATUS_FULFILLED }).count
+  paid_requests = $ir.get_many({user_id: cuid, paid: true }).count
+  user = $users.get({_id: cuid })
+  #(expects user_id, returns a hash with email, name, pic_url)
+  {user_statistics: {
+    user_id: cuid,
+    requests_number: requests_number,
+     offered_for_payment: offered_for_payment,
+     fulfilled_offered_for_payment: fulfilled_offered_for_payment, 
+     paid_requests: paid_requests
+    }
+  }
 end 
 
 def map_users(items)

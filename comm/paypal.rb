@@ -12,8 +12,9 @@ PayPal::SDK.configure(
 
 def build_paypal_payment_page(info_request, responder_email)
   paypal_api = PayPal::SDK::AdaptivePayments.new
-  return_url = $root_url+'/paypal_confirm?request_id='+info_request['_id'] 
-  cancel_url = $root_url+'/paypal_cancel?request_id='+info_request['_id'] 
+  bp
+  return_url = $root_url+'/paypal_confirm?request_id='+info_request['_id'] + "&token=" + $users.get("_id":info_request['user_id'])["token"]
+  cancel_url = $root_url+'/paypal_cancel?request_id='+info_request['_id']  + "&token=" + $users.get("_id":info_request['user_id'])["token"]
   amount     = info_request['amount'].to_f
   responder_email = 'sella.rafaeli@gmail.com' #until we work in production
   @pay = paypal_api.build_pay({ # Build request object 

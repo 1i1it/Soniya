@@ -5,7 +5,7 @@ RESPONSES_TABLE_FIELDS = ["_id", "user_id", "text", "request_id", "latitude",
 
 MAX_RESPONSES_PER_REQUEST = 4
 RESPONSE_STATUS_FULFILLING = "fulfilling"
-RESPONSE_STATUS_NOT_FULFILLING = "fulfilling"
+RESPONSE_STATUS_NOT_FULFILLING = "not_fulfilling"
 RESPONSE_STATUS_UNMARKED = "unmarked"
 
 
@@ -43,11 +43,11 @@ post '/responses/ajax' do
 	col_num = params[:order]["0"]["column"] rescue RESPONSES_TABLE_FIELDS.find_index('created_at')
 	sort_field = RESPONSES_TABLE_FIELDS[col_num.to_i	]
 	sort_dir   = (params[:order]["0"]["dir"] == 'asc' ? 1 : -1) rescue 1
-	data = $responses.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |req| 
-		req['updated_at']     ||= nil
-		req['fulfilling']     ||= nil
-		req.values ||= nil 
+	data = $responses.find({}, sort: [{sort_field => sort_dir}]).skip(skip).limit(limit).to_a.map { |rsp| 
+		new_item = {}; RESPONSES_TABLE_FIELDS.map {|f| new_item[f] = rsp[f] || '' }
+		new_item.values
 	}
+
 	res = {
   "draw": params[:draw].to_i,
   "recordsTotal": $responses.count,
@@ -129,7 +129,14 @@ get '/delete_response' do
 end
 
 post '/response_fulfilling' do
+	#MAKE SURE CUID == request[:user_id]
+	request_id = $responses.get(_id: params[:response_id])["request_id"]
+	requesting_user_id =  $ir.get(_id: request_id)["user_id"]
+	if cuid != requesting_user_id
+		halt_bad_input(msg:"can't mark as fulfilled, not your request")
+	end 
 	response = $responses.update_id(params[:response_id], is_fulfilling:RESPONSE_STATUS_FULFILLING) 
+	request = $ir.update_id(request_id, status: REQUEST_STATUS_FULFILLED)
 	{response: response}
 end
 

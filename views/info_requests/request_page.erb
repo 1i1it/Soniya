@@ -60,8 +60,8 @@ cursor:pointer;
   <% responses.each do |response| %>
   		<tr class="table-row" data-href="/response_page?response_id=<%=response['_id']%>">
 
-	  <% response.each_value do |value| %>
-	  <td> <%= value %></td>
+    <% response_keys.each do |key| %>
+    <td> <%= response[key] || 'value missing' %></td>
 
 	    <% end %>
 	  </tr>
