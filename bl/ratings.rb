@@ -3,10 +3,14 @@ $ratings = $mongo.collection('ratings')
 RATINGS_TABLE_FIELDS = ["_id", "user_id", "rating", "response_id", "rated_user_id", "created_at", "updated_at"]
 
 get '/ratings' do
-	if params[:user_id]
-		items = $ratings.find({user_id:params[:user_id]}).to_a
+	if params[:rating_id]
+		items = $ratings.get({_id:params[:rating_id]} ) 
+	elsif params[:request_id]
+		items = $ratings.get_many({request_id:params[:request_id]}, sort: [{created_at: -1}] ) 
+	elsif params[:user_id] 
+		items = $ratings.get_many({user_id: params[:user_id]}, sort: [{created_at: -1}] )
 	elsif params[:rated_user_id]
-		items = $ratings.find({rated_user_id:params[:rated_user_id]}).to_a
+		items = $ratings.get_many({rated_user_id:params[:rated_user_id]}, sort: [{created_at: -1}] )
 	else
 		status 400
 		return {error: "No such parameter. Please choose from legal parameters user_id, rated_user_id"}
@@ -46,10 +50,12 @@ post '/ratings/ajax' do
 end
 
 post '/create_rating' do 
-	if  !params[:response_id] && !params[:rating] && !params[:request_id]
-		return {err: "missing parameters"}
-	end
 	require_user
+	require_fields(params[:rating])
+	if  !params[:response_id] && !params[:request_id]
+		{err: "missing response id or request id"}
+	end
+	
 	requesting_user = $ir.get(_id:params[:request_id])["user_id"]
 	if requesting_user != cuid
 		halt_bad_input(msg: "can't rate response, request is not yours")
@@ -64,25 +70,24 @@ post '/create_rating' do
 
 	existing_rating = $ratings.get({user_id:cuid, response_id:params[:response_id], rated_user_id:response["user_id"]})
 	if existing_rating
-
 		rating = $ratings.update_id(existing_rating['_id'], {rating: params[:rating]}) 
 	else
     	rating = $ratings.add({user_id: cuid, 
     				rating:params[:rating],
     				response_id:params[:response_id],
-  					rated_user_id:response["user_id"]})
+  					rated_user_id:response["user_id"]},
+  					request_id:params[:request_id])
     end
 
   {rating:rating} 
-
 end
 
 post '/update_rating' do
 	$ratings.update_id(params[:id], {rating: params[:rating]}) 
-  {rating:rating} 
+ 	{rating:rating} 
 end 
 
-get '/ratings_page?' do
+get '/ratings_page' do
 	full_page_card(:"other/collection_page", locals: {
 		data: $ratings.get({_id:params[:rating_id]}),  
 		keys: RATINGS_TABLE_FIELDS,

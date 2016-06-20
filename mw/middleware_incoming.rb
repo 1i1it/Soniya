@@ -7,10 +7,19 @@ def request_expects_json?
 end
 
 def request_is_public?
-  request_fullpath.to_s.starts_with?('/css/','/js/','/img/') rescue false 
+  request_path.to_s.starts_with?('/css/','/js/','/img/','/favicon/','/HTTP/') rescue false 
 end
 
-before do     
+OPEN_ROUTES = ['/ping', '/fb_enter', '/login', '/about']
+
+def is_open_route
+  return true if request_is_public?
+  return true if request_path.to_s.in?(OPEN_ROUTES)
+  return false
+end
+
+before do
+  require_user unless is_open_route     
   @time_started_request = Time.now    
 end
 

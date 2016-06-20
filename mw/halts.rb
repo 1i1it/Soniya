@@ -18,8 +18,7 @@ def require_fields(fields)
   Array(fields).each do |field| halt_missing_param(field) unless params[field].present? end 
 end
 
-
-def require_user()
+def require_user
   halt_bad_input({msg:"not signed in - bad token #{params[:token]}"}) if !cu
   halt_bad_input({msg:"you were blocked"}) if cu[:blocked]
 end

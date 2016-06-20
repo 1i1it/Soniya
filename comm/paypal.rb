@@ -12,7 +12,6 @@ PayPal::SDK.configure(
 
 def build_paypal_payment_page(info_request, responder_email)
   paypal_api = PayPal::SDK::AdaptivePayments.new
-  bp
   return_url = $root_url+'/paypal_confirm?request_id='+info_request['_id'] + "&token=" + $users.get("_id":info_request['user_id'])["token"]
   cancel_url = $root_url+'/paypal_cancel?request_id='+info_request['_id']  + "&token=" + $users.get("_id":info_request['user_id'])["token"]
   amount     = info_request['amount'].to_f
@@ -53,7 +52,6 @@ def get_paypal_payment_details(pay_key)
   paypal_api = PayPal::SDK::AdaptivePayments.new
   #call paypal to confirm payment
   details = paypal_api.payment_details({payKey: pay_key}).to_hash.hwia  #??hwia
-
   details[:confirmed_paid] = details['status'].to_s.in?(['COMPLETED', 'PROCESSED'])
   details
 end

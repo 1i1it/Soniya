@@ -34,58 +34,6 @@ end
 
 # fb app token: EAAOxuLF0mJkBAH8r1ykzjhq5xeZCQ6WEZAb7TtcWNQ2eZBW887Lf9AYW3a10WvIJLWsD3uiXT9TZBgZAPwi2adBxCBLr14hVHorjjedy3W6gEPM6Gg3ZCUBfcHLFo6tZCu4fflBYIHfofzqoQ67W2pZABd87GLUSJCeFIIkTgGLeOAZDZD
 
-
-def print_msg
-  puts Time.now.to_s
-  puts "received params: ".blue
-  puts JSON.pretty_generate(params).light_blue
-  puts "---"  
-end
-
-def kinky_text
-  verb = Faker::Hacker.verb
-  noun = Faker::Hacker.noun
-  "I'd like to #{verb} your #{noun}..."
-end
-
-def handle_msg 
-  print_msg
-  return params['hub.challenge'] if params['hub.challenge']
-  data = fb_msg_data(params)
-  user_id, text = data[:user_id], data[:text]
-
-  response_msg = "I got: #{text}. In reverse it is: #{text.reverse}"
-  response_msg = LiterateRandomizer.sentence if text == 'random' rescue 'oopsie'
-  response_msg = kinky_text if text == 'test'
-  send_fb_msg(user_id, response_msg)
-rescue => e
-  {msg: "some error occurred"}
-end
-
-get '/webhook' do
-  handle_msg  
-end
-
-post '/webhook' do
-  handle_msg
-end
-
 get '/' do
-  #flash.message = "hello this is a flash"
-  #render_home_page  
-  #bp
   redirect '/about'
 end
-
-get '/ko' do
-  erb :"ko_page", default_layout
-end
-
-# get '/:slug' do
-#   slug = params[:slug]
-#   if user = $users.get(username: slug)
-#     render_user_page(user)
-#   else
-#     halt(404)
-#   end
-# end

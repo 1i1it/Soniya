@@ -2,22 +2,14 @@ $messages = $submitted_messages = $contact = $contact_us =  $mongo.collection('c
 
 MESSAGES_TABLE_FIELDS = ["_id", "user_id", "name","text", "email", "created_at"]
 
-
 get '/contact_us' do
  full_page_card(:"contact_us/contact_form")
 end
 
 post '/contact_us' do
-	if cu
-		contact = $contact.add({user_id: cuid, 
-    							text: params['text'],
-    							email: params[:email]})
-
-	else
-		contact = $contact.add({name: params['name'],
-								text: params['text'],
-    							email:params[:email]})
-	end
+	data = {text: params['text'], email: params['email'], 
+			name: params['name'], user_id: cuid}
+	$contact.add(data)	
 	{contact: contact}
 end
 
@@ -51,24 +43,26 @@ post '/messages/ajax' do
 }
 end
 
-get '/messages_page?' do
+get '/messages_page' do
 	full_page_card(:"other/collection_page", locals: {
 		data: $messages.get({_id:params[:message_id]}),  
 		keys: MESSAGES_TABLE_FIELDS,
 		collection_name: "Message"})
 end
 
-
 get '/messages' do
-	if params[:user_id]
-		items = $messages.find({user_id:params[:user_id]}).to_a
+	if params[:message_id]
+		items = $messages.get({_id:params[:message_id]})
 	elsif params[:email]
-		items = $messages.find({email:params[:email]}).to_a
-	elsif params[:message_id]
-		items = $messages.find({_id:params[:message_id]}).to_a
+		items = $messages.get_many({email:params[:email]}, sort: [{created_at: -1}] )
+	elsif params[:user_id]
+		items = $messages.get_many({user_id:params[:user_id]}, sort: [{created_at: -1}] )
+	elsif params[:request_id]
+		items = $messages.get_many({_id:params[:request_id]}, sort: [{created_at: -1}] )
 	else
 		status 400
 		return {error: "No such parameter. Please choose from legal parameters user_id, email"}
 	end
 	{items:items}
 end
+

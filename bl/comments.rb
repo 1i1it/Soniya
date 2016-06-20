@@ -14,8 +14,6 @@ get '/comments/all' do
 	end
 end
 
-
-
 post '/comments/ajax' do
 	limit = (params[:length] || 10).to_i
 	skip  = (params[:start]  ||  0).to_i
@@ -38,10 +36,10 @@ post '/create_comment' do
 	user = cu
 	flash.message = 'Please log in to post request' if !user 
 	require_user
-
-    	comment = $comments.add({user_id: user['_id'], 
-    				text:params[:text],
-  					response_id:params[:response_id]})
+    comment = $comments.add({user_id: user['_id'], 
+    			   	text:params[:text],
+  					response_id:params[:response_id],	
+  					request_id:params[:request_id]})
 	{comment: comment}
 end
 
@@ -62,5 +60,20 @@ get '/comments_page' do
 		keys: COMMENTS_TABLE_FIELDS,
 		collection_name: "Comment"})
 end
+
+get '/comments' do
+	if params[:comment_id]
+		items = $comments.get({_id:params[:comment_id]} ) 
+	elsif params[:request_id]
+		items = $comments.get_many({request_id:params[:request_id]}, sort: [{created_at: -1}] ) 
+	elsif params[:user_id] 
+		items = $comments.get_many({user_id: params[:user_id]}, sort: [{created_at: -1}] )
+	else
+		status 400
+		return {error: "No such parameter. Choose from legal parameters comment_id, user_id, request_id"}
+	end
+	{items:items}
+end
+
 
 

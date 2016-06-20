@@ -8,7 +8,6 @@ get '/admin/api_spec' do
   erb :"admin/api_spec", default_layout
 end
 
-
 get "/admin/manage/:coll" do 
   erb :"admin/items", default_layout
 end 
@@ -27,17 +26,17 @@ before '/admin*' do
   halt(404) unless is_admin
 end
 
-def verify_admin_val(coll, field, val)
-  if coll == 'posts'
-    if field == 'photos'
-      halt_bad_input(msg: 'Bad photos')
-    end
-  end
+def verify_admin_val(collection, field, val)
+  # if you want to verify admin value, you can do it by collection
+  # and/or field 
+  # mock-code
+  # if collection == 'something'
+  #   if field == 'something'
+  #     halt_bad_input(msg: 'Bad input')
+
   if field == 'latitude' || field == 'longitude'
       val = val.to_f
   end
-
-  
   val
 end
 

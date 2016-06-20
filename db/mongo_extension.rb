@@ -6,6 +6,9 @@ class Mongo::Collection
   end
 
   def get_many(params = {}, opts = {})
+    # you can limit amount of returned results by passing
+    # required number in options. 100 by default
+    opts[:limit] ||= 100 if !opts
     self.find(params, opts).to_a
   end
 

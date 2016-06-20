@@ -31,16 +31,18 @@ post '/flags/ajax' do
   "data": data
 }
 end
-get '/flag_user' do
+
+post '/flag_user' do
 	require_user
 	 #(expects  cuid, flagged_user_id, request_id/response_id, returns new object flag added)
 	if params[:response_id]
 		response = $res.get(_id:params[:response_id])
-		existing_flag = $flags.get({flagging_user_id: cuid, flagged_user_id: response[:user_id], response_id: params[:response_id]}) 
+		existing_flag = $flags.get({flagging_user_id: cuid, 
+					flagged_user_id: response[:user_id], response_id: params[:response_id]}) 
 		if !existing_flag
 			flag = $flags.add({flagging_user_id: cuid, flagged_user_id: response[:user_id], response_id: params[:response_id]}) 
 		else
-			return {msg: "flag exists"}
+			return {msg: "flag already exists"}
 		end	
 	elsif params[:request_id]
 		request = $ir.get(_id:params[:request_id])
@@ -48,38 +50,51 @@ get '/flag_user' do
 		if !existing_flag
 			flag = $flags.add({flagging_user_id: cuid, flagged_user_id: request[:user_id], request_id: params[:request_id]})
 		else
-			return {msg: "flag exists"}
+			return {msg: "flag already exists"}
 		end	
 	end
 	{flag:flag}
-	
 end
 
 get '/unflag_user' do
 	require_user
 	if params[:response_id]
 		response = $res.get(_id:params[:response_id])
-		 $flags.delete_one({flagging_user_id: cuid, flagged_user_id: response[:user_id], response_id: params[:response_id]})
-
+		$flags.delete_one({flagging_user_id: cuid, 
+		 	                flagged_user_id: response[:user_id], 
+		 	                response_id: params[:response_id]})
 	elsif params[:request_id]
 		request = $ir.get(_id:params[:request_id])
-		$flags.delete_one({flagging_user_id: cuid, flagged_user_id: request[:user_id], request_id: params[:request_id]})
-
+		$flags.delete_one({flagging_user_id: cuid, 
+			                 flagged_user_id: request[:user_id], 
+			                 request_id: params[:request_id]})
 	end
 	{msg:"flag deleted"}
 end
 
-
-get '/flags_page' do
+def search_flags()
 	if params[:flagged_user_id]
-		item = $flags.get_many_limited({flagged_user_id:params[:flagged_user_id]})
+		item = $flags.get_many_limited({flagged_user_id: params[:flagged_user_id]})
 	elsif params[:flagging_user_id]
 		item = $flags.get_many_limited({flagging_user_id:params[:flagging_user_id]})
 	elsif params[:flag_id]
 		item = $flags.get_many_limited({_id:params[:flag_id]})
+	elsif params[:request_id]
+		items = $flags.get_many({request_id:params[:request_id]}, sort: [{created_at: -1}] ) 
 	else		
-		{msg: "params missing"} 
-	
+		status 400
+     	return {error:"No such parameter. 
+     		    Choose from legal parameters flagged_user_id, flagging_user_id, user_id, request_id"} 	
 	end
+end
+
+get '/flags_page' do
+	item = search_flags
 	full_page_card(:"flags/flags", locals: {data: item})
 end
+
+get '/flags' do
+	items = search_flags
+	{items:items}
+end
+

@@ -1,6 +1,7 @@
 $conref = $confirm_refute =  $mongo.collection('confirm_refute')
 
-CONREF_TABLE_FIELDS = ["_id", "user_id", "response_id", "action", "created_at", "updated_at"]
+CONREF_TABLE_FIELDS = ["_id", "user_id", "response_id", 
+						"action", "created_at", "updated_at"]
 
 get '/confirms_refutes/all' do
 	if params[:browser]
@@ -34,7 +35,7 @@ end
 	
 
 def confirm_refute
-	# can add confirm, refute, or nil for removing confirm/refute
+	# can add confirm, refute to confirm/refute; or nil for removing confirm/refute
 	#receive token and response_id and action (confirm/refute/none)
 	require_user
 	response = $responses.get({_id:params[:response_id]})
@@ -46,7 +47,8 @@ def confirm_refute
 		{msg: "refute/confirm changed"}
 	else
 		#if not
-		$conref.add({user_id: cuid, response_id:response['_id'], action: params[:action]})
+		$conref.add({user_id: cuid, response_id:response['_id'], 
+			action: params[:action], request_id:params[:request_id]})
 		{msg: "refute/confirm added"}
 	end
 	
@@ -56,9 +58,25 @@ post '/create_confirm_refute' do
 	confirm_refute
 end
 
-get '/confirms_refutes_page?' do
+get '/confirms_refutes_page' do
 	full_page_card(:"other/collection_page", locals: {
 		data: $conref.get({_id:params[:conref_id]}),  
 		keys: CONREF_TABLE_FIELDS,
 		collection_name: "Confirm/Refute"})
+end
+
+
+get '/confirms_refutes' do
+	if params[:conref_id]
+		items = $conref.get({_id:params[:conref_id]} ) 
+	elsif params[:request_id]
+		items = $conref.get_many({request_id:params[:request_id]}, sort: [{created_at: -1}] ) 
+
+	elsif params[:user_id] 
+		items = $conref.get_many({user_id: params[:user_id]}, sort: [{created_at: -1}] )
+	else
+		status 400
+		return {error: "No such parameter. Choose from legal parameters conref_id, user_id, request_id"}
+	end
+	{items:items}
 end

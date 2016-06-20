@@ -8,7 +8,6 @@ RESPONSE_STATUS_FULFILLING = "fulfilling"
 RESPONSE_STATUS_NOT_FULFILLING = "not_fulfilling"
 RESPONSE_STATUS_UNMARKED = "unmarked"
 
-
 def map_responses(items)
 	items.map! do |old|
 	  new_request = {
@@ -56,7 +55,6 @@ post '/responses/ajax' do
 }
 end
 
-
 get '/response_page' do
 	full_page_card(:"other/collection_page", locals: {
 		data: $res.get({_id:params[:response_id]}),  
@@ -64,47 +62,41 @@ get '/response_page' do
 		collection_name: "Response"})
 end
 
-
 get '/responses' do
 	if params[:text]
 		items = $res.search_by("text", params[:text])
 	elsif params[:response_id]
-		items = $res.get_many_limited({_id:params[:response_id]}, sort: [{created_at: -1}] ) 
+		items = $res.get({_id:params[:response_id]}) 
 	elsif params[:request_id]
-		items = $res.find({request_id:params[:request_id]}).to_a
+		items = $res.get_many({request_id:params[:request_id]}, sort: [{created_at: -1}] )
 	elsif params[:user_id]
-		items = $res.find({user_id:params[:user_id]}).to_a
+		items = $res.get_many({user_id:params[:user_id]}, sort: [{created_at: -1}] )
 	else
 		status 400
-		return {error: "No such parameter. Please choose from legal parameters location, text, user_id, request_id"}
-		
+		return {error: "No such parameter. Please choose from legal parameters location, text, user_id, request_id"}		
 	end
 	{items:items}
 end
 
-
-
 post '/create_response' do 
-
 	if !params[:request_id]
 		return {err: "missing parameters"}
 	end
-	
-
 	require_user
+
 	request = $ir.get({_id:params[:request_id]})
 	halt_bad_input(msg:"no such request") if !request
 
-	#can't add more responsed if request is fulfilled or closed
+	#can't add more responses if request is fulfilled or closed
 	if (request["status"] == REQUEST_STATUS_FULFILLED) || (request["status"] == REQUEST_STATUS_CLOSED)
-
 		halt_bad_input(msg:"this request is #{request["status"]}, can't post resposes")
 	end
 
-	# Max 4 responses per requests with fulfilled:false
+	# Max 4 responses per requests with fulfilled:UNMARKED
 	if $res.count({request_id:params[:request_id], fulfilling:RESPONSE_STATUS_UNMARKED}) > MAX_RESPONSES_PER_REQUEST-1
 		halt_bad_input(msg:"you can't add more than " + MAX_RESPONSES_PER_REQUEST.to_s + " responses")
 	end
+    
     response = $res.add({user_id: cuid, 
     				text: params['text'],
     				request_id:params[:request_id],
@@ -115,31 +107,29 @@ post '/create_response' do
   					is_fulfilling:RESPONSE_STATUS_UNMARKED})
 
   {response:response} 
-
 end
 
-get '/edit_response' do
+post '/edit_response' do
 	response = $responses.update_id(params[:response_id], params.except("response_id")) 
 	{response: response}
 end
 
-get '/delete_response' do
+post '/delete_response' do
 	response = $responses.delete_one(_id: params[:response_id])
 	{msg: "response removed"}
 end
 
-post '/response_fulfilling' do
-	#MAKE SURE CUID == request[:user_id]
+post '/response_fulfilling' do	
 	request_id = $responses.get(_id: params[:response_id])["request_id"]
 	requesting_user_id =  $ir.get(_id: request_id)["user_id"]
 	if cuid != requesting_user_id
 		halt_bad_input(msg:"can't mark as fulfilled, not your request")
 	end 
+	
 	response = $responses.update_id(params[:response_id], is_fulfilling:RESPONSE_STATUS_FULFILLING) 
-	request = $ir.update_id(request_id, status: REQUEST_STATUS_FULFILLED)
+	request  = $ir.update_id(request_id, status: REQUEST_STATUS_FULFILLED)
 	{response: response}
 end
-
 
 post '/response_not_fulfilling' do
 	response = $responses.update_id(params[:response_id], is_fulfilling:RESPONSE_STATUS_NOT_FULFILLING) 
