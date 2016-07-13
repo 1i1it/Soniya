@@ -69,43 +69,61 @@ or
 End-Points
 ==========
 
+All routes, except for login/signup/contact_us expect token 
 * Users
 - /login (with FB) (expects fb token, return user + flag if is new user)
-- /user_data (expects user_id, returns a hash with email, name, pic_url, paypal
+- /user_data ( returns a hash with email, name, pic_url)
 - /update_me (expects one(or more) of the following and sets it: [paypal, email, pic_url, name.])
-- /activity_data  (expects user_id,
+- /user_statistics  
 returns of activity_data:
   - num_requests_made
-  - num_responses
-  - num_requests_marked_as_fulfilled
-  - num_paid_requests_marked_as_fulfilled
+  - num_requests_offered_for_payment
+  - num_requests_marked_as_fulfilled_offered_for_payment
   - num_actual_paid
-  - average rating
+
+- /edit_user (gets user_id from current user)(expects one or more of the following and sets it: [paypal_email, email, pic_url, name)
+
 
 * Info Requests
-- /add_request (expects user_id (current user), 
+- /add_new_request
 posts params from Info Requests collection(mandatory and optional))
 returns added object .
-- /get_requests  (will show of different types by imput param (e.g logitude and latitude will return local requests)
+- /requests  (will show of different types by imput param (e.g logitude and latitude will return local requests)
   - expects one of the following as criteria: _id, user_id, text, lat & long, amount, responder_id
   - returns an array of requests
     - each request has all data necessary to display 
-  
+ - /fulfill_request 
+ - /close_request
+ - /pay  (pay for fulfilled request, gets request id, returns build_paypal_payment_page)
+ - /paypal_confirm (gets request id, returns request with paid:true, and message "ok, you paid"}
+-/paypal_cancel - cancel paypal payment
+
+-/requests_around_me (receives latitude and longitude, returns 10 requests 1km around me, if there is less then 10, searches in 10 km around me, and if still less then 10, searches 100 km around me)
+-/requests_by_text (receives text to search for, returns requests with such text)
+
+
 * Responses 
-- /add_response (expects user_id (current user), 
+- /create_response  
 posts params from * Responses collection(mandatory and optional)). returns added object 
-- /get_responses
+- /responses
   - expects one of the following as criteria: _id, user_id, request_id, text
   - returns an array of responses
     - each response has all data necessary to display it 
 - /confirm_refute (confirm or refute response)
 (expects user_id, id of response and action (confirm/refute), returns added object 
 
+-/edit_response  (and response_id)
+-/delete_response (expects response_id)
+-/response_fulfilling  (mark response as fulfilling (expects response_id)
+-/response_not_fulfilling  (mark response as not fulfilling (expects response_id)
+
+
 * Ratings 
-- /add_rating (expects rated_user_id, rating(1 to 5), response_id). returns added object 
-- get_ratings 
-  - expects user_id or rated_user_id
+- /create_rating (expects request_id, rating(1 to 5), response_id). returns added object 
+- /ratings 
+  - expects one of: user_id, rated_user_id, rating_id, request_id
   - returns an array of rating objects
+- /update_rating (expects rating(1 to 5), rating_id
 
 * Payments  ====missing====
 - /prepare_payment_page
@@ -120,16 +138,14 @@ posts params from * Responses collection(mandatory and optional)). returns added
 -/flags (expects one or more of the following: flagging_user_id, flagged_user_id, request_id/response_id, returns found objects)
 
  * Comments
--/add_comment (expects user_id, response_id; returns object comment)
--/remove comment (expects user_id, comment_id; returns "comment removed")
--/edit_comment (expects user_id, comment_id; returns object comment)
+-/add_comment (expectsresponse_id; returns object comment)
+-/remove comment (expects comment_id; returns "comment removed")
+-/edit_comment (expects comment_id; returns object comment)
 
 
  * Admin ====missing====
- - /block_account (add {blocked: true} to user hash) - check for block in require user, if blocked, return message "you were blocked".
-also "you were blocked" when trying to sign in
-
- - /unblock_account
+ - /admin/block_user
+ - /admin/unblock_user
  - /show_contact_us (see messages users sent on contact us form)
 
 * Other

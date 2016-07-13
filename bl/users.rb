@@ -1,6 +1,7 @@
 $users = $mongo.collection('users')
 
 MANAGEABLE_COLLECTIONS = [:users,:errors,:site_log,:requests, :info_requests].map {|n| $mongo.collection(n) }
+
 USERS_TABLE_FIELDS = ["_id", "email", "pic_url", "fb_id", "name", "token",
                        "created_at", "updated_at", "paypal_email"]
 
@@ -9,17 +10,7 @@ def create_user(data)
   $users.add(data)
 end
 
-def map_users(items)
-  items.map! do |old|
-    users = $users.get_many_limited({_id: old['_id']}, sort: [{created_at: -1}] )
-    new_user = {
-      email:old['email'],
-      name: old[:name],
-      picture_url: old[:picture_url]
-    }
-  end
-  return items
-end
+
 
 ## routes 
 
@@ -178,4 +169,16 @@ get '/logout' do
   log_event('logged out')
   session.clear
   redirect '/login'
+end
+
+def map_users(items)
+  items.map! do |old|
+    users = $users.get_many_limited({_id: old['_id']}, sort: [{created_at: -1}] )
+    new_user = {
+      email:old['email'],
+      name: old[:name],
+      picture_url: old[:picture_url]
+    }
+  end
+  return items
 end

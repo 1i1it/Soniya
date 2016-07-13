@@ -31,7 +31,6 @@ get '/pay' do
     	halt_bad_input(msg: 'Request has already been paid for')
     end
 
-
     fulfilling_response = $res.get(request_id: params[:id], is_fulfilling: RESPONSE_STATUS_FULFILLING)
  	responder_paypal_email = $users.get(_id: fulfilling_response["user_id"])["paypal_email"]
  	responder_paypal_email = 'sella.rafaeli@gmail.com' #for testing TODO

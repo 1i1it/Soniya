@@ -1,62 +1,79 @@
 
 <h2>Routes</h2>
 
+All routes, except for signup/contact_us expect user token.
+
 <div><pre> <b>Users</b>
 - /login (with FB) (expects fb token, return user + flag if is new user)
-- /user_data (expects user_id, returns a hash with email, name, pic_url, paypal
+- /user_data ( returns a hash with email, name, pic_url)
 - /update_me (expects one(or more) of the following and sets it: [paypal, email, pic_url, name.])
-- /activity_data  (expects user_id,
+- /user_statistics  
 returns of activity_data:
   - num_requests_made
-  - num_responses
-  - num_requests_marked_as_fulfilled
-  - num_paid_requests_marked_as_fulfilled
+  - num_requests_offered_for_payment
+  - num_requests_marked_as_fulfilled_offered_for_payment
   - num_actual_paid
-  - average rating
+
+- /edit_user (expects one or more of the following and sets it: [paypal_email, email, pic_url, name)
+
 
 * <b>Info Requests</b>
-- /create_request (expects user_id (current user), 
+- /add_new_request
 posts params from Info Requests collection(mandatory and optional))
 returns added object .
 - /requests  (will show of different types by imput param (e.g logitude and latitude will return local requests)
   - expects one of the following as criteria: _id, user_id, text, lat & long, amount, responder_id
   - returns an array of requests
     - each request has all data necessary to display 
+ - /fulfill_request 
+ - /close_request
+
+-/requests_around_me (receives latitude and longitude, returns 10 requests 1km around me, if there is less then 10, searches in 10 km around me, and if still less then 10, searches 100 km around me)
+-/requests_by_text (receives text to search for, returns requests with such tex
   
 * <b>Responses </b>
-- /create_response (expects user_id (current user), 
+- /create_response  
 posts params from * Responses collection(mandatory and optional)). returns added object 
 - /responses
   - expects one of the following as criteria: _id, user_id, request_id, text
   - returns an array of responses
     - each response has all data necessary to display it 
+- /confirm_refute (confirm or refute response)
+(expects id of response and action (confirm/refute), returns added object 
+
+-/edit_response  (and response_id)
+-/delete_response (expects response_id)
+-/response_fulfilling  (mark response as fulfilling (expects response_id)
+-/response_not_fulfilling  (mark response as not fulfilling (expects response_id)
+
 
  * <b>Confrims and Refutes </b>   
 - /confirm_refute (confirm or refute response)
-(expects user_id, id of response and action (confirm/refute), returns added object 
+(expects id of response and action (confirm/refute), returns added object 
 
 * <b>Ratings </b>
-- /create_ating (expects rated_user_id, rating(1 to 5), response_id). returns added object 
-- get_ratings 
-  - expects user_id or rated_user_id
+- /create_rating (expects request_id, rating(1 to 5), response_id). returns added object 
+- /ratings 
+  - expects one of: user_id, rated_user_id, rating_id, request_id
   - returns an array of rating objects
+- /update_rating (expects rating(1 to 5), rating_id
 
 * <b>Payments </b> 
--/pay(expects request_id, returns URL of Paypal page ready for payment + pay-key (Paypal identifier for payment)
+-/pay(pay for fulfilled request. expects request_id, returns URL of Paypal page ready for payment + pay-key (Paypal identifier for payment)
 -/paypal_confirm (expects payment identifier (string), returns hash indicating confirmed payment status )
 -/paypal_cancel (expects request_id, redirects back to request)
 
 
  * <b>Flags</b>
--/flag_user (expects user_id, flagged_user_id, request_id/response_id, returns new object flag added)
--/unflag_user (expects  user_id, flagged_user_id, request_id/response_id, returns - flag removed)
+-/flag_user (expects flagged_user_id, request_id/response_id, returns new object flag added)
+-/unflag_user (expects flagged_user_id, request_id/response_id, returns - flag removed)
 -/flags (expects one or more of the following: flagging_user_id, flagged_user_id, request_id/response_id, returns found objects)
 
  * <b>Comments</b>
--/create_comment (expects user_id, response_id; returns object comment)
--/remove comment (expects user_id, comment_id; returns "comment removed")
--/edit_comment (expects user_id, comment_id; returns object comment)
--/comments
+-/create_comment (expects response_id; returns object comment)
+-/remove comment (expects  comment_id; returns "comment removed")
+-/edit_comment (expects comment_id; returns object comment)
+-/comments  (expects one or more of the following: comment_id, user_id, request_id/request_id; returns found objects)
 
  
  * <b>Admin </b>
